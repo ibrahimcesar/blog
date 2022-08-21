@@ -9,13 +9,7 @@ const { post } = Astro.props;
     <header>
       <p class="max-w-3xl mx-auto text-center">
         <time datetime={post.pubDate}>
-          {
-            new Date(post.pubDate).toLocaleDateString("en-us", {
-              year: "numeric",
-              month: "short",
-              day: "numeric",
-            })
-          }
+          {new Date(post.pubDate).toISOString().substring(0, 10)}
         </time> ~ {Math.ceil(post.readingTime)} min
       </p>
       <h1
