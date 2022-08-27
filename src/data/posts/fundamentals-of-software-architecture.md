@@ -3,7 +3,7 @@ title: Fundamentals of Software Architecture
 description: Livro de Mark Richards e Neal Ford
 featured: true
 featuredImage: fundamentals.png
-date: "2020-09-19T10:50:00.000Z"
+pubDate: "2020-09-19T10:50:00.000Z"
 permalink: "/blog/fundametals-of-software-architecture/"
 image: cover.png
 featuredImageColor: "#1E2C54"

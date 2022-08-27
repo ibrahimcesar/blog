@@ -4,7 +4,7 @@ description: "We need psychological safety. And financial!"
 featured: true
 permalink: "/blog/open-letter-to-aws-please-give-us-a-price-cap/"
 featuredImage: price.png
-date: "2021-05-05T10:50:00.000Z"
+pubDate: "2021-05-05T10:50:00.000Z"
 image: cover.png
 featuredImageColor: "#1E2C54"
 language: en

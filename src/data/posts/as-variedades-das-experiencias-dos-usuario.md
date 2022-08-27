@@ -5,7 +5,7 @@ featured: true
 permalink: "/blog/as-variedades-das-experiencias-dos-usuarios/"
 featuredImage: ux.jpg
 image: cover.jpg
-date: "2020-02-15T10:50:00.000Z"
+pubDate: "2020-02-15T10:50:00.000Z"
 featuredImageColor: "#1E2C54"
 ---
 

@@ -2,11 +2,10 @@
 title: Brasil, uma Profecia e O Monstro de Mariana
 description: Apresentando duas obras de ficção de minha autoria
 featured: true
-date: "2021-11-26T10:50:00.000Z"
+pubDate: "2021-11-26T10:50:00.000Z"
 featuredImage: fic.jpg
 permalink: "/blog/brasil-uma-profecia-o-monstro-de-mariana-ficcao-ibrahim-cesar/"
 image: cover.png
-featuredImageColor: "#1E2C54"
 ---
 
 <p class="lead">Eu, de vez em quando — ainda que seja puxado para isso o todo tempo —, escrevo (ou tento) ficção. São contos que publiquei na Amazon e estão disponíveis gratuitamente para quem assina o Kindle Unlimited. Também estarão de graça entre o dias 30 de novembro e 02 de dezembro, 2021. Fora estes dias, custam R$ 1,99 cada, o que é o menor preço que consigo disponibilizar na loja Kindle. Resolvi falar um pouco deste meu outro lado. Somos múltiplos. Sempre destado isso e esqueço de também transparencer isso.</p>

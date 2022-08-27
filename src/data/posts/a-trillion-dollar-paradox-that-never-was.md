@@ -3,7 +3,7 @@ title: "A Trillion Dollar Paradox that never was"
 description: The largest bank in Latin America will move half of its infra to AWS Cloud
 featured: true
 permalink: "/blog/a-trillion-dollar-paradox-that-never-was/"
-date: "2021-06-05T10:50:00.000Z"
+pubDate: "2021-06-05T10:50:00.000Z"
 featuredImage: paradox.png
 image: trillion-page.png
 featuredImageColor: "#1E2C54"

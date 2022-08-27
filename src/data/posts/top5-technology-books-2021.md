@@ -2,7 +2,7 @@
 title: Top 5 technology books I read in 2021
 description: My top picks for technical / technology related books
 featured: true
-date: "2021-12-30T10:50:00.000Z"
+pubDate: "2021-12-30T10:50:00.000Z"
 featuredImage: books2021.jpg
 permalink: "/blog/top5-technology-books-2021/"
 image: top5.png

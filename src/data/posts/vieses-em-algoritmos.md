@@ -4,7 +4,7 @@ description: "Discurso de Celeste Kidd para o evento #AIDebate2, que aborda de f
 featured: true
 permalink: "/blog/vieses-em-algoritmos/"
 featuredImage: kidd.jpg
-date: "2020-12-24T11:06:00.000Z"
+pubDate: "2020-12-24T11:06:00.000Z"
 image: cover.jpg
 featuredImageColor: "#1E2C54"
 ---

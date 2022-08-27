@@ -2,7 +2,7 @@
 title: "#webdev: Anatomia de uma URL"
 description: As peças e história de um protocolo
 featured: true
-date: "2021-07-18T10:50:00.000Z"
+pubDate: "2021-07-18T10:50:00.000Z"
 featuredImage: url.jpg
 image: url.png
 permalink: "/blog/anatomia-de-uma-url/"

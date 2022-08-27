@@ -4,7 +4,7 @@ description: Knut é responsável por um dos mais fortes adágios e frases em de
 featured: true
 featuredImage: root.jpg
 permalink: "/blog/otimizacao-prematura-e-a-raiz-de-todo-mal/"
-date: "2020-01-27T10:50:00.000Z"
+pubDate: "2020-01-27T10:50:00.000Z"
 image: cover.jpg
 featuredImageColor: "#1E2C54"
 ---

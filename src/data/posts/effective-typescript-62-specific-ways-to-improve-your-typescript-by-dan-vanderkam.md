@@ -2,11 +2,9 @@
 title: "📘 #devbooks:  Effective TypeScript: 62 Specific Ways to Improve Your TypeScript"
 description: If practical books are your type, this is for you!
 featured: true
-permalink: "/blog/effective-typescript-62-specific-ways-to-improve-your-typescript-by-dan-vanderkam/"
-date: "2021-05-16T10:50:00.000Z"
+pubDate: "2021-05-16T10:50:00.000Z"
 featuredImage: girl-window-reading.png
 image: devbooks-effectivets.png
-featuredImageColor: "#1E2C54"
 language: "en"
 ---
 

@@ -4,7 +4,7 @@ description: "A comparision between AWS native models of Infrastructure as Code"
 featured: true
 permalink: "/blog/aws-amplify-sam-cdk-what-to-choose-for-infrastructure-as-code-on-aws/"
 featuredImage: lego.jpg
-date: "2020-12-20T10:50:00.000Z"
+pubDate: "2020-12-20T10:50:00.000Z"
 image: cover.png
 featuredImageColor: "#1E2C54"
 language: en

@@ -2,7 +2,7 @@
 title: "SAFe™ Considered Harmful"
 description: This framework is not Agile at all. Or safe.
 featured: true
-date: "2021-10-16T10:50:00.000Z"
+pubDate: "2021-10-16T10:50:00.000Z"
 featuredImage: safe.jpg
 image: considered-harmful.png
 permalink: "/blog/SAFe-considered-harmful/"

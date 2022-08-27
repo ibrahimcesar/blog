@@ -4,7 +4,7 @@ description: "Most of the user cases for documentation besides open source requi
 featured: true
 permalink: "/blog/how-to-deploy-docusaurus-with-authentication-using-aws-amplify/"
 featuredImage: dino.jpg
-date: "2021-01-27T10:50:00.000Z"
+pubDate: "2021-01-27T10:50:00.000Z"
 image: cover.png
 featuredImageColor: "#1E2C54"
 language: en

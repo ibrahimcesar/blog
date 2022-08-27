@@ -3,7 +3,7 @@ title: "Mergulho em AWS Cloud Development Kit (CDK)"
 description: Conheça mais profundamente o AWS CDK
 featured: true
 permalink: "/blog/mergulho-cdk/"
-date: "2021-11-14T10:50:00.000Z"
+pubDate: "2021-11-14T10:50:00.000Z"
 featuredImage: cdk-feature.jpg
 image: mergulho-cdk.png
 featuredImageColor: "#1E2C54"

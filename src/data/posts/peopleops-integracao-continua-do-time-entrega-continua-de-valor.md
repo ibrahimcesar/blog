@@ -2,7 +2,7 @@
 title: PeopleOps
 description: Integração Contínua do time e Entrega Contínua de valor
 featured: true
-date: "2021-10-05T10:50:00.000Z"
+pubDate: "2021-10-05T10:50:00.000Z"
 permalink: "/blog/peopleops-integracao-continua-do-time-entrega-continua-de-valor/"
 featuredImage: peopleops.png
 image: peopleops.png

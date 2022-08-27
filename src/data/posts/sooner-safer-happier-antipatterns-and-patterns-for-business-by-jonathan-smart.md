@@ -3,7 +3,7 @@ title: "📘 #devbooks:  Sooner, Safer, Sooner, Happier: Antipatterns and Patter
 description: As soon you start to read it, is safe to say, you'll be happy
 featured: true
 permalink: "/blog/sooner-safer-happier-antipatterns-and-patterns-for-business-by-jonathan-smart/"
-date: "2021-07-10T10:50:00.000Z"
+pubDate: "2021-07-10T10:50:00.000Z"
 featuredImage: agile-wall.jpg
 image: devbooks-sooner-safer-happier.png
 featuredImageColor: "#1E2C54"

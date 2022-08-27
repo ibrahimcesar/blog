@@ -4,7 +4,7 @@ description: "More than cache"
 featured: true
 permalink: "/blog/redis-exploring-redis-as-serverless-databases-to-solve-idempotence-in-api-upstash/"
 featuredImage: redis.png
-date: "2021-05-14T10:50:00.000Z"
+pubDate: "2021-05-14T10:50:00.000Z"
 image: cover.png
 featuredImageColor: "#1E2C54"
 language: en

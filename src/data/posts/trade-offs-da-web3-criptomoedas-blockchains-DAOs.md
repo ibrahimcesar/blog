@@ -2,7 +2,7 @@
 title: Explorando trade-offs da web3 
 description: Alguns pontos sobre essa nova onda de tecnologias que vejo como decisivos para sua adoção e efeitos na sociedade 
 featured: true
-date: "2021-12-21T10:50:00.000Z"
+pubDate: "2021-12-21T10:50:00.000Z"
 featuredImage: web3.jpg
 permalink: "/blog/trade-offs-da-web3-criptomoedas-blockchains-DAOs/"
 image: web3.png

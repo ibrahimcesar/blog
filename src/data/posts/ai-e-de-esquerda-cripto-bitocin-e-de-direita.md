@@ -3,7 +3,7 @@ title: "AI é de esquerda e Cripto é de direita?"
 description: A (estranha?) visão política de tecnologias de Peter Thiel e Marc Andreessen
 featured: true
 permalink: "/blog/ai-e-de-esquerda-cripto-bitocin-e-de-direita/"
-date: "2021-07-04T10:50:00.000Z"
+pubDate: "2021-07-04T10:50:00.000Z"
 featuredImage: eggman.png
 image: left-right.png
 featuredImageColor: "#1E2C54"

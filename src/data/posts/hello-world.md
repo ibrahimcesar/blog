@@ -4,7 +4,7 @@ description: O método aqui definido confessa o sentimento de que todo verdadeir
 featured: true
 permalink: "/blog/hello-world/"
 featuredImage: helloworld.jpg
-date: "2020-01-17T10:50:00.000Z"
+pubDate: "2020-01-17T10:50:00.000Z"
 image: cover.jpg
 featuredImageColor: "#1E2C54"
 ---

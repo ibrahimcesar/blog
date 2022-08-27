@@ -2,7 +2,7 @@
 title: "Estrutura e Interpretação de Programas de Computador"
 description: Um clássico que te leva ao amâgo de programar
 featured: true
-date: "2021-07-20T10:50:00.000Z"
+pubDate: "2021-07-20T10:50:00.000Z"
 featuredImage: sicp.jpg
 image: scip.png
 permalink: "/blog/estrutura-e-interpretacao-de-programas-de-computador/"

@@ -2,7 +2,7 @@
 title: Introdução ao Next.js
 description: Framework para React em produção
 featured: true
-date: "2021-12-07T10:50:00.000Z"
+pubDate: "2021-12-07T10:50:00.000Z"
 featuredImage: nextjs.jpg
 permalink: "/blog/introducao-nextjs-ssr-isr-ssg-javascript-react-framework/"
 image: cover.png

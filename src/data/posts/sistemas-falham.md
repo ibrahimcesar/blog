@@ -3,7 +3,7 @@ title: Por quê sistemas falham?
 description: Sistemas falham o tempo todo. Ignorar os logs corre-se o risco de repetir os bugs do passado
 featured: true
 permalink: "/blog/sistemas-falham/"
-date: "2021-03-30T10:50:00.000Z"
+pubDate: "2021-03-30T10:50:00.000Z"
 featuredImage: ruins.jpg
 image: cover.jpg
 featuredImageColor: "#1E2C54"

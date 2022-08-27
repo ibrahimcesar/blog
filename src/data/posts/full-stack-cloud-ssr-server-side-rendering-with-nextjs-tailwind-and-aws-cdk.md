@@ -4,9 +4,8 @@ description: "A spin in the workshop!"
 featured: true
 permalink: "/blog/full-stack-cloud-ssr-server-side-rendering-with-nextjs-tailwind-and-aws-cdk/"
 featuredImage: ssr.png
-date: "2021-03-14T10:50:00.000Z"
+pubDate: "2021-03-14T10:50:00.000Z"
 image: cover.png
-featuredImageColor: "#1E2C54"
 language: en
 ---
 

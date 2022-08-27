@@ -2,11 +2,10 @@
 title: Certificações AWS — Por quê e de que forma
 description: Não existe algoritmo de compressão para experiência. — Andy Jassy
 featured: true
-date: "2022-04-08T10:50:00.000Z"
+pubDate: "2022-04-08T10:50:00.000Z"
 featuredImage: exam.png
 permalink: "/blog/certificacoes/"
 image: cert.png
-featuredImageColor: "#1E2C54"
 ---
 
 O objetivo desta postagem é responder por quê você deve ter entre seus objetivos uma certificação AWS. Também exploro minhas motivações que me levaram a buscar uma certificação — spoiler: eu não havia nenhum incentivo em minha posição e fiz para validar minha atuação. No final, trago algumas respostas a questões comuns.

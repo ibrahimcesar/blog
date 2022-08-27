@@ -4,7 +4,7 @@ description: "This is water, my friend"
 featured: true
 permalink: "/blog/we-need-to-talk-more-about-equality-in-tech/"
 featuredImage: binary.jpg
-date: "2021-05-23T10:50:00.000Z"
+pubDate: "2021-05-23T10:50:00.000Z"
 image: cover.png
 featuredImageColor: "#1E2C54"
 language: en

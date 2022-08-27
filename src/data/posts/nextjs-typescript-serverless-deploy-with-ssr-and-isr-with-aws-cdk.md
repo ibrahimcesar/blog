@@ -2,7 +2,7 @@
 title: "Next.js TypeScript serverless deploy with SSR and ISR with AWS CDK"
 description: Incremental Static Regeneration is Next.js superpower
 featured: true
-date: "2021-08-18T10:50:00.000Z"
+pubDate: "2021-08-18T10:50:00.000Z"
 featuredImage: nextjs-lambda.png
 image: nextjs-serverless.png
 permalink: "/blog/nextjs-typescript-serverless-deploy-with-ssr-and-isr-with-aws-cdk/"

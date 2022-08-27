@@ -2,7 +2,7 @@
 title: Estou escrevendo um livro! Sobre AWS!
 description: Não há data prevista de publicação, me acompanhe para estar entre as primeiras pessoas a saber!
 featured: true
-date: "2022-04-25T10:50:00.000Z"
+pubDate: "2022-04-25T10:50:00.000Z"
 featuredImage: livro-aws.png
 permalink: "/blog/livro-aws/"
 image: livro-aws.png

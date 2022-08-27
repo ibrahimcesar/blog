@@ -5,7 +5,7 @@ image: cover.jpg
 description: "Phil Karlton é creditado com frase de que só existem duas coisas difíceis em Ciência da Computação: invalidação de cache e escolher nomes das coisas. E escolher nomes também passa por muito do que entendemos por coisas e como elas se relacionam com o mundo. O recente lançamento do Yarn 2 traz à luz muitas dessas questões"
 featured: false
 permalink: "/blog/o-navio-de-teseu-e-yarn-2/"
-date: "2020-01-26T10:50:00.000Z"
+pubDate: "2020-01-26T10:50:00.000Z"
 featuredImage: retro.jpg
 featuredImageColor: "#1E2C54"
 ---

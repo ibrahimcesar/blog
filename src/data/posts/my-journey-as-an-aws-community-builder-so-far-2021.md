@@ -4,7 +4,7 @@ description: "6 months in"
 featured: true
 permalink: "/blog/my-journey-as-an-aws-community-builder-so-far-2021/"
 featuredImage: communitybuilder.png
-date: "2021-04-27T10:50:00.000Z"
+pubDate: "2021-04-27T10:50:00.000Z"
 image: cover.png
 featuredImageColor: "#1E2C54"
 language: en

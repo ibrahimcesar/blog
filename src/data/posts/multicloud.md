@@ -3,7 +3,7 @@ title: "Multi-cloud: o que, quando e para quem?"
 description: Além de multiclouds, há multi conceitos de multicloud. Uma análise de abordagens.
 featured: true
 permalink: "/blog/multicloud/"
-date: "2021-05-28T10:50:00.000Z"
+pubDate: "2021-05-28T10:50:00.000Z"
 featuredImage: multicloud.png
 image: multicloud-page.png
 featuredImageColor: "#1E2C54"

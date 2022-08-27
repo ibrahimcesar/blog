@@ -3,10 +3,9 @@ title: "📘 #devbooks:  AWS Well-Architected Framework"
 description: The AWS Constitution
 featured: true
 permalink: "/blog/aws-well-architected-framework/"
-date: "2021-02-25T10:50:00.000Z"
+pubDate: "2021-02-25T10:50:00.000Z"
 featuredImage: coolgirl-reading.png
 image: devbooks-aws.png
-featuredImageColor: "#1E2C54"
 language: "en"
 ---
 

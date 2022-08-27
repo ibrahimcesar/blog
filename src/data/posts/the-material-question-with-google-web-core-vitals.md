@@ -2,7 +2,7 @@
 title: "The material question with Google's Core Web Vitals"
 description: The fair metrics that are three biased metrics in a trenchcoat
 featured: true
-date: "2021-09-01T10:50:00.000Z"
+pubDate: "2021-09-01T10:50:00.000Z"
 featuredImage: corewebvitals.png
 image: google.png
 permalink: "/blog/the-material-question-with-google-web-core-vitals/"

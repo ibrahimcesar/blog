@@ -4,7 +4,7 @@ description: "O conceito de NBU: Next Billion Users e o que isso significa em te
 featured: true
 permalink: "/blog/nbu-next-billion-users-brasil/"
 featuredImage: nbu.jpg
-date: "2020-01-30T10:50:00.000Z"
+pubDate: "2020-01-30T10:50:00.000Z"
 image: cover.jpg
 ---
 

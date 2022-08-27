@@ -4,7 +4,7 @@ description: "Oficina sobre os desafios tecnológicos de implementar e manter si
 featured: true
 permalink: "/blog/nexo-de-codigo-aberto/"
 featuredImage: oficina.png
-date: "2020-10-30T10:50:00.000Z"
+pubDate: "2020-10-30T10:50:00.000Z"
 image: cover.png
 featuredImageColor: "#1E2C54"
 ---

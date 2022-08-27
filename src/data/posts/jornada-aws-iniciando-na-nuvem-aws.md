@@ -3,7 +3,7 @@ title: "⛅ #jornadaaws:  Iniciando nossa jornada na AWS"
 description: Como começar a mergulhar nos mais de 200 serviços da maior Nuvem do mundo
 featured: true
 permalink: "/blog/jornada-aws-iniciando-na-nuvem-aws/"
-date: "2021-10-19T10:50:00.000Z"
+pubDate: "2021-10-19T10:50:00.000Z"
 featuredImage: aws-iniciando.jpg
 image: aws-intro.png
 featuredImageColor: "#1E2C54"

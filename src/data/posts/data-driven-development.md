@@ -4,9 +4,8 @@ description: Como uma cultura de desenvolvimento baseada em evidências e métri
 featured: true
 featuredImage: ddd.jpg
 permalink: "/blog/data-driven-development/"
-date: "2020-01-23T10:50:00.000Z"
+pubDate: "2020-01-23T10:50:00.000Z"
 image: cover.jpg
-featuredImageColor: "#1E2C54"
 ---
 
 <p class="lead">Como uma cultura de desenvolvimento baseada em evidências e métricas centradas no usuário pode ajudar a criar melhores produtos.</p>

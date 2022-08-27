@@ -5,7 +5,7 @@ description: "Natively!"
 featured: true
 permalink: "/blog/how-to-host-a-nextjs-web-app-with-server-side-rendering-ssr-in-aws-amplify/"
 featuredImage: amplify.png
-date: "2021-04-27T10:50:00.000Z"
+pubDate: "2021-04-27T10:50:00.000Z"
 image: cover.png
 featuredImageColor: "#1E2C54"
 language: en

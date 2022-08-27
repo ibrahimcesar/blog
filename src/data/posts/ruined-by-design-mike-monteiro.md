@@ -4,7 +4,7 @@ description: 'Review do livro "Ruined by Design How Designers Destroyed the Worl
 permalink: "/blog/ruined-by-design-mike-monteiro/"
 featured: true
 featuredImage: ruinedByDesign.jpg
-date: "2020-01-25T11:06:00.000Z"
+pubDate: "2020-01-25T11:06:00.000Z"
 image: cover.png
 featuredImageColor: "#1E2C54"
 ---

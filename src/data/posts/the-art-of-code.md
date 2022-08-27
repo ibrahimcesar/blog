@@ -2,7 +2,7 @@
 title: The Art of Code, Dylan Beattie
 description: Código pelo código, para os amantes desta arte
 featured: true
-date: "2020-12-17T10:50:00.000Z"
+pubDate: "2020-12-17T10:50:00.000Z"
 featuredImage: artOfCode.jpg
 permalink: "/blog/the-art-of-code/"
 image: cover.jpg

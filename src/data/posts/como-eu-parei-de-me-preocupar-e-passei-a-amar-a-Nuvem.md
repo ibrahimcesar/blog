@@ -5,8 +5,7 @@ featured: true
 featuredImage: server.png
 permalink: "/blog/como-eu-parei-de-me-preocupar-e-passei-a-amar-a-Nuvem/"
 image: cover.png
-date: "2020-10-03T10:50:00.000Z"
-featuredImageColor: "#1E2C54"
+pubDate: "2020-10-03T10:50:00.000Z"
 ---
 
 <p class="lead">A Nuvem, ou melhor, a Cloud — afinal o inglês é intrinsicamente a linguagem da tecnologia — é uma dos grandes avanços em desenvolvimento e tecnologia e traz inovações em uma velocidade impressionante. E só recentemente tive a revelação. Vivia dentro de uma caverna, como na fábula platônica.  E agora, me sinto livre — aceitando a Nuvem em minhas arquiteturas e abraçando seus inúmeros tradeoffs.<br/>Esta é a minha história pessoal com a Nuvem, de como passei de ignorante, a cético, e por fim, a convertido e entusiasta</p>

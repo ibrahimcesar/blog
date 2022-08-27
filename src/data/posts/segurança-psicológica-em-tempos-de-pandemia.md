@@ -3,7 +3,7 @@ title: Segurança psicológica em tempos de pandemia
 description: Será possível?
 featured: true
 permalink: "/blog/segurança-psicológica-em-tempos-de-pandemia/"
-date: "2021-05-02T10:50:00.000Z"
+pubDate: "2021-05-02T10:50:00.000Z"
 featuredImage: workingalone.jpg
 image: pandemia.png
 featuredImageColor: "#1E2C54"

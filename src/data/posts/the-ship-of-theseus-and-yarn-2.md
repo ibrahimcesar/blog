@@ -3,7 +3,7 @@ title: "The Ship of Theseus and Yarn 2"
 description: My first open source project
 featured: true
 permalink: "/blog/the-ship-of-theseus-and-yarn-2/"
-date: "2020-01-27T10:50:00.000Z"
+pubDate: "2020-01-27T10:50:00.000Z"
 featuredImage: theseus.jpg
 image: ship.png
 featuredImageColor: "#1E2C54"

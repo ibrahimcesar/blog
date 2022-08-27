@@ -2,7 +2,7 @@
 title: O Princípio Anna Kariênina
 description: Todas as sessões felizes se parecem, cada sessão infeliz é infeliz à sua maneira. O Princípio Anna Kariêninca aplicado ao desenvolvimento
 featured: true
-date: "2020-09-07T10:50:00.000Z"
+pubDate: "2020-09-07T10:50:00.000Z"
 featuredImage: anna.jpg
 permalink: "/blog/o-principio-anna-karienina/"
 image: cover.jpg
