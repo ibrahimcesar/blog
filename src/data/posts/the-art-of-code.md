@@ -1,0 +1,16 @@
+---
+title: The Art of Code, Dylan Beattie
+description: Código pelo código, para os amantes desta arte
+featured: true
+date: "2020-12-17T10:50:00.000Z"
+featuredImage: artOfCode.jpg
+permalink: "/blog/the-art-of-code/"
+image: cover.jpg
+featuredImageColor: "#1E2C54"
+---
+
+<style>.embed-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; } .embed-container iframe, .embed-container object, .embed-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }</style><div class='embed-container'>
+<iframe title="YouTube" width="560" height="315" src="https://www.youtube.com/embed/6avJHaC3C2U" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+
+<p class="lead">Entendo que exista uma resistência em se dedicar a vídeos longos. Esse por exemplo, possui uma hora. Mas para quem é apaixonado por tecnologia, será uma hora incrível em <strong>código pelo código</strong>, a beleza e a loucura com que fazemos nossos computadores dançarem, esse vídeo, <em>The Art of Code</em> de Dylan Beattie será memorável. Grande apresentação!</p>
