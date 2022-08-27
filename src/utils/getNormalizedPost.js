@@ -13,5 +13,7 @@ export const getNormalizedPost = async (post) => {
     authors: frontmatter.authors,
     slug: file.split("/").pop().split(".").shift(),
     readingTime: Math.ceil(getReadingTime(rawContent()).minutes),
+    featured: frontmatter.featured,
+    featuredImage: frontmatter.featuredImage
   };
 };

@@ -1,56 +1,33 @@
 ---
-import Picture from "~/components/core/Picture.astro";
+import HighlightedPost from "./HighlightedPost.astro";
 
 import { getPosts } from "~/utils/getPosts";
 
-const posts = [{}, {}, {}, {}, {}, {}, {}];
+const posts = await getPosts();
 
-const {} = Astro.props;
+const featured = posts.filter(post => post.featured)
+
+const { } = Astro.props;
 ---
 
 <section class="px-4 py-16 mx-auto max-w-6xl lg:py-20">
   <div class="flex flex-col mb-6 lg:justify-between lg:flex-row md:mb-8">
     <h2
-      class="max-w-lg mb-2 font-sans text-3xl font-bold tracking-tight sm:text-4xl sm:leading-none lg:mb-5 group"
+      class="max-w-lg mb-2 font-sans text-3xl font-bold tracking-tight sm:text-3xl sm:leading-none lg:mb-5 group"
     >
       <span class="inline-block mb-1 sm:mb-4"
-        >Find out more content<br class="hidden md:block" /> in our Blog
+        >Olá! Hello! Hola!<br class="hidden md:block" />Cloud, Code and Everything Else
       </span>
     </h2>
-    <p class="text-gray-700 dark:text-slate-400 lg:text-sm lg:max-w-md">
-      The blog will be used to display AstroWind documentation. Each new article
-      will be an important step that you will need to know to be an expert in
-      creating a website using Astro + Tailwind CSS The blog does not exist yet,
-      but very soon. Astro is a very interesting technology. Thanks.
+    <p class="text-gray-700 dark:text-slate-200 lg:text-sm lg:max-w-md">
+      Eventually consistent. I'm a Bilder, a Solutions Architect and a developer interested in a lot of things to explore. I have A LOT of opinions. But they are all my own. Without expections. This digital garden is bilingual, with posts in English and Brazilian Portuguese.
     </p>
   </div>
 
   <div class="grid gap-6 row-gap-5 md:grid-cols-2 lg:grid-cols-4 -mb-6">
     {
-      posts.map((post) => (
-        <div class="mb-6 transition">
-          <Picture
-            src={import("~/assets/images/hero.jpg")}
-            class="object-cover w-full h-64 mb-6 rounded shadow-lg bg-gray-400 dark:bg-slate-700"
-            widths={[400, 768]}
-            sizes="(max-width: 767px) 400px, 768px"
-            alt="Post 2 Image"
-            aspectRatio="16:9"
-          />
-          <h3 class="mb-2 text-xl font-bold leading-snug sm:text-2xl">
-            <a
-              href="/blog/astrowind-template-in-depth"
-              class="hover:text-blue-600 underline underline-offset-4 decoration-1 decoration-dotted transition ease-in duration-200"
-            >
-              AstroWind template in depth
-            </a>
-          </h3>
-          <p class="text-gray-700 dark:text-gray-400">
-            Ornare cum cursus laoreet sagittis nunc fusce posuere per euismod
-            dis vehicula a, semper fames lacus maecenas dictumst pulvinar neque
-            enim non potenti. Torquent hac sociosqu eleifend potenti.
-          </p>
-        </div>
+      featured.map((post) => (
+       <HighlightedPost post={post} />
       ))
     }
   </div>

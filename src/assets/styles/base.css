@@ -16,6 +16,7 @@
   --plum-medium: #504bab;
 }
 
-.cloud-color {
+.cloud-color,
+a:hover {
   color: var(--cloud-blue);
 }
