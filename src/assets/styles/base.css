@@ -20,3 +20,15 @@
 a:hover {
   color: var(--cloud-blue);
 }
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
+
+.__blinker::after {
+    content: "|";
+    -webkit-animation: blinker 1s linear infinite;
+    animation: blinker 1s linear infinite;
+}

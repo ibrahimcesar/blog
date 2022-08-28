@@ -11,7 +11,8 @@ const image = await findImage(post.image);
  <div class="mb-6 transition">
 
    <a
-      href={`/blog/${post.slug}`}>
+      href={`/blog/${post.slug}`}
+      title={post.title}>
     <Picture
             src={image}
             class="object-cover w-full h-64 mb-6 rounded shadow-lg bg-gray-400 dark:bg-slate-700"
