@@ -4,6 +4,7 @@ description: O método aqui definido confessa o sentimento de que todo verdadeir
 featured: true
 image: ~/assets/images/helloworld.jpg
 pubDate: "2020-01-17T10:50:00.000Z"
+socialImage: "/features/hello-world.jpg"
 ---
 
 > # "O método aqui definido confessa o sentimento de que todo verdadeiro conhecimento é impossível. Só se pode enumerar as aparências e fazer sentir o clima"

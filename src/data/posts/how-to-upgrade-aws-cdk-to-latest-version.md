@@ -5,6 +5,7 @@ featured: true
 image: ~/assets/images/constructor.jpg
 pubDate: "2021-01-27T15:50:00.000Z"
 language: en
+socialImage: "/features/upgrade-cdk.png"
 ---
 
 <p class="lead"><b>CDK is updating all the time</b>. Which is great, the tool is expanding, gaining more features. Take a look of the timestamps in their <a href="https://github.com/aws/aws-cdk/releases" alt="CDK releases" target="_blank">GitHub releases page</a>. I wonder if <a href="https://twitter.com/nideveloper" alt="Matt Coulter" target="_blank">Matt Coulter</a> find a single weekend to chill.</p>

@@ -1,6 +1,6 @@
 <div align="center">
 
-# Personal Blog for Ibrahim Cesar
+# Personal blog for Ibrahim Cesar
 
 </div>
 

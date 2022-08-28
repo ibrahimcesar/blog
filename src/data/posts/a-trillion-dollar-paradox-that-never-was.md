@@ -4,7 +4,8 @@ description: The largest bank in Latin America will move half of its infra to AW
 featured: true
 pubDate: "2021-06-05T10:50:00.000Z"
 image: "~/assets/images/paradox.png"
-language: "en"
+language: en
+socialImage: "/features/trillion-page.png"
 ---
 
 <p class="lead">The largest bank in Latin America will move half of its infra to AWS Cloud</p>

@@ -4,7 +4,8 @@ description: Incremental Static Regeneration is Next.js superpower
 featured: true
 pubDate: "2021-08-18T10:50:00.000Z"
 image: ~/assets/images/nextjs-lambda.png
-language: "en"
+language: en
+socialImage: "/features/nextjs-serverless.png"
 ---
 
 <p class="lead">Incremental Static Regeneration is the Next.js <b>superpower</b>. We’ll deploy a Next.js webapp in AWS using Lambda@Edge and CloudFront with support for SSR and ISG. Both our Next.js webapp and our Infrastructure as Code (IaC) will use TypeScript, using the Cloud Development Kit (CDK).</p>

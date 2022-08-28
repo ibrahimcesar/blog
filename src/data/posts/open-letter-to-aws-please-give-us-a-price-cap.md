@@ -5,6 +5,7 @@ featured: true
 image: ~/assets/images/price.png
 pubDate: "2021-05-05T10:50:00.000Z"
 language: en
+socialImage: "/features/price-cap.png"
 ---
 
 <p class="lead">Hello AWS,</p>

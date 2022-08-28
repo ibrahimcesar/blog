@@ -5,6 +5,7 @@ featured: true
 image: ~/assets/images/communitybuilder.png
 pubDate: "2021-04-27T10:50:00.000Z"
 language: en
+socialImage: "/features/aws-community-builder.png"
 ---
 
 <p class="lead">Hi there. You’ve made it.</p>

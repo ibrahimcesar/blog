@@ -5,6 +5,7 @@ featured: true
 image: ~/assets/images/redis.png
 pubDate: "2021-05-14T10:50:00.000Z"
 language: en
+socialImage: "/features/redis-serverless.png"
 ---
 
 <p class="lead"><b>Redis means fast.</b> This was the  impression I always had. But, at the same time, for me, Redis was “just” (as if this wasn't  enough) a cache store. To my surprise, Redis is much more versatile than this.</p>

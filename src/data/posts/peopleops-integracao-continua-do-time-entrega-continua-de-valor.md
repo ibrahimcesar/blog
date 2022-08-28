@@ -4,6 +4,7 @@ description: Integração Contínua do time e Entrega Contínua de valor
 featured: true
 pubDate: "2021-10-05T10:50:00.000Z"
 image: ~/assets/images/peopleops.png
+socialImage: "/features/peopleops.png"
 ---
 
 <p class="lead">Vou apresentar um pouco de como foi nosso processo de contratação de pessoas desenvolvedoras e de como acreditamos, conseguimos diminuir muito da fricção, falar com as pessoas certas e o mais importante, saber combinar para formar não apenas um grupo de pessoas — distribuídas por todo o Brasil e até fora dele — mas em um verdadeiro time. Este artigo foi submetido como talk para o <a href="http://www.agilebrazil.com/2021/">Agile Brazil 2021</a> com o título <b>PeopleOps: Integração contínua do time, Entrega contínua de valor</b>, mas não foi aceita.</p>

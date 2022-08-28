@@ -4,6 +4,7 @@ description: Framework para React em produção
 featured: true
 pubDate: "2021-12-07T10:50:00.000Z"
 image: ~/assets/images/nextjs.jpg
+socialImage: "/features/nextjs-ssr-isr.png"
 ---
 
 <p class="lead">"Toda semana um novo framework JavaScript" — com certeza já deve ter ouvido essa. Mas, já parou para analisar criticamente esta frase?</p>

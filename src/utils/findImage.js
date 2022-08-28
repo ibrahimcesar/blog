@@ -1,8 +1,6 @@
 export const findImage = async (imageRoute) => {
   const images = import.meta.glob("../assets/images/*");
 
-  console.log(imageRoute)
-
   const key = imageRoute.replace("~/", "../");
 
   const image =

@@ -4,6 +4,7 @@ description: "O conceito de NBU: Next Billion Users e o que isso significa em te
 featured: true
 image: ~/assets/images/nbu.jpg
 pubDate: "2020-01-30T10:50:00.000Z"
+socialImage: "/features/nbu.jpg"
 ---
 
 <p class="lead">O conceito de NBU: Next Billion Users e o que isso significa em termos práticos de como analizo que UX, negócios e desenvolvimento devem ser impactados e como o Brasil está neste contexto</p>

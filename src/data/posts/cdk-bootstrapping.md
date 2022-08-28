@@ -4,6 +4,7 @@ description: Instalando e iniciando o Bootstrapping do CDK em sua conta
 featured: true
 pubDate: "2021-10-20T10:50:00.000Z"
 image: ~/assets/images/code-code.jpg
+socialImage: "/features/cdk-bootstrap.png"
 ---
 
 <p class="lead">Tudo o que é possível fazer na AWS é possível fazer através do "console" web. A área logada em que é possível acessar serviço por serviço, criar, verificar, editar e destruir novos recursos. Mas o ideal é ter toda a sua infraestrutura como código. Há diversas opções. mas vou me concentrar no CDK. Neste vídeo mostro bem rapidamente como instalar e fazer o boostrapping do CDK, que cria um <em>bucket</em> em sua conta para gerenciar recursos e ações.</p>

@@ -6,6 +6,7 @@ featured: true
 image: ~/assets/images/amplify.png
 pubDate: "2021-04-27T10:50:00.000Z"
 language: en
+socialImage: "/features/aws-amplify-ssr.png"
 ---
 
 > Demo links are currently dead

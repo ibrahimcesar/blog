@@ -4,6 +4,7 @@ description: Sistemas falham o tempo todo. Ignorar os logs corre-se o risco de r
 featured: true
 pubDate: "2021-03-30T10:50:00.000Z"
 image: ~/assets/images/ruins.jpg
+socialImage: "/features/sistemas-falham.jpg"
 ---
 <p class="lead">A anedota diz que dois peixes jovens nadavam no Oceano entre corais quando passam por um peixe sábio e bastante conhecido que lhes diz sorrindo: "– Como vai a água, garotos? Eles acenam e sorriam. Após ele passar eles se perguntam "O que é água?". O ambiente que nos cerca possui certas características, estruturas e propriedades na qual de tão imersos mal percebemos sua presença. Nossa cultura, valores, mas também vieses, preconceitos e visões distorcidas.</p>
 

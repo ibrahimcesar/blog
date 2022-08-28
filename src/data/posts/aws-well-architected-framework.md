@@ -5,6 +5,7 @@ featured: true
 pubDate: "2021-02-25T10:50:00.000Z"
 image: ~/assets/images/coolgirl-reading.png
 language: "en"
+socialImage: "/features/devboks-aws.png"
 ---
 
 > The AWS Constitution, [**AWS Well-Architected Framework**](https://aws.amazon.com/architecture/well-architected/) is a White Paper and a series of independent publications such the five pillars: Reliability, Performance, Operational Excellence, Cost, and Security; and the lenses.

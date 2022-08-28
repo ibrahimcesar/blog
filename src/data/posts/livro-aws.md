@@ -4,6 +4,7 @@ description: Não há data prevista de publicação, me acompanhe para estar ent
 featured: true
 image: "~/assets/images/2022-aprenda-aws.png"
 pubDate: "2022-04-25T10:50:00.000Z"
+socialImage: "/features/livro-aws.png"
 ---
 
 <p class="lead">Havia compartilhado nas redes sociais, mas não em meu próprio blog 😅!</p>

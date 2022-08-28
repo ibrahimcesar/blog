@@ -4,7 +4,8 @@ description: As soon you start to read it, is safe to say, you'll be happy
 featured: true
 pubDate: "2021-07-10T10:50:00.000Z"
 image: ~/assets/images/agile-wall.jpg
-language: "en"
+language: en
+socialImage: "/features/devboks-sooner-safer-happier.png"
 ---
 
 <p class="lead">As soon I started to read this book I got so happy to see his takes on agile and Agile™.<a href="https://amzn.to/3e4MI2c" target="_blank" alt="Sooner, Safer, Happier" title="Sooner, Safer, Happier">Sooner, Safer, Happier</a> is a book that was an "instant hit" with me. First, the approach of the contextual setting that <b>there are no</b> silver bullet. Second the <em>pattterns</em> and <em>antipatterns</em> approach led me to recognize so much that certainly this book has a lot to give. Is my <em>favorite agile book</em> – Wow, I never thought I would say that. There is.</p>

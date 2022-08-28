@@ -4,6 +4,7 @@ description: A (estranha?) visão política de tecnologias de Peter Thiel e Marc
 featured: true
 pubDate: "2021-07-04T10:50:00.000Z"
 image: "~/assets/images/eggman.png"
+socialImage: "/features/left-right.png"
 ---
 
 

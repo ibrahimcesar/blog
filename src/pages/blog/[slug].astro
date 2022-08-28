@@ -20,6 +20,8 @@ const { post } = Astro.props;
 const title = `${post.title} — ${SITE.name}`;
 const description = post.description;
 const canonical = new URL(`blog/${post.slug}`, Astro.site);
+const featureImage = post.socialImage ? new URL(`${post.socialImage
+}`, Astro.site) : null;
 
 const image = await findImage(post.image);
 ---
@@ -29,7 +31,8 @@ const image = await findImage(post.image);
     title,
     description,
     canonical,
-    image
+    image,
+    featureImage
   }}
 >
   <main>

@@ -4,6 +4,7 @@ description: Livro de Mark Richards e Neal Ford
 featured: true
 image: ~/assets/images/fundamentals.png
 pubDate: "2020-09-19T10:50:00.000Z"
+socialImage: "/features/fundamentals-sa.png"
 ---
 <p class="lead">Há quem diga que ler livros técnicos é perda de tempo. Tenho a opinião oposta: é essencial. Não existe melhor forma de transmissão de conhecimento focado e organizado do que em um livro. Código planejado é melhor código. Certamente não vai te deixar melhor na prática e esta é fundamental para saber de verdade. Mas livros te ajudam a pensar melhor. A pensar com o conhecimento formulado por outras pessoas que percorreram caminhos parecidos com os nossos. Ler é fundamental e este é um dos livros técnicos mais recentes e importantes que li.</p>
 

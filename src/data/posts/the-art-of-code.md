@@ -4,6 +4,7 @@ description: Código pelo código, para os amantes desta arte
 featured: true
 pubDate: "2020-12-17T10:50:00.000Z"
 image: ~/assets/images/artOfCode.jpg
+socialImage: "/features/art-of-code.jpg"
 ---
 
 <style>.embed-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; } .embed-container iframe, .embed-container object, .embed-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }</style><div class='embed-container'>

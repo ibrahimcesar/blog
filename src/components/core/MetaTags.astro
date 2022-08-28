@@ -12,7 +12,7 @@ const {
   title = "IbrahimCesar.cloud",
   description = "",
   image = defaultImage,
-  socialImage = "",
+  featureImage,
   canonical,
 } = Astro.props;
 ---
@@ -28,21 +28,21 @@ const {
 <!-- Google / Search Engine Tags -->
 <meta itemprop="name" content={title} />
 <meta itemprop="description" content={description} />
-<meta itemprop="image" content={socialImage} />
+<meta itemprop="image" content={featureImage || defaultImage} />
 
 <!-- Facebook Meta Tags -->
 {canonical && <meta property="og:url" content={canonical} />}
 <meta property="og:type" content="website" />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
-<meta property="og:image" content={socialImage} />
+<meta property="og:image" content={featureImage || defaultImage} />
 
 <!-- Twitter Meta Tags -->
 {canonical && <meta name="twitter:url" content={canonical} />}
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
-<meta name="twitter:image" content={socialImage} />
+<meta name="twitter:image" content={featureImage || defaultImage} />
 
 <!-- Fonts -->
 <link

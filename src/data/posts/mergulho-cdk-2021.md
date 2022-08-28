@@ -4,6 +4,7 @@ description: Conheça mais profundamente o AWS CDK
 featured: true
 pubDate: "2021-11-14T10:50:00.000Z"
 image: ~/assets/images/cdk-feature.jpg
+socialImage: "/features/mergulho-cdk.png"
 ---
 
 <figure class="extend">

@@ -5,6 +5,7 @@ featured: trues
 image: ~/assets/images/ssr.png
 pubDate: "2021-03-14T10:50:00.000Z"
 language: en
+socialImage: "/features/fullstack-nextjs.png"
 ---
 
 <p class="lead">Server-side rendering (SSR) is a must for some use cases. Bettter SEO, optimization for TTFB (Time To First Byte) and better control access through authentication - where some users can access some content and others don't. In this post I pick up on a great workshop and implement  SSR with AWS CDK.</p>

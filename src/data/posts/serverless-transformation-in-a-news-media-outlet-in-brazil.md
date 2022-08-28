@@ -5,6 +5,7 @@ featured: true
 image: ~/assets/images/sp.jpg
 pubDate: "2020-11-28T10:50:00.000Z"
 language: en
+socialImage: "/features/serverless-transformation.png"
 ---
 
 > “Why is more important than how.”

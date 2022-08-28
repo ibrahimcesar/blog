@@ -4,7 +4,8 @@ description: This framework is not Agile at all. Or safe.
 featured: true
 pubDate: "2021-10-16T10:50:00.000Z"
 image: ~/assets/images/safe.jpg
-language: "en"
+language: en
+socialImage: "/features/considered-harmful.png"
 ---
 
 <p class="lead">Is safe to say, the framework SAFe™ embodies everything wrong with the so-called <em>Agile Industrial Complex</em>. Is so bloated and focus on the wrong things that are not even remotely <em>agile</em> in the sense of the original manifesto. I’ll argue how SAFe™ do more harm to the community than generates value and is devoid of any <em>agility</em>. Pay for your training, get your certificate, some taps on the back and... <em>whatever</em>. SAFe™ is so bad that makes the case for <em>Waterfall looks like a good idea </em>.</p>

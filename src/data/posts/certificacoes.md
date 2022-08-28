@@ -4,6 +4,7 @@ description: Não existe algoritmo de compressão para experiência. — Andy Ja
 featured: true
 pubDate: "2022-04-08T10:50:00.000Z"
 image: ~/assets/images/exam.png
+socialImage: "/features/cert.png"
 ---
 
 O objetivo desta postagem é responder por quê você deve ter entre seus objetivos uma certificação AWS. Também exploro minhas motivações que me levaram a buscar uma certificação — spoiler: eu não havia nenhum incentivo em minha posição e fiz para validar minha atuação. No final, trago algumas respostas a questões comuns.

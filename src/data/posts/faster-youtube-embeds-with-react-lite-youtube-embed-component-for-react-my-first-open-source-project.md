@@ -4,6 +4,7 @@ description: My first open source project
 featured: true
 pubDate: "2019-12-03T10:50:00.000Z"
 image: ~/assets/images/npm-react-lite-youtube-embed.png
+socialImage: "/features/react-lite-youtube-embed.jpeg"
 language: "en"
 ---
 
@@ -18,6 +19,6 @@ My benchmarks for performance don't share the same performance from the original
 Feels great to give something, as small it is, to the community, and also a some fear in case I ship some bug. I think the code can be improved a lot, since I decide for the first version to use as little dependencies as possible, I had to be creative in some strategies dealing with preconnect and preload. Looking forward to get some feedback, evolve this component and be a more active member in the open source community.
 
 <figure class="extend">
-    <a href="https://github.com/ibrahimcesar/react-lite-youtube-embed" target="_blank" alt="React Lite YouTube Embed" title="React Lite YouTube Embed"><img src="{{ 'liteyoutube.png' | media(page) }}" width="752" height="475" alt="Surma em sua palestra no Chrome Dev Summit 2019 exibindo celulares com menores capacidades" style="border: 1px solid #BBB" /></a>
+    <a href="https://github.com/ibrahimcesar/react-lite-youtube-embed" target="_blank" alt="React Lite YouTube Embed" title="React Lite YouTube Embed"><img src="/assets/liteyoutube.png" width="752" height="475" alt="Surma em sua palestra no Chrome Dev Summit 2019 exibindo celulares com menores capacidades" style="border: 1px solid #BBB" /></a>
     <figcaption><b>Update:</b> As 2021 the project is on '2.x' version, being completely rebuilt from scratch in TypeScript. <br/>It was an amazing journey!</figcaption>
 </figure>

@@ -4,6 +4,7 @@ description: My first open source project
 featured: true
 pubDate: "2020-01-27T10:50:00.000Z"
 image: ~/assets/images/theseus.jpg
+socialImage: "/features/ship.png"
 language: "en"
 ---
 

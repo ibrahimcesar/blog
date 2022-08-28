@@ -4,6 +4,7 @@ description: As peças e história de um protocolo
 featured: true
 pubDate: "2021-07-18T10:50:00.000Z"
 image: "~/assets/images/url.jpg"
+socialImage: "/features/url.png"
 ---
 
 <p class="lead">Neste momento, enquanto lê, você está acessando uma <b>URL</b>. Ou ao menos o conteúdo desta página foi originalmente publicado em uma URL, sindicalizado em um feed RSS e catalogado, raspado e arquivado. Apesar de sua ubiquidade, sempre aprender ao examinar a história e a anatomia das partes que compõem uma URL.</p>

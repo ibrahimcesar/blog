@@ -5,6 +5,7 @@ featured: true
 image: "~/assets/images/lego.jpg"
 pubDate: "2020-12-20T10:50:00.000Z"
 language: en
+socialImage: "/features/aws-iac.png"
 ---
 
 <p class="lead">Chances are if you are reading this right now, you have the same questions I got when I started working on provisioning Infrastructure as Code on AWS. After deploying production workloads with each tool, I want to share my insights and my experience with <a href="https://docs.amplify.aws/" title="AWS Amplify" alt="AWS Amplify" target="_blank">AWS Amplify</a>, <a href="https://docs.aws.amazon.com/serverless-application-model/" title="SAM" alt="SAM" target="_blank">SAM</a> and <a href="https://aws.amazon.com/cdk/" title="AWS CDK" alt="AWS CDK" target="_blank">CDK</a>.</p>

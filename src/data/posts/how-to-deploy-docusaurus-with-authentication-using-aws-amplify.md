@@ -5,6 +5,7 @@ featured: true
 image: ~/assets/images/dino.jpg
 pubDate: "2021-01-27T10:50:00.000Z"
 language: en
+socialImage: "/features/docusaurus.png"
 ---
 
 <p class="lead"><b>Deploy fast your documentation with authentication with AWS Amplify</b>. <a href="https://v2.docusaurus.io/" target="_blank" alt="Docusaurus">Docusaurus</a> is a great documentation tool. The best, even to collaborate with non-technical people. Deploying and securing through an authentication is always a question I see developers facing. Most of the user cases for documentation besides open source require some level of auth. Working remote, this is a simple way to deploy your documentation.

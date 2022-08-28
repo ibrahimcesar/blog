@@ -4,7 +4,8 @@ description: The fair metrics that are three biased metrics in a trenchcoat
 featured: true
 pubDate: "2021-09-01T10:50:00.000Z"
 image: ~/assets/images/corewebvitals.png
-language: "en"
+language: en
+socialImage: "/features/google.png"
 ---
 
 <p class="lead">Google's <b>Core Web Vitals</b> has arrived. And as Google prides itself, has an <a href="https://web.dev/vitals-business-impact/">huge business impact</a>. The data is very well known that even small increases in performance, with a faster website your conversion rates grows. But the set, based on the top performers, has hidden bias embedded in it I want to talk about.</p>

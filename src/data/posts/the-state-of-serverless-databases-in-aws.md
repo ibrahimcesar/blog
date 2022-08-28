@@ -5,6 +5,7 @@ featured: true
 image: ~/assets/images/databases.jpg
 pubDate: "2021-04-29T10:50:00.000Z"
 language: en
+socialImage: "/features/serverless-databases.png"
 ---
 
 Databases are a key piece of any service or application, because is where gonna live your most precious assets: your data. Since my post [“Serverless is Ready, Developers are Not”](/blog/serverless-is-ready-developers-are-not/), I talked with a lot of peers about some issues in the space and a lot gravitates around tools and a great deal is about ways to handle data.

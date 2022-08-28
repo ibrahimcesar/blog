@@ -4,6 +4,7 @@ description: Um clássico que te leva ao amâgo de programar
 featured: true
 pubDate: "2021-07-20T10:50:00.000Z"
 image: ~/assets/images/sicp.jpg
+socialImage: "/features/scip.png"
 ---
 
 <p class="lead"><b>Structure and Interpretation
