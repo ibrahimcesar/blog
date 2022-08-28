@@ -1,6 +1,7 @@
 <div align="center">
 
-# 🚀
+# 🚀   
+Personal Blog for Ibrahim Cesar
 
 </div>
 
