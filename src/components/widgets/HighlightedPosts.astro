@@ -3,7 +3,7 @@ import HighlightedPost from "./HighlightedPost.astro";
 
 import { getPosts } from "~/utils/getPosts";
 
-const posts = await getPosts();
+const posts = await getPosts("posts");
 
 const featured = posts.filter(post => post.featured)
 

@@ -41,7 +41,7 @@ const image = await findImage(post.image);
     <footer class="flex items-center mt-4">
       <div>
         <span class="text-gray-500 dark:text-slate-400">
-          <time datetime={""}>
+          <time datetime={post.pubDate}>
             {
               new Date(post.pubDate).toLocaleDateString("en-us", {
                 year: "numeric",

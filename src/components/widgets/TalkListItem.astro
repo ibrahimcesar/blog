@@ -1,0 +1,26 @@
+---
+const { post } = Astro.props;
+---
+
+<article
+  class="max-w-md mx-auto md:max-w-none"
+>
+    <header>
+      <h2 class="text-xl sm:text-2xl font-bold mb-2">
+          {post.title}
+      </h2>
+      <!-- <div>
+        <span class="text-gray-500 dark:text-slate-400">
+          <time datetime={post.pubDate}>
+            {new Date(post.pubDate).toISOString().substring(0, 10)} — {post.eventTime}
+          </time>
+        </span>
+      </div> -->
+    </header>
+
+    <div class="text-md sm:text-lg flex-grow">
+      <Fragment set:html={post.body} />
+    </div>
+    <footer class="flex items-center mt-4">
+    </footer>
+</article>

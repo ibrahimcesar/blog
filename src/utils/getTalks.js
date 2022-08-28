@@ -2,7 +2,7 @@ import { getNormalizedPost } from "~/utils/getNormalizedPost";
 
 const load = async function () {
 
-  const posts = import.meta.glob("../data/posts/**/*.{md,mdx}", {
+  const posts = import.meta.glob("../data/talks/**/*.{md,mdx}", {
       eager: true,
     });
 
@@ -19,8 +19,8 @@ const load = async function () {
 
 let _posts;
 
-export const getPosts = async () => {
-  _posts = _posts || load();
+export const getTalks = async (folder) => {
+  _posts = _posts || load(folder);
 
   return await _posts;
 };

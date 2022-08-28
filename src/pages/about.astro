@@ -1,13 +1,19 @@
 ---
-import Layout from "~/layouts/BaseLayout.astro";
-import { SITE } from "~/config.mjs";
-import Error404 from "~/components/widgets/Error404.astro";
-
-const title = `Error 404 — ${SITE.name}`;
+import Layout from "~/layouts/PageLayout.astro";
 ---
 
-<Layout meta={{ title }}>
+<Layout meta={}>
   <main>
-    <Error404 />
+    <section class="py-8 sm:py-16 lg:py-20 mx-auto">
+  <article>
+    <header>
+      <h1
+        class="px-4 sm:px-6 max-w-3xl mx-auto text-center text-5xl md:text-[3.50rem] font-bold leading-tighter tracking-tighter mb-6 md:mb-8"
+      >
+       Sobre
+      </h1>
+    </header>
+    </article>
+    </section>
   </main>
 </Layout>

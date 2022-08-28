@@ -15,6 +15,7 @@ export const getNormalizedPost = async (post) => {
     readingTime: Math.ceil(getReadingTime(rawContent()).minutes),
     featured: frontmatter.featured,
     videoTime: frontmatter.videoTime,
-    socialImage: frontmatter.socialImage
+    socialImage: frontmatter.socialImage,
+    eventTime: frontmatter.eventTime
   };
 };
