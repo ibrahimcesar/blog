@@ -1,6 +1,6 @@
 <div align="center">
 
-![Ibrahim Cesar](/public/apple-touch-icon.png "Avatar")
+# 🚀
 
 </div>
 
