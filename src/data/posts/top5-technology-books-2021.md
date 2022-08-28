@@ -3,10 +3,7 @@ title: Top 5 technology books I read in 2021
 description: My top picks for technical / technology related books
 featured: true
 pubDate: "2021-12-30T10:50:00.000Z"
-featuredImage: books2021.jpg
-permalink: "/blog/top5-technology-books-2021/"
-image: top5.png
-featuredImageColor: "#1E2C54"
+image: ~/assets/images/books2021.jpg
 language: "en"
 ---
 
@@ -15,7 +12,7 @@ language: "en"
 ## 5. Your Computer Is On Fire
 
 <figure class="support">
-    <img src="{{ 'fire.jpeg' | media(page) }}" width="752" height="475" alt="Your Computer Is On Fire" style="border: 1px solid #BBB" />
+    <img src="/assets/fire.jpeg" width="752" height="475" alt="Your Computer Is On Fire" style="border: 1px solid #BBB" />
 </figure>
 
 Edited by Thomas S. Mullaney, Benjamin Peters, Mar Hicks and Kavita Philip
@@ -49,7 +46,7 @@ In times like theses in which tech is under (the much needed) public scrutiny, i
 ## 4. Sooner Safer Happier
 
 <figure class="support">
-    <img src="{{ 'sooner.jpeg' | media(page) }}" width="752" height="475" alt="Sooner Safer Happier" style="border: 1px solid #BBB" />
+    <img src="/assets/sooner.jpeg" width="752" height="475" alt="Sooner Safer Happier" style="border: 1px solid #BBB" />
 </figure>
 
 One review title on Amazon says **Most honest book I have read in last 4 years**. I agree. Because it speaks against the so-called [_Agile Industrial Complex_](https://martinfowler.com/articles/agile-aus-2018.html) that broke agile, or well, Agile™. I already [wrote about this book earlier this year](/blog/sooner-safer-happier-antipatterns-and-patterns-for-business-by-jonathan-smart/) and even made a whole talk around it, which I called [PeopleOps](blog/peopleops-integracao-continua-do-time-entrega-continua-de-valor/) (content in pt-br) and made a mix with another great book, **Team Topologies**.
@@ -59,7 +56,7 @@ Is a much needed look at Agile landscape that spoke a lot with me and how I see 
 ## 3. Cloud Native Patterns
 
 <figure class="support">
-    <img src="{{ 'cloud-native.jpg' | media(page) }}" width="752" height="475" alt="Cloud Native Patterns" style="border: 1px solid #BBB" />
+    <img src="/assets/cloud-native.jpg" width="752" height="475" alt="Cloud Native Patterns" style="border: 1px solid #BBB" />
 </figure>
 
 [**Cloud Native Patterns**: Designing change-tolerant software](https://amzn.to/349UqG9) by Cornelia Davis is a brilliant book. The historical perspective the author gives us helps build our mental models and see the patterns that we are so deep that we even realize are constructions. Like the "request/response" model that permeates much of our development and the move to more reactive systems like the [Event Driven Architectures](/blog/event-driven-architectures/).
@@ -79,7 +76,7 @@ This is a **must read** for everyone in the Cloud field. The patterns covered ar
 ## 2. The CDK Book
 
 <figure class="support">
-    <img src="{{ 'cdk.png' | media(page) }}" width="752" height="475" alt="The CDK Book" style="border: 1px solid #BBB" />
+    <img src="/assets/cdk.png" width="752" height="475" alt="The CDK Book" style="border: 1px solid #BBB" />
 </figure>
 
 In the 2021 I developed **a lot** with AWS CDK. In fact, I started nothing on AWS without using it. Is a powerful tool.
@@ -118,7 +115,7 @@ This year I even contributed with code for CDK!
 ## 1. Crafting Interpreters
 
 <figure class="extend">
-    <img src="{{ 'crafting.png' | media(page) }}" width="752" height="475" alt="Your Computer Is On Fire" style="border: 1px solid #BBB" />
+    <img src="/assets/crafting.png" width="752" height="475" alt="Your Computer Is On Fire" style="border: 1px solid #BBB" />
 </figure>
 
 > Ever wanted to make your own programming language or wondered how they are designed and built?

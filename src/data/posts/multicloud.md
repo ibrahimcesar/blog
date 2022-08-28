@@ -2,11 +2,8 @@
 title: "Multi-cloud: o que, quando e para quem?"
 description: Além de multiclouds, há multi conceitos de multicloud. Uma análise de abordagens.
 featured: true
-permalink: "/blog/multicloud/"
 pubDate: "2021-05-28T10:50:00.000Z"
-featuredImage: multicloud.png
-image: multicloud-page.png
-featuredImageColor: "#1E2C54"
+image: ~/assets/images/multicloud.png
 ---
 
 <p class="lead">Multi-cloud como estratégia é um tópico que vem se tornando cada vez mais comentado. Mas, ao mesmo tempo o termo ganha polissemia,significando coisas diferentes, para pessoas diferentes e para além de qualquer discussão semântica, a definição concreta do termo é o primeiro passo, melhor, ainda que hajam definições concorrentes, que fique bem claro as implicações bem práticas desse tipo de estratégia que altera não somente as decisões de tecnologia, mas impacta a própria cultura dos times e das organizações. </p>
@@ -38,7 +35,7 @@ Eu entendo como em empresas com processos de decisão demorados e avessos ao ris
 > <footer><a href="https://twitter.com/rts_rob" target="_blank">Rob Sutter</a></footer>
 
 <figure class="extend">
-    <img src="{{ 'gartner.jpeg' | media(page) }}" width="752" height="475" alt="AWS lidera o mercado de Cloud" style="border: 1px solid #BBB" />
+    <img src="/assets/gartner.jpeg" width="752" height="475" alt="AWS lidera o mercado de Cloud" style="border: 1px solid #BBB" />
     <figcaption>Por dez anos seguidos, a AWS lidera o mercado de Cloud no quadrante Gartner</figcaption>
 </figure>
 

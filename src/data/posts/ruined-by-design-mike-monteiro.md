@@ -1,12 +1,9 @@
 ---
 title: '"Ruined by Design", um livro mais do que necessário'
 description: 'Review do livro "Ruined by Design How Designers Destroyed the World and What We Can Do to Fix It", de Mike Monteiro'
-permalink: "/blog/ruined-by-design-mike-monteiro/"
 featured: true
-featuredImage: ruinedByDesign.jpg
+image: ~/assets/images/ruinedByDesign.jpg
 pubDate: "2020-01-25T11:06:00.000Z"
-image: cover.png
-featuredImageColor: "#1E2C54"
 ---
 
 _Este é um texto que escrevi e [publiquei no Medium](https://brasil.uxdesign.cc/ruined-by-design-um-livro-mais-do-que-necess%C3%A1rio-9a4026ee110e) no excelente [UX Collective](https://brasil.uxdesign.cc/). Estou passando algumas publicações do Medium para meu próprio blog, para não limitar à plataforma, que cada vez mais tenho me afastado._

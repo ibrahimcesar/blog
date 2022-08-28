@@ -3,10 +3,7 @@ title: PeopleOps
 description: Integração Contínua do time e Entrega Contínua de valor
 featured: true
 pubDate: "2021-10-05T10:50:00.000Z"
-permalink: "/blog/peopleops-integracao-continua-do-time-entrega-continua-de-valor/"
-featuredImage: peopleops.png
-image: peopleops.png
-featuredImageColor: "#1E2C54"
+image: ~/assets/images/peopleops.png
 ---
 
 <p class="lead">Vou apresentar um pouco de como foi nosso processo de contratação de pessoas desenvolvedoras e de como acreditamos, conseguimos diminuir muito da fricção, falar com as pessoas certas e o mais importante, saber combinar para formar não apenas um grupo de pessoas — distribuídas por todo o Brasil e até fora dele — mas em um verdadeiro time. Este artigo foi submetido como talk para o <a href="http://www.agilebrazil.com/2021/">Agile Brazil 2021</a> com o título <b>PeopleOps: Integração contínua do time, Entrega contínua de valor</b>, mas não foi aceita.</p>
@@ -25,7 +22,7 @@ Comecei a ler e até procrastinar o início do processo. Abrir chamada, fazer um
 Como não temos um RH focado em contratar pessoas para nosso time, consultamos empresas que fazem esse trabalho, plataformas e sempre alguma coisa que não nos deixava completamente satisfeitos. Ou era o preço, nunca iríamos consumir um ano os créditos mínimos em outras era uma cópia do modelo tradicional em forma de webapp entre outras razões. Conversando, falando de como seria bom contratar alguém para o time através de uma Pull Request (PR), resolvi levar isso ao extremo e propus um experimento: vamos contratar alguém através do GitHub, que já era nosso ponto focal de trabalho. E assim, criamos um [repositório do time](https://github.com/Nexo-Tec/time).
 
 <figure class="extend">
-    <img src="{{ 'github-time.png' | media(page) }}" width="752" height="475" alt="Página do GitHub apresentando as tecnologias de nosso time" style="border: 1px solid #BBB" />
+    <img src="/assets/github-time.png" width="752" height="475" alt="Página do GitHub apresentando as tecnologias de nosso time" style="border: 1px solid #BBB" />
     <figcaption>Página de nosso repositório do time</figcaption>
 </figure>
 
@@ -42,7 +39,7 @@ Algo digno de nota, nós estávamos abertos a pessoas dos mais diversos níveis 
 Queríamos explorar como fazer a melhor imersão de membros para nosso time. Como acelerar a entrada de cada pessoa e fazê-las se sentirem com ag&encia. Por _design_ nós assumimos que em um primeiro momento eles iriam trabalhar em projetos de grande valor, mas seriam livres de prazos e outras limitações. Faríamos “imersões”: uma ou às vezes duas horas, explorando um determinado assunto: AWS, React, NextJS entre outros. E um ponto essencial foi criar um guia ou playbook estruturado para estas pessoas se sentirem com uma estrutura, afinal, é bem fácil se sentir perdido ou à deriva trabalhando remotamente e uma das alternativas,de simplesmente ir passando tarefas, sem discussões ou agência, não era algo que eu estava interessado a realizar.
 
 <figure class="extend">
-    <img src="{{ 'playbook.png' | media(page) }}" width="752" height="475" alt="Página do GitHub apresentando ao time" style="border: 1px solid #BBB" />
+    <img src="/assets/playbook.png" width="752" height="475" alt="Página do GitHub apresentando ao time" style="border: 1px solid #BBB" />
     <figcaption>Criamos um repositório interno para agregar conhecimento, métodos, descrições e artigos relativos ao trabalho em nosso <b>Guia das Pessoas Desenvolvedoras</b>.</figcaption>
 </figure>
 
@@ -76,7 +73,7 @@ Eu até mesmo já escrevi anteriormente sobre [**Safer, Happier: Antipatterns an
 Em que direto ao ponto o autor estabelece que seu conselho a qualquer um atualmente realizando uma Transformação Ágil, Lean ou de DevOps, simplesmente não o faça.
 
 <figure class="extend">
-    <img src="{{ 'agile-spectrum.png' | media(page) }}" width="752" height="475" alt="Um espectro ronda o mundo da tecnologia: o espectro do ágil" style="border: 1px solid #BBB" />
+    <img src="/assets/agile-spectrum.png" width="752" height="475" alt="Um espectro ronda o mundo da tecnologia: o espectro do ágil" style="border: 1px solid #BBB" />
     <figcaption>Um espectro ronda o mundo da tecnologia: o espectro do ágil</figcaption>
 </figure>
 
@@ -93,7 +90,7 @@ Parafraseando o final de "Soylent Green" (1973), que curiosamente o título no B
 ## Living la vida ágil
 
 <figure class="extend">
-    <img src="{{ 'conway-paper.png' | media(page) }}" width="752" height="475" alt="Abril de 1968" style="border: 1px solid #BBB" />
+    <img src="/assets/conway-paper.png" width="752" height="475" alt="Abril de 1968" style="border: 1px solid #BBB" />
     <figcaption>Conway, M. E. 1968. How do committees invent? Datamation 14(4), 28-31.</figcaption>
 </figure>
 
@@ -106,7 +103,7 @@ O próprio ato de organizar o time: quem faz ou não parte do processo desde o i
 Ou seja, **organizações que fazem design de sistemas (em seu sentido amplo), são limitadas a produzir designs que irão ser cópias das estruturas de comunicação destas organizações** — Não importa o quanto de _squads_ sua empresa tiver, o quão horizontal em seu silo você seja, o software produzido vai obedecer às estruturas internas de comunicação. E isso tem muitas implicações. As funções de *Product Owner*, *Product Managers*, entre outros sempre foram tentativas de "domesticar" esse fluxo, mas às vezes estas mesmas figuras se tornam gargalos ou ainda represam o fluxo, criando nossas pequenas cachoeiras de duas semanas.
 
 <figure class="extend">
-    <img src="{{ 'types-work.png' | media(page) }}" width="752" height="475" alt="Tipos de trabalho" style="border: 1px solid #BBB" />
+    <img src="/assets/types-work.png" width="752" height="475" alt="Tipos de trabalho" style="border: 1px solid #BBB" />
     <figcaption>Tipos de trabalho</figcaption>
 </figure>
 

@@ -2,11 +2,8 @@
 title: "AI é de esquerda e Cripto é de direita?"
 description: A (estranha?) visão política de tecnologias de Peter Thiel e Marc Andreessen
 featured: true
-permalink: "/blog/ai-e-de-esquerda-cripto-bitocin-e-de-direita/"
 pubDate: "2021-07-04T10:50:00.000Z"
-featuredImage: eggman.png
-image: left-right.png
-featuredImageColor: "#1E2C54"
+image: "~/assets/images/eggman.png"
 ---
 
 
@@ -58,7 +55,7 @@ Finalmente, por quê se importar afinal com a opinião dessas duas figuras? Em u
 Vejamos em ação. O recém lançado [GitHub Copilot](https://copilot.github.com/), por exemplo, que traz uma gigantesca definição de "Your AI pair programmer" para não deixar dúvidas:
 
 <figure class="extend">
-    <img src="{{ 'githubcopilot.png' | media(page) }}" width="752" height="475" alt="AWS lidera o mercado de Cloud" style="border: 1px solid #BBB" />
+    <img src="/assets/githubcopilot.png" width="752" height="475" alt="AWS lidera o mercado de Cloud" style="border: 1px solid #BBB" />
     <figcaption>Your left-wing pair programmer como Thiel e Andreessen definiriam</figcaption>
 </figure>
 

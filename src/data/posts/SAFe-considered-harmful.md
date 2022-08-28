@@ -3,10 +3,7 @@ title: "SAFe™ Considered Harmful"
 description: This framework is not Agile at all. Or safe.
 featured: true
 pubDate: "2021-10-16T10:50:00.000Z"
-featuredImage: safe.jpg
-image: considered-harmful.png
-permalink: "/blog/SAFe-considered-harmful/"
-featuredImageColor: "#1E2C54"
+image: ~/assets/images/safe.jpg
 language: "en"
 ---
 
@@ -26,14 +23,14 @@ Is less “anti-Agile sentiment” and more “anti-Agile Practices™️”. SA
 ## Agily McAgileface
 
 <figure class="extend">
-    <img src="{{ 'safe-slide.jpeg' | media(page) }}" width="752" height="475" alt="SAFe Slide" style="border: 1px solid #BBB" />
+    <img src="/assets/safe-slide.jpeg" width="752" height="475" alt="SAFe Slide" style="border: 1px solid #BBB" />
     <figcaption>This could be a map for SAFe™ but no, is just a slide that was actually used in a briefing to the commanding general of U.S. forces in Afghanistan, Stanley McChrystal.  It purported to explain U.S. counterinsurgency strategy in Afghanistan, all on one slide.</figcaption>
 </figure>
 
 The first time I saw this as “agile” on Twitter I laugh. I thought it was just satire. This is _actual_ SAFe™ map. Find the errors:
 
 <figure class="extend">
-    <img src="{{ 'safe-map.png' | media(page) }}" width="752" height="475" alt="SAFe Slide" style="border: 1px solid #BBB" />
+    <img src="/assets/safe-map.png" width="752" height="475" alt="SAFe Slide" style="border: 1px solid #BBB" />
     <figcaption>This is called "SAFe 5 for Lean Enterprises"</figcaption>
 </figure>
 
@@ -58,7 +55,7 @@ https://www.scaledagile.com/training/calendar/"
 I use in my Markdown the highlight for `bs`, but I had to resume to just `txt`, I got the error `"bs" is not a valid Prism.js language`.
 
 <figure class="extend">
-    <img src="{{ 'safe-meme-min.jpeg' | media(page) }}" width="752" height="475" alt="SAFe Meme" style="border: 1px solid #BBB" />
+    <img src="/assets/safe-meme-min.jpeg" width="752" height="475" alt="SAFe Meme" style="border: 1px solid #BBB" />
     <figcaption>SAFe™ meme found on Internet. Anonymous author.</figcaption>
 </figure>
 
@@ -68,5 +65,5 @@ I use in my Markdown the highlight for `bs`, but I had to resume to just `txt`, 
 - [SAFe™ is not the scaled Agile approach you need](https://agileforest.com/2018/06/24/why-safe-is-not-the-scaled-agile-approach-you-need/)
 
 <figure class="extend">
-    <img src="{{ 'E9Z_l8vWQAACs23-min.jpeg' | media(page) }}" width="752" height="475" alt="Solving problems at scale" style="border: 1px solid #BBB" />
+    <img src="/assets/E9Z_l8vWQAACs23-min.jpeg" width="752" height="475" alt="Solving problems at scale" style="border: 1px solid #BBB" />
 </figure>

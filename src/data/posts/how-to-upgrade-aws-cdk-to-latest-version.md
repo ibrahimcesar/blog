@@ -2,11 +2,8 @@
 title: How to upgrade CDK to latest version under 1 min
 description: "CDK is updating all the time. Which is great, the tool is expanding, gaining more features. How to upgrade, again?"
 featured: true
-permalink: "/blog/how-to-upgrade-aws-cdk-to-latest-version/"
-featuredImage: constructor.jpg
+image: ~/assets/images/constructor.jpg
 pubDate: "2021-01-27T15:50:00.000Z"
-image: cover.png
-featuredImageColor: "#1E2C54"
 language: en
 ---
 

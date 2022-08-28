@@ -3,8 +3,7 @@ title: "📘 #devbooks:  Effective TypeScript: 62 Specific Ways to Improve Your 
 description: If practical books are your type, this is for you!
 featured: true
 pubDate: "2021-05-16T10:50:00.000Z"
-featuredImage: girl-window-reading.png
-image: devbooks-effectivets.png
+image: ~/assets/images/girl-window-reading.png
 language: "en"
 ---
 

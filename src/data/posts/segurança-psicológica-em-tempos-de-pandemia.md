@@ -2,18 +2,15 @@
 title: Segurança psicológica em tempos de pandemia
 description: Será possível?
 featured: true
-permalink: "/blog/segurança-psicológica-em-tempos-de-pandemia/"
 pubDate: "2021-05-02T10:50:00.000Z"
-featuredImage: workingalone.jpg
-image: pandemia.png
-featuredImageColor: "#1E2C54"
+image: ~/assets/images/workingalone.jpg
 ---
 > Segurança psicológica não existe em um vácuo. Afinal cada de um de nós vive em uma complexa trama de papéis e relações com outras pessoas e o mundo ao redor e não podemos simplesmente deixar nossos problemas de lado ou esperar que que uma área afeta a outra. Fazemos o nosso melhor, mas é impossível. E o que fazer vivendo em nossos tempos de pandemia? A pergunta, que acredito, gostaríamos que fosse apenas retórica ou exploração de uma hipótese, revirou nossa realidade de penas para o ar – ao menos a realidade de nós, privilegiados o bastante, para poder trabalhar a distância, de forma remota. Distopia é cada vez mais, rotina. Como ficar bem. _Eu não estou bem_. E vocês, como estão?
 
 ## A importância da segurança psicológica
 
 <figure class="extend">
-    <img src="{{ 'goal.png' | media(page) }}" width="752" height="475" alt="Estratégias de otimização de entrega de software" style="border: 1px solid #BBB" />
+    <img src="/assets/goal.png" width="752" height="475" alt="Estratégias de otimização de entrega de software" style="border: 1px solid #BBB" />
     <figcaption>Estratégias para otimização da melhora de entrega de software </figcaption>
 </figure>
 
@@ -64,7 +61,7 @@ Tentamos fazer o mínimo de reuniões possíveis, nunca ninguém é obrigado a l
 Outras formas de construir uma linguagem e contexto ao time que encontramos foi o que chamamos de **"Imersões"**: sessões dedicadas a um determinado assunto, variando o nível de profundidade, mas sempre partindo de nossos casos de uso e buscando explorar os fundamentos. Outra foi o uso do [MetroRetro](https://metroretro.io/) para retrospectivas – excelente ferramenta, não apenas para retrospectivas mas também pára planejamento de _sprints_ e o [Miro](https://miro.com) que substituiu o meu uso do flipchart.
 
 <figure class="extend">
-    <img src="{{ 'miro.png' | media(page) }}" width="752" height="475" alt="Estratégias de otimização de entrega de software" style="border: 1px solid #BBB" />
+    <img src="/assets/miro.png" width="752" height="475" alt="Estratégias de otimização de entrega de software" style="border: 1px solid #BBB" />
     <figcaption>Exemplo do Miro para elaboração de gráfico de dependências e planejamento</figcaption>
 </figure>
 

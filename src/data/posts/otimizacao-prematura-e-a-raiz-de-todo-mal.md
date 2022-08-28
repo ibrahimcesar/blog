@@ -2,11 +2,8 @@
 title: A Otimização Prematura e a Raíz de Todo o Mal
 description: Knut é responsável por um dos mais fortes adágios e frases em desenvolvimento. Do que ele falava?
 featured: true
-featuredImage: root.jpg
-permalink: "/blog/otimizacao-prematura-e-a-raiz-de-todo-mal/"
+image: ~/assets/images/root.jpg
 pubDate: "2020-01-27T10:50:00.000Z"
-image: cover.jpg
-featuredImageColor: "#1E2C54"
 ---
 
 <p class="lead">Knut é responsável por um dos mais fortes adágios e frases em desenvolvimento. É um credo passado de desenvolvedor a desenvolvedor, de que a otimização prematura é a raíz de todo mal, aqui exploro sua origem e contexto.</p>

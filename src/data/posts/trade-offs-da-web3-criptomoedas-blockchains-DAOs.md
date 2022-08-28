@@ -3,10 +3,8 @@ title: Explorando trade-offs da web3
 description: Alguns pontos sobre essa nova onda de tecnologias que vejo como decisivos para sua adoção e efeitos na sociedade 
 featured: true
 pubDate: "2021-12-21T10:50:00.000Z"
-featuredImage: web3.jpg
-permalink: "/blog/trade-offs-da-web3-criptomoedas-blockchains-DAOs/"
-image: web3.png
-featuredImageColor: "#1E2C54"
+image: ~/assets/images/web3.jpg
+
 ---
 
 <p class="lead">Web3, NFTs, criptomoedas, Bitcoin, Ethereum, blockchains, DAOs — ou são uma nova categoria de <em>Vaporware</em> gerando uma nova bolha como a ponto com no início do século ou são a melhor coisa desde o Big Bang, e cada convertido parece ter descoberto a água, ou algo assim. Parece ser um campo de discursos <b>extremamente</b> polarizados. Eu acho esse terreno mais politicamente carregado do que o próprio cenário de dicotomias extremas nas escolhas presidenciais que tivemos no país. Resolvi escrever esta postagem menos como uma defesa de qualquer lado, mas no antigo espírito dos blogs, de coletar e por ordem meus pensamentos.</p>
@@ -16,7 +14,7 @@ featuredImageColor: "#1E2C54"
 ## De onde eu parto
 
 <figure class="extend">
-    <img src="{{ 'hypecycle.png' | media(page) }}" width="752" height="475" alt="" style="border: 1px solid #BBB" />
+    <img src="/assets/hypecycle.png" width="752" height="475" alt="" style="border: 1px solid #BBB" />
     <figcaption>Nenhum mapa é o território. Esses gráficos podem e <em>não são representações</em> exatadas da realidade, mas funcionam como um bom de partida para ancorar nosso entendimento.</figcaption>
 </figure>
 
@@ -25,14 +23,14 @@ Como podem ver, os analistas da Gartner colocam NFTs e Identidades Descentraliza
 Por isso, sempre que está havendo alguma discussão e alguém invoca a imagem abaixo, eu simplesmente perco a razão. É usar um _data point_ de uma tecnologia que está solidificada e usar como um exemplo de que criticismo não "significa nada" ou "em alguns anos estarão errados". Na verdade, deveriam tomar qualquer criticismo como uma preocupação de um usuário atual da web que em algum momento para seus evangelistas vai estar usando e fazendo transações na web3, certo? 
 
 <figure class="extend">
-    <img src="{{ 'cherry-picking.png' | media(page) }}" width="752" height="475" alt="Cherry Picking" style="border: 1px solid #BBB" />
+    <img src="/assets/cherry-picking.png" width="752" height="475" alt="Cherry Picking" style="border: 1px solid #BBB" />
     <figcaption>Eu juro que estou cansado com esse tipo de falácia de argumentação. Mostrar que x foi desacreditado em um momento histórico não é automaticamente um <em>"free-jail card"</em> que dá imunidade ao seu argumento. É apenas <em>cherry-picking</em> de argumentos. Palm-tops, Blackberrys, SOAP, WAP. Poderia citar várias. E <em>também</em> seria <em>cherry-picking</em>, de meu lado. Simplesmente isso não é um argumento válido. Aliás, nem se trata de um argumento <em>per se</em>, só um estratagema para evitar debater com fatos concretos.</figcaption>
 </figure>
 
 ## Descentralização... onde?
 
 <figure class="extend">
-    <img src="{{ 'evo.jpeg' | media(page) }}" width="752" height="475" alt="" style="border: 1px solid #BBB" />
+    <img src="/assets/evo.jpeg" width="752" height="475" alt="" style="border: 1px solid #BBB" />
     <figcaption>Nenhum mapa é o território.</figcaption>
 </figure>
 
@@ -55,7 +53,7 @@ Categorizações e classificações são sempre complexas. Pegue os movimentos l
 Nessa "Web 1" _read only_, tínhamos justamente esse lugar de expressão desenfreada e livre.
 
 <figure class="extend">
-    <img src="{{ 'geocities-jerry-the-cat.jpeg' | media(page) }}" width="752" height="475" alt="Site do Jerry, the Cat no Geocities" style="border: 1px solid #BBB" />
+    <img src="/assets/geocities-jerry-the-cat.jpeg" width="752" height="475" alt="Site do Jerry, the Cat no Geocities" style="border: 1px solid #BBB" />
     <figcaption>Exemplo de um site da era <em>read only</em> da web.</figcaption>
 </figure>
 
@@ -68,7 +66,7 @@ Ok. Eu quero fazer uma aplicação web3. Fui atrás de vários materiais e a com
 A pessoa que escreveu então mostra como é uma aplicação Web 2.0 hoje: "All of this code is hosted on centralized servers and sent to users through an internet browser. This is a good high-level summary of how most Web 2.0 applications work today.":
 
 <figure class="extend">
-    <img src="{{ 'architecture-now.png' | media(page) }}" width="752" height="475" alt="" style="border: 1px solid #BBB" />
+    <img src="/assets/architecture-now.png" width="752" height="475" alt="" style="border: 1px solid #BBB" />
     <figcaption>Nosso pão com manteiga de uma arquitetura 3-tiers: apresentação, servidor e persistência de dados.</figcaption>
 </figure>
 
@@ -77,14 +75,14 @@ Para um cenário bem mais complexo em que para evitar colocar seu código em um 
 E não posso deixar de ver que muitas soluções na arquitetura parecem até mesmo proprietárias como o [The Graph](https://thegraph.com/en/). Eu nem vou entrar na questão de que o usuário precisará além de seu navegador de configurar uma _wallet_ e mais camadas que afetarão sua experiência do usuário. Temos problemas e fricções em nossos fluxos atuais. A experiência do usuário final ainda vai ter que melhorar muito.
 
 <figure class="extend">
-    <img src="{{ 'architecture-web3.png' | media(page) }}" width="752" height="475" alt="" style="border: 1px solid #BBB" />
+    <img src="/assets/architecture-web3.png" width="752" height="475" alt="" style="border: 1px solid #BBB" />
     <figcaption>E esta é uma arquitura final proposta de uma aplicação <em>web3</em>. Já ouviu falar do termo "explosão de commplexidade"? Se não, esta imagem para mim ilustra o conceito com muita acurácia.</figcaption>
 </figure>
 
 ## El Salvador e seu experimento com Bitcoin
 
 <figure class="extend">
-    <img src="{{ 'nayib-bukele-bitcoin-city.jpeg' | media(page) }}" width="752" height="475" alt="" style="border: 1px solid #BBB" />
+    <img src="/assets/nayib-bukele-bitcoin-city.jpeg" width="752" height="475" alt="" style="border: 1px solid #BBB" />
     <figcaption>Nayib Bukele, <em>bro-president</em> de El Salvador</figcaption>
 </figure>
 
@@ -101,7 +99,7 @@ Como disse antes, _write_ na web, e na sociedade sempre se tratou de barreiras m
 Web 3 é [Pay to Play](https://en.wikipedia.org/wiki/Pay_to_play). Ouço muito de como as criptomoedas vão ajudar a população desbancarizada no mundo ou em países autoritários. E eu apenas me pergunto: "como exatamente?". Se para pagar o gas fee de alguns serviços, o  preço é baseado em moedas de alta-volatilidade. Já ouvi também falar de vários projetos que não custam nada para explorar (inclusive para testar em sidechains), mas acontece que esses ambientes são como sandboxes, e é necessário capital para entrar em qualquer rede mainstream. Há diversas iniciativas e projetos que oferecem _grants_ e _investimentos_, mas acaba sendo mais um "gatekeeper" em nossa promessa de descentralização. E isso automaticamente é uma barreira de entrada e já exclui devido a paridade de poder compra do Sul Global com os desenvolvedores dos países mais ricos.
 
 <figure class="extend">
-    <img src="{{ 'paytoplay.jpeg' | media(page) }}" width="752" height="475" alt="Homem com café, sentando em uma mesa com um cartaz onde se lê: 'web3 is pay to play. Change my Mind' — web 3 é pay to play. Mude minha opinião." style="border: 1px solid #BBB" />
+    <img src="/assets/paytoplay.jpeg" width="752" height="475" alt="Homem com café, sentando em uma mesa com um cartaz onde se lê: 'web3 is pay to play. Change my Mind' — web 3 é pay to play. Mude minha opinião." style="border: 1px solid #BBB" />
     <figcaption>Pay to Play, como nos games. Fui comprar, ou tentar, pois desisti, um domínio web3, com a terminação <code>.eth</code> para meu uso. Quanto sairia, no dia em que cotei? 0.001 ETH + "at most" 0.011 ETH gas fee = "at most" 0.013 ETH, totalizando $47.45 USD, mais ou menos ~$270,31 BRL. Fora a volatividade, seria o domínio mais caro para manter (anualmente) e que nem mesmo é resolvido por DNS. 22% do salário mínimo mensal projetado para o ano de 2022. Um domínio <code>.com.br</code> custa, no Registro.br $ 40,00 BRL, por volta de 7 vezes menor. Sem volatização em conta.</figcaption>
 </figure>
 

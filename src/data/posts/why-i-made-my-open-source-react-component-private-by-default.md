@@ -2,11 +2,8 @@
 title: "Why I made my open source React component private by default"
 description: "An Open Source story"
 featured: true
-permalink: "/blog/why-i-made-my-open-source-react-component-private-by-default/"
-featuredImage: yt.jpg
+image: ~/assets/images/yt.jpg
 pubDate: "2021-05-18T10:50:00.000Z"
-image: cover.png
-featuredImageColor: "#1E2C54"
 language: en
 ---
 

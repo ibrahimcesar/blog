@@ -3,10 +3,7 @@ title: "The material question with Google's Core Web Vitals"
 description: The fair metrics that are three biased metrics in a trenchcoat
 featured: true
 pubDate: "2021-09-01T10:50:00.000Z"
-featuredImage: corewebvitals.png
-image: google.png
-permalink: "/blog/the-material-question-with-google-web-core-vitals/"
-featuredImageColor: "#1E2C54"
+image: ~/assets/images/corewebvitals.png
 language: "en"
 ---
 
@@ -23,14 +20,14 @@ First, more context: the Core Web Vitals are a set of three metrics.
 Google does a great deal to [share a lot of information](https://developers.google.com/speed/docs/insights/v5/about).
 
 <figure class="extend">
-    <img src="{{ 'google-core-web-vitals.png' | media(page) }}" width="752" height="475" alt="The core web vitals" style="border: 1px solid #BBB" />
+    <img src="/assets/google-core-web-vitals.png" width="752" height="475" alt="The core web vitals" style="border: 1px solid #BBB" />
     <figcaption>The Three Core Web Vitals</figcaption>
 </figure>
 
 In this post I will not argue _against_ Web Core Vitals. I think is past due the time we take our user metrics, real user metrics (sometimes called by its acronym, RUM) in the center of everything we do. The "rise of user centric" metrics such as CLS (Cumulative Layout Shift) and other are remarkable feats and much needed. But I have some thoughts in the complexity that arise from it. I was lucky enough to attend in person the [2019 Google Chrome Developer Summit](https://www.youtube.com/watch?v=F1UP7wRCPH8)[^1]. It was the first time I saw presentations calling out developers to not only pay attention to their top devices — several of the talks the subject and reality of low end devices. It was amazing to see that. But I was thinking... "I'm working in Brazil for at least 10 years and all my references came from here, _this place_, and now, **2019**, they are talking about the most common scenario I face _everyday_".
 
 <figure class="extend">
-    <img src="{{ 'nbu1-min.jpeg' | media(page) }}" width="752" height="475" alt="Addy Osmani: Respect the user's network and hardware" style="border: 1px solid #BBB" />
+    <img src="/assets/nbu1-min.jpeg" width="752" height="475" alt="Addy Osmani: Respect the user's network and hardware" style="border: 1px solid #BBB" />
     <figcaption>Addy Osmani: Respect the user's network and hardware</figcaption>
 </figure>
 
@@ -56,7 +53,7 @@ I asked a representative of Google on the subject. And asked if the realities in
 > I'm not aware of anything planned in that direction. Regarding on the website and what your audience makes it a bit easier or harder, but essentiality we want this Core Web Vital be as global as possible. In practice, if your users are in very slow connections then you must make sure your site is extra fast for them.
 
 <figure class="extend">
-    <img src="{{ 'red-queen.jpeg' | media(page) }}" width="752" height="475" alt="Red Queen" style="border: 1px solid #BBB" />
+    <img src="/assets/red-queen.jpeg" width="752" height="475" alt="Red Queen" style="border: 1px solid #BBB" />
     <figcaption>Not only run, but run at least twice as fast! "Now, here, you see, it takes all the running you can do, to keep in the same place. If you want to get somewhere else, you must run at least twice as fast as that!" — Red Queen from Lewis Carroll's <b>Through the Looking-Glass</b></figcaption>
 </figure>
 

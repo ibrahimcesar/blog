@@ -2,11 +2,8 @@
 title: Serverless Transformation at a news media outlet in Brazil
 description: "A little exploration about our Serverless Transformation so far"
 featured: true
-permalink: "/blog/serverless-transformation-in-a-news-media-outlet-in-brazil/"
-featuredImage: sp.jpg
+image: ~/assets/images/sp.jpg
 pubDate: "2020-11-28T10:50:00.000Z"
-image: serverless-transformation.png
-featuredImageColor: "#1E2C54"
 language: en
 ---
 

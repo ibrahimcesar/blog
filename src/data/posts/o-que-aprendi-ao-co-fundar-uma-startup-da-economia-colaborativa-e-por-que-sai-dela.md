@@ -84,10 +84,8 @@ A própria [Uber, em seus termos de uso, disponíveis em português](https://www
 
 __A página com os termos de uso é o lugar onde as propostas de valor vão para morrer__. Me pergunto o quanto disso não poderia ser considerado propaganda enganosa. Afinal tudo o que eles vendem, sua comunicação e páginas de design atrativo, é exatamente aquilo que eles deixam bem claro que não é de responsabilidade deles. Por exemplo, este anúncio comunica outra coisa:
 
-![Illustration of woman using a meditation app](/posts/blumpa.jpeg)
-
 <figure class="extend">
-    <img src="/posts/blumpa.jpeg" width="752" height="475" alt="Anúncio: Faxina em São Paulo - Flexibilidade nas Reservas Online - A partir de R$ 20,90 por hora! Profissionais Capacitados - Reserva Rápida - Serviço de Qualidade. Confiável para quem quer contratar uma diarista - TechTudo" style="border: 1px solid #BBB" />
+    <img src="/assets/ad.png" width="752" height="475" alt="Anúncio: Faxina em São Paulo - Flexibilidade nas Reservas Online - A partir de R$ 20,90 por hora! Profissionais Capacitados - Reserva Rápida - Serviço de Qualidade. Confiável para quem quer contratar uma diarista - TechTudo" style="border: 1px solid #BBB" />
     <figcaption>Posso estar enganado, mas este anúncio me sugere que eles oferecem faxina e ainda garantem a qualidade e que posso confiar!</figcaption>
 </figure>
 

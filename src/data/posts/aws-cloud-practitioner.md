@@ -3,10 +3,8 @@ title: Certificar ou não? Eis a questão
 tags: writing
 description: "Em agosto me certifiquei como AWS Certified Cloud Practitioner e compartilho aqui minhas impressões e motivações"
 featured: true
-permalink: "/blog/aws-cloud-practitioner/"
 pubDate: "2020-09-06T10:50:00.000Z"
-featuredImage: cloud.jpg
-image: cover.jpg
+image: "~/assets/images/colors.jpg"
 ---
 
 <p class="lead">Certificar ou não? Eis a questão. Em 04 de agosto de 2020 fiz o exame para AWS Certified Cloud Practitioner, que é o nível mais básico de certificação da AWS A pedido de uma amiga e ex-colega de trabalho vou compartilhar minha motivação, plano de estudo e passo a passo que eu fiz, e compartilhei anteriormente em uma thread no Twitter, que agora transcrevo para cá no blogs, para ser encontrado mais fácil e conveniência de colecionar ideias & experiências.</p>

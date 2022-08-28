@@ -3,10 +3,7 @@ title: Introdução ao Next.js
 description: Framework para React em produção
 featured: true
 pubDate: "2021-12-07T10:50:00.000Z"
-featuredImage: nextjs.jpg
-permalink: "/blog/introducao-nextjs-ssr-isr-ssg-javascript-react-framework/"
-image: cover.png
-featuredImageColor: "#1E2C54"
+image: ~/assets/images/nextjs.jpg
 ---
 
 <p class="lead">"Toda semana um novo framework JavaScript" — com certeza já deve ter ouvido essa. Mas, já parou para analisar criticamente esta frase?</p>
@@ -134,7 +131,6 @@ import type { NextApiRequest, NextApiResponse } from 'next'
        } else {
          res.status(404).json({ error: 'Not Found'})
        }
-        
     }
 ```
 
@@ -248,7 +244,7 @@ Basicamente existem alguns métodos / estratégias de renderização.
 A primeira é a SSG (Site Static Generation), uma geração estática dos recursos. Isto não significa que se site ou webapp será completamente sem interatividade ou comportamentos. Este blog é gerado em SSG, por exemplo. É um método em que todos os assets, arquivos usados, imagens e conteúdo são requisitados em `build time`, e então é realizado o deploy, para disponibilizar aos usuários uma nova versão ou conteúdo.
 
 <figure class="extend">
-    <img src="{{ 'server-side-rendering-min.png' | media(page) }}" width="752" height="475" alt="" style="border: 1px solid #BBB" />
+    <img src="/assets/server-side-rendering-min.png" width="752" height="475" alt="" style="border: 1px solid #BBB" />
 </figure>
 
 Como resultado, o servidor não precisa realizar nenhum processamento. Muitas vezes pode ser servido diretamente de armazenamentos de objetos como o S3 por exemplo. O `TTFB` (Time To First Byte), o tempo que leva entre o `GET` do seu navegador até receber a primeira resposta do servidor é muito baixo pois não há nenhuma computação a ser feita para sua entrega, todos os recursos já podem estar otimizados, inclusive cacheados em diversas CDNs.
@@ -270,7 +266,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 Obviamente, cada escolha possui um trade-off. E com `SSG` um destes é que quanto mais conteúdo e páginas seu site possui mais e mais tempo ele demora para ser colocado no ar, elevando seu `build time`. O que para alguns negócios é bem sensível.
 
 <figure class="extend">
-    <img src="{{ 'build-time-ssg-min.png' | media(page) }}" width="752" height="475" alt="" style="border: 1px solid #BBB" />
+    <img src="/assets/build-time-ssg-min.png" width="752" height="475" alt="" style="border: 1px solid #BBB" />
 </figure>
 
 Outro método é o SSR (Server Side Rendering), neste método, uma rota dinâmica como `[posts].tsx` ou "cata-tudo" como `[...posts].tsx`. Neste método, a partir do contexto o processo do servidor Node.js que o Next.js entrega. 
@@ -286,13 +282,13 @@ export const getServerSideProps: GetServerSideProps = async context => {
 O trade-off é que a cada requisição, a aplicação precisa fazer uma computação, buscar em uma API ou banco de dados e gerar em tempo real as páginas. Obviamente podem existir camadas de cache mas as páginas destes caminhos dinâmicos serão criadas _on demand_.
 
 <figure class="extend">
-    <img src="{{ 'server-side-rendering-min.png' | media(page) }}" width="752" height="475" alt="" style="border: 1px solid #BBB" />
+    <img src="/assets/server-side-rendering-min.png" width="752" height="475" alt="" style="border: 1px solid #BBB" />
 </figure>
 
 Por isso, a velocidade do `TTFB` não é tão rápida quanto em `SSG`, mas para alguns tipos de sites, como de notícias, por exemplo, é um modelo ideal pois reflete a agilidade em que o conteúdo e dezenas de novas páginas podem ser inseridas a todo momento.
 
 <figure class="extend">
-    <img src="{{ 'incremental-static-regeneration-min.png' | media(page) }}" width="752" height="475" alt="" style="border: 1px solid #BBB" />
+    <img src="/assets/incremental-static-regeneration-min.png" width="752" height="475" alt="" style="border: 1px solid #BBB" />
 </figure>
 
 Uma terceira estratégia é o ISR (Incremental Static Regeneration). O código é bem parecido com `SSG` mas `getStaticProps` retorna deve retornar uma nova propriedade e `getStaticPaths` que define a maneira de lidar com caminhos ainda não gerados em `request time` tendo um `falback`, com uma página de "carregamento" ou sendo `blocking` em que a página antes de ser enviada será gerada de forma `SSR`.
@@ -322,7 +318,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 Basicamente é uma estratégia que basicamente combina as estratégias anteriores. Também adiciona esse valor de `revalidate` em que as páginas estáticas, criadas em `build time` poderão ser atualizadas em `run time`, caso haja uma nova alteração das mesmas baseada nesse timestamp em `request time`. Ou seja, geramos uma página estática no momento de criação com o valor `60 * 15`, ou seja, após 15 minutos deve ser revalidada. Ela estará cacheada e caso haja uma requisitação e esta requisitação seja feita _após_ 15 minutos, será verificada se existe uma nova atualização e em caso positivo, ela é re-generada. Dentro deste intervalo a mesma página gerada será sempre entregue como em SSR.
 
 <figure class="extend">
-    <img src="{{ 'isr-how-min.png' | media(page) }}" width="752" height="475" alt="" style="border: 1px solid #BBB" />
+    <img src="/assets/isr-how-min.png" width="752" height="475" alt="" style="border: 1px solid #BBB" />
 </figure>
 
 ## Qual dos métodos utilizar?
@@ -336,7 +332,7 @@ Brincadeira. A resposta é mais complexa:
 Caso não haja restriçõe de como disponibilizar seu conteúdo a melhor estratégia é uma combinação das estratégias. Se há alguma limitação em que apenas arquivos estáticos podem ser disponibilizados então, você terá o `SSG` e a cada mudança em seu conteúdo deverá disparar um novo `build`. Entretanto, se este não for o caso, você pode combinar. Existem páginas cujo conteúdo praticamente não muda ou muda raramente — páginas de contato, etc. Estas podem ser sempre `SSR`. Outras páginas podem se beneficiar muito de `ISR` ou mesmo diretamente `SSR`. E é claro, uma vez carregada qualquer uma destas páginas você pode fazer seu carregamento assíncrono de dados em qualquer outra fonte e popular no próprio cliente, fazendo a melhor combinação.
 
 <figure class="extend">
-  <img src="{{ 'web-core-vitals-min.png' | media(page) }}" width="752" height="475" alt="" style="border: 1px solid #BBB" />
+  <img src="/assets/web-core-vitals-min.png" width="752" height="475" alt="" style="border: 1px solid #BBB" />
 </figure>
 
 Para atingir uma excelente performance é necessário medir, acompanhar e explorar possibilidades e não existe nenhuma estratégia sem trade-offs. Imagine um site de notícias que escolha `SSR`. A cada publicação de uma nova matéria, correção, edição de Front Page e edição de matérias disparar um novo `build`. Rapidamente poderá haver até mesmo builds competindo tempo de computação, que é um dos fator mais determinante em custos na chamada "FinOps" do que armazenamento, por exemplo.

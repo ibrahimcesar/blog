@@ -3,8 +3,7 @@ title: "Event-Driven Architectures"
 description: Let's event lead the way to tackle complexity
 featured: true
 pubDate: "2021-09-11T10:50:00.000Z"
-featuredImage: events.png
-image: event-driven.png
+image: ~/assets/images/events.png
 ---
 
 <p class="lead">In this article, I will explore some <em>trade-offs</em> and the case for the use of event-driven architectures in modern applications. While I will focus on the products and services from <strong>AWS</strong>, we could use this architecture in any Cloud or on-premises.</p>

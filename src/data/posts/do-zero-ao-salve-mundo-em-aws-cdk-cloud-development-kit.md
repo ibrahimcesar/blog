@@ -3,9 +3,7 @@ title: "Do Zero a “Salve Mundo” com AWS CDK"
 description: Da infra ao código, todo em TypeScript!
 featured: true
 pubDate: "2021-08-13T10:50:00.000Z"
-featuredImage: cdk-salvemundo.png
-image: cdk.png
-permalink: "/blog/do-zero-ao-salve-mundo-em-aws-cdk-cloud-development-kit/"
+image: ~/assets/images/cdk-salvemundo.png
 ---
 
 <p class="lead"><b>CDK</b> — <em>Cloud Development Kit</em> é atualmente a minha ferramenta predileta para <em>Infrastruture as Code (IaC)</em>. Para se ter uma API na AWS com toda a infraestrutura provisionada e o próprio código em TypeScript, CDK permite a criação e manutenção de aplicações isomórficas em outro nível já que se trata até mesmo da infra, não apenas front-end e back-end.</p>
@@ -25,7 +23,7 @@ Este código foi apresentado nesta sexta-feira 13, de agosto 2021 no [**DevOps E
 ## Arquitetura
 
 <figure class="extend">
-    <img src="{{ 'arquitetura.png' | media(page) }}" width="752" height="475" alt="Arquitetura básica" style="border: 1px solid #BBB" />
+    <img src="/assets/arquitetura-devopsextreme.png" width="752" height="475" alt="Arquitetura básica" style="border: 1px solid #BBB" />
     <figcaption>API Gatewy REST API <em>ANY {proxy+}</em> e Lambda </figcaption>
 </figure>
 

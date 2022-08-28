@@ -3,9 +3,7 @@ title: 10 livros de 2020
 description: Minha lista preferidas de leituras deste ano de 2020
 featured: true
 pubDate: "2020-12-11T10:50:00.000Z"
-featuredImage: 10livros2020.jpg
-permalink: "/blog/10-livros-de-2020/"
-image: cover.jpg
+image: "~/assets/images/10livros2020.jpg"
 featuredImageColor: "#1E2C54"
 ---
 

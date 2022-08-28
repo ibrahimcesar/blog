@@ -2,16 +2,13 @@
 title: "Happy little clouds: finding my way with CDK"
 description: "Speaking on the language of the Cloud"
 featured: true
-permalink: "/blog/happy-little-clouds-finding-my-way-with-cdk/"
-featuredImage: happy.png
+image: ~/assets/images/happy.png
 pubDate: "2021-04-30T10:50:00.000Z"
-image: cover.png
-featuredImageColor: "#1E2C54"
 language: en
 ---
 
 <figure class="extend">
-    <img src="{{ 'happy.jpeg' | media(page) }}" width="752" height="475" alt="Happy Little Clouds" style="border: 1px solid #BBB" />
+    <img src="/assets/happy.jpeg" width="752" height="475" alt="Happy Little Clouds" style="border: 1px solid #BBB" />
 </figure>
 
 Today, April 30, we celebrate <a href="https://www.cdkday.com/" title="CDK Day" alt="CDK Day"><b>CDK Day</b></a>. The work made by Matt Coulter with the community is an exceptional feat by itself. <a href="https://www.cdkpatterns.com/" title="CDK Patterns" alt="CDK Patterbs">CDK Patterns</a> became __the place__ to start any dig into CDK.

@@ -2,11 +2,8 @@
 title: Por quê sistemas falham?
 description: Sistemas falham o tempo todo. Ignorar os logs corre-se o risco de repetir os bugs do passado
 featured: true
-permalink: "/blog/sistemas-falham/"
 pubDate: "2021-03-30T10:50:00.000Z"
-featuredImage: ruins.jpg
-image: cover.jpg
-featuredImageColor: "#1E2C54"
+image: ~/assets/images/ruins.jpg
 ---
 <p class="lead">A anedota diz que dois peixes jovens nadavam no Oceano entre corais quando passam por um peixe sábio e bastante conhecido que lhes diz sorrindo: "– Como vai a água, garotos? Eles acenam e sorriam. Após ele passar eles se perguntam "O que é água?". O ambiente que nos cerca possui certas características, estruturas e propriedades na qual de tão imersos mal percebemos sua presença. Nossa cultura, valores, mas também vieses, preconceitos e visões distorcidas.</p>
 
@@ -16,7 +13,7 @@ featuredImageColor: "#1E2C54"
 
 Vivemos imersos em uma teia de complexidades que a redução brutal de conceitos ou a simples polarização sem base em dados que nem sempre é fácil entender a trajetória e mesmo o estado interno dos sistemas. Como já citei na postagem [O Princípio Anna Kariênina](/blog/o-principio-anna-karienina/) vivemos sempre em um tenso equilíbrio de otimizar nossos recursos e a falha de sistemas é sempre uma possibilidade. Como nos proteger? Estudar outros projetos. Observar seus logs, criar alarmes, verificar com _data points_ a característica de seu sistema. Aqueles que não leem seus logs estão fadados a reproduzir os bugs do passado. Há um livro que pretendo abordar em algum momento que foi um estudo de caso muito interessante de Eden Medina, [_"Cybernetic Revolutionaries: Technology and Politics in Allende's Chile"_](https://amzn.to/3sz9Evv) do MIT Books sobre um ousado experimento da união de estudos de cibernética e a política socialista de Allende no Chile. O projeto envolvia uma sala _a la_ Star Trek em que os governantes teriam acesso a informações em tempo real de todo o país e poderiam otimizar e governar baseado em dados. 
 <figure class="extend">
-    <img src="{{ 'cybersyn.jpeg' | media(page) }}" width="752" height="475" alt="Sala de controle do Projeto Synco/Cybersyn" style="border: 1px solid #BBB" />
+    <img src="/assets/cybersyn.jpeg" width="752" height="475" alt="Sala de controle do Projeto Synco/Cybersyn" style="border: 1px solid #BBB" />
     <figcaption>Um ousado projeto para um país sulamericano em que mesmo computadores eram escassos</figcaption>
 </figure
 

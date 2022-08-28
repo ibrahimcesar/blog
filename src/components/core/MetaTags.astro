@@ -2,6 +2,7 @@
 import { getImage } from "@astrojs/image";
 
 const { src: defaultImage } = await getImage({
+  // @ts-ignore
   src: import("~/assets/images/default.png"),
   width: 1200,
   height: 628,
@@ -11,10 +12,9 @@ const {
   title = "IbrahimCesar.cloud",
   description = "",
   image = defaultImage,
+  socialImage = "",
   canonical,
 } = Astro.props;
-
-const absoluteImageUrl = new URL(image, Astro.site);
 ---
 
 <meta charset="UTF-8" />
@@ -28,21 +28,21 @@ const absoluteImageUrl = new URL(image, Astro.site);
 <!-- Google / Search Engine Tags -->
 <meta itemprop="name" content={title} />
 <meta itemprop="description" content={description} />
-<meta itemprop="image" content={absoluteImageUrl} />
+<meta itemprop="image" content={socialImage} />
 
 <!-- Facebook Meta Tags -->
 {canonical && <meta property="og:url" content={canonical} />}
 <meta property="og:type" content="website" />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
-<meta property="og:image" content={absoluteImageUrl} />
+<meta property="og:image" content={socialImage} />
 
 <!-- Twitter Meta Tags -->
 {canonical && <meta name="twitter:url" content={canonical} />}
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
-<meta name="twitter:image" content={absoluteImageUrl} />
+<meta name="twitter:image" content={socialImage} />
 
 <!-- Fonts -->
 <link

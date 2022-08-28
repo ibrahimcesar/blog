@@ -1,19 +1,19 @@
 ---
 title: Next Billion Users
-description: "O conceito de NBU: Next Billion Users e o que isso significa em termos práticos de como analiso que UX, negócios e desenvolvimento devem ser impactados e como o Brasil está neste contexto"
+description: "O conceito de NBU: Next Billion Users e o que isso significa em termos práticos de como analizo que UX, negócios e desenvolvimento devem ser impactados e como o Brasil está neste contexto"
 featured: true
-permalink: "/blog/nbu-next-billion-users-brasil/"
-featuredImage: nbu.jpg
+image: ~/assets/images/nbu.jpg
 pubDate: "2020-01-30T10:50:00.000Z"
-image: cover.jpg
 ---
 
-<p class="lead">O conceito de NBU: Next Billion Users e o que isso significa em termos práticos de como analiso que UX, negócios e desenvolvimento devem ser impactados e como o Brasil está neste contexto</p>
+<p class="lead">O conceito de NBU: Next Billion Users e o que isso significa em termos práticos de como analizo que UX, negócios e desenvolvimento devem ser impactados e como o Brasil está neste contexto</p>
 
 ## Next Billion Users definido
 
 > "Bilhões e bilhões"  
-> <footer>Carl Sagan[^1]</footer>
+> <footer>
+Carl Sagan [^1]
+</footer>
 
 Bilhões. Parece que culturalmente estamos um tanto quanto obcecados com o termo, com esta quantia. Quando uma startup atinge o patamar de ser avaliada em bilhões, temos os nossos unicórnios do século XXI :unicorn:, alguns inclusive em nosso país. Existem também os bilionários, esta classe especial de indivíduos no planeta, com uma [população por volta de 2.604](https://www.cnbc.com/2019/05/09/the-countries-with-the-largest-number-of-billionaires.html) segundo o último censo. __Big Data__ se trata literalmente de lidar com tantos data points que facilmente se chega aos bilhões e bilhões. Impactar "um bilhão de usuários" se tornou um [objetivo para muitos círculos de empreendedorismo](https://www.inc.com/sangram-vajre/how-to-impact-one-billion-people.html). Culturalmente até mesmo dramas estão criados ao redor dessas figuras, o mais explícito chamado exatamente [Billions](https://www.imdb.com/title/tt4270492/).
 
@@ -61,14 +61,14 @@ A Google tem dado atenção particular para esse termo[^5], no I/O de 2019 até 
 ["**The Next Billion Users**: Digital Life Beyond the West"](https://www.hup.harvard.edu/catalog.php?isbn=9780674983786) foi tema do livro da antropologa digital Payal Arora traz um instigante trabalho de campo sobre os usos da internet para além dos padrões assumidos de utilitarismo. É interessante notar que o NBU traz consigo não apenas um "fato" de entrada de mais usuários, mas uma mudança cultural na própria demografia do espaço online.  ["Who are the next billion users and what do they want?"](https://techcrunch.com/2019/03/08/who-are-the-next-billion-users-and-what-do-they-want/) se perguntam. Pois muitas das obsessões da rede que inclusive pautam os negócios que são transformados em unicórnios, o que é pautado na mídia ou influenciado pelas vendas e relacionamento das grandess plataformas, é muito diferente do que é a realidade do NBU. Estamos descobrindo, mais uma vez, de novo, abismos entre excluídos e incluídos, agora na própria rede. A antropóloga já escreveu na [mídia sobre seuas descobertas](https://qz.com/1669754/tech-companies-misunderstand-the-next-billion-internet-users/).
 
 <figure class="extend">
-    <img src="{{ 'nbu3-min.jpeg' | media(page) }}" width="752" height="475" alt="Surma falando do chamado 'Obama Phone', celulares baratos mas sem muita capacidade no 'Chrome Dev Summit 2019'" style="border: 1px solid #BBB" />
+    <img src="/assets/nbu3-min.jpeg" width="752" height="475" alt="Surma falando do chamado 'Obama Phone', celulares baratos mas sem muita capacidade no 'Chrome Dev Summit 2019'" style="border: 1px solid #BBB" />
     <figcaption>Surma falando do chamado "Obama Phone", celulares baratos mas sem muita capacidade](./nbu3.jpeg "Chrome Dev Summit 2019</figcaption>
 </figure>
 
 Óbvio, que o grande foco, ao menos nas conferências em que participo é o tema técnico. Mesmo nos Estados Unidos há uma quantidade muito grande de pessoas utilizando [Obama Phones](https://www.obamaphone.com/). E para permitir uma boa performance nesses aparelhos com CPU reduzida, é necessário adotar novas técnicas, como por exemplo, deixar a Main thread do navegador o menos bloqueada possível, o que acaba criando como "side effect", melhores experiências para todos.
 
 <figure class="extend">
-    <img src="{{ 'nbu4-min.jpeg' | media(page) }}" width="752" height="475" alt="Surma em sua palestra no Chrome Dev Summit 2019 exibindo celulares com menores capacidades" style="border: 1px solid #BBB" />
+    <img src="/assets/nbu4-min.jpeg" width="752" height="475" alt="Surma em sua palestra no Chrome Dev Summit 2019 exibindo celulares com menores capacidades" style="border: 1px solid #BBB" />
     <figcaption>Surma em sua palestra no Chrome Dev Summit 2019 exibindo celulares com menores capacidades</figcaption>
 </figure>
 
@@ -113,14 +113,14 @@ Espero que a web se consolide mais com o NUB, também. Já que a não ser uns po
 Como o software pode se preparar para esses novos usuários? De primeira, o que se chama **Adaptive Loading**.
 
 <figure class="extend">
-    <img src="{{ 'nbu1-min.jpeg' | media(page) }}" width="752" height="475" alt="Addy Osmani: Respeite a rede e hardware de seu usuário" style="border: 1px solid #BBB" />
+    <img src="/assets/nbu1-min.jpeg" width="752" height="475" alt="Addy Osmani: Respeite a rede e hardware de seu usuário" style="border: 1px solid #BBB" />
     <figcaption>Addy Osmani: Respeite a rede e hardware de seu usuário</figcaption>
 </figure>
 
 Estive no [Chrome Dev Summit](https://developer.chrome.com/devsummit/) 2019 e pude ver a apresentação de [Adaptive Loading - Improving the user-experience for millions on low-end devices](https://youtu.be/puUPpVrIRkc) de [**Addy Osmani**](https://twitter.com/addyosmani) focada em apresentar o c . Basicamente passa por identificar limitações e características dos clientes e adaptar o loading de acordo com as características. Está em uma rede 2G? Não vamos entregar nenhuma imagem. A CPU é mínima, vamos entregar o mínimo de JavaScript para deixar a main thread o mais livre possível. E várias outras estratégias. Nós não precisamos entregar a mesma experiência a todos os usuários, pois mesmo se quisermos, **não vamos conseguir**. A quantidade de contextos é tão grande em uma enorme diversidade e permutações que simplesmente não existe uma "única experiência" em se tratando de web, apenas desenvolvendo para uma única plataforma, que controla até mesmo o hardware (Olá Apple!) e mesmo assim, não é 100% garantido. Podemos, assim como a ideia de responsividade, e se adaptar aos diversos tamanhos e resoluções de tela, trabalhar para entregar a melhor experiência possível para cada contexto a partir de vários sinais que podemos coletar.
 
 <figure class="extend">
-    <img src="{{ 'nbu2-min.jpeg' | media(page) }}" width="752" height="475" alt="Addy Osmani: Network, memória e CPU são itens para se avaliar" style="border: 1px solid #BBB" />
+    <img src="/assets/nbu2-min.jpeg" width="752" height="475" alt="Addy Osmani: Network, memória e CPU são itens para se avaliar" style="border: 1px solid #BBB" />
     <figcaption>Network, memória e CPU são itens para se avaliar</figcaption>
 </figure>
 

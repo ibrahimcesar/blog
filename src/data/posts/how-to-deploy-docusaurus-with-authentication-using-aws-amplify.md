@@ -2,11 +2,8 @@
 title: How to deploy Docusaurus with authentication using AWS Amplify
 description: "Most of the user cases for documentation besides open source require some level of auth. Working remote, this is a simple way to deploy your documentation."
 featured: true
-permalink: "/blog/how-to-deploy-docusaurus-with-authentication-using-aws-amplify/"
-featuredImage: dino.jpg
+image: ~/assets/images/dino.jpg
 pubDate: "2021-01-27T10:50:00.000Z"
-image: cover.png
-featuredImageColor: "#1E2C54"
 language: en
 ---
 

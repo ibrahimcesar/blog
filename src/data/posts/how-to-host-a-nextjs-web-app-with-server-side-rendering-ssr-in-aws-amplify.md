@@ -3,11 +3,8 @@ title:
   "How to host a Next.js web app with server-side rendering (SSR) in AWS Amplify"
 description: "Natively!"
 featured: true
-permalink: "/blog/how-to-host-a-nextjs-web-app-with-server-side-rendering-ssr-in-aws-amplify/"
-featuredImage: amplify.png
+image: ~/assets/images/amplify.png
 pubDate: "2021-04-27T10:50:00.000Z"
-image: cover.png
-featuredImageColor: "#1E2C54"
 language: en
 ---
 

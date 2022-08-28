@@ -14,6 +14,7 @@ export const getNormalizedPost = async (post) => {
     slug: file.split("/").pop().split(".").shift(),
     readingTime: Math.ceil(getReadingTime(rawContent()).minutes),
     featured: frontmatter.featured,
-    featuredImage: frontmatter.featuredImage
+    videoTime: frontmatter.videoTime,
+    socialImage: frontmatter.socialImage
   };
 };

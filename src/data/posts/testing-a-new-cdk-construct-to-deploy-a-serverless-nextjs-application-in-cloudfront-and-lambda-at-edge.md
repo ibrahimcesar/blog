@@ -2,11 +2,8 @@
 title: "Testing a new CDK Construct to deploy a Serverless NextJS application with CloudFront and Lambda@Edge"
 description: With a repository for testing
 featured: true
-permalink: "/blog/testing-a-new-cdk-construct-to-deploy-a-serverless-nextjs-application-in-cloudfront-and-lambda-at-edge/"
 pubDate: "2021-03-01T10:50:00.000Z"
-featuredImage: pokeserverless.jpg
-image: cdk.png
-featuredImageColor: "#1E2C54"
+image: ~/assets/images/pokeserverless.jpg
 language: "en"
 ---
 

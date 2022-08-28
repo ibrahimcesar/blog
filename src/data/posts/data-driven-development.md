@@ -2,10 +2,8 @@
 title: Data Driven Development
 description: Como uma cultura de desenvolvimento baseada em evidências e métricas centradas no usuário pode ajudar a criar melhores produtos
 featured: true
-featuredImage: ddd.jpg
-permalink: "/blog/data-driven-development/"
+image: ~/assets/images/ddd.jpg
 pubDate: "2020-01-23T10:50:00.000Z"
-image: cover.jpg
 ---
 
 <p class="lead">Como uma cultura de desenvolvimento baseada em evidências e métricas centradas no usuário pode ajudar a criar melhores produtos.</p>

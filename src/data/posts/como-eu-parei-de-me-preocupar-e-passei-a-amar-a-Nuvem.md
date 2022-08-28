@@ -2,9 +2,7 @@
 title: Como eu parei de me preocupar e passei a amar a Nuvem
 description: Minha jornada pessoal de adoção das nuvens públicas e serviços gerenciados
 featured: true
-featuredImage: server.png
-permalink: "/blog/como-eu-parei-de-me-preocupar-e-passei-a-amar-a-Nuvem/"
-image: cover.png
+image: ~/assets/images/server.png
 pubDate: "2020-10-03T10:50:00.000Z"
 ---
 

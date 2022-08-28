@@ -3,10 +3,7 @@ title: Is Software Engineering Still an Oxymoron?, Alan Kay
 description: Excelente apresentação com um dos mais importantes pensadores da computação
 featured: true
 pubDate: "2021-11-25T10:50:00.000Z"
-featuredImage: kay.jpg
-permalink: "/blog/is-software-engineering-still-an-oxymoron-alan-kay/"
-image: cover.jpeg
-featuredImageColor: "#1E2C54"
+image: ~/assets/images/kay.jpg
 ---
 
 <style>.embed-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; } .embed-container iframe, .embed-container object, .embed-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }</style><div class='embed-container'>

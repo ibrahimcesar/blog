@@ -2,11 +2,8 @@
 title: Hello world
 description: O método aqui definido confessa o sentimento de que todo verdadeiro conhecimento é impossível. Só se pode enumerar as aparências e fazer sentir o clima
 featured: true
-permalink: "/blog/hello-world/"
-featuredImage: helloworld.jpg
+image: ~/assets/images/helloworld.jpg
 pubDate: "2020-01-17T10:50:00.000Z"
-image: cover.jpg
-featuredImageColor: "#1E2C54"
 ---
 
 > # "O método aqui definido confessa o sentimento de que todo verdadeiro conhecimento é impossível. Só se pode enumerar as aparências e fazer sentir o clima"

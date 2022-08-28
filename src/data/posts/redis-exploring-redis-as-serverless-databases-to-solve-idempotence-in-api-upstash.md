@@ -2,11 +2,8 @@
 title: "Redis: Exploring Redis as Serverless Database to solve idempotence in APIs"
 description: "More than cache"
 featured: true
-permalink: "/blog/redis-exploring-redis-as-serverless-databases-to-solve-idempotence-in-api-upstash/"
-featuredImage: redis.png
+image: ~/assets/images/redis.png
 pubDate: "2021-05-14T10:50:00.000Z"
-image: cover.png
-featuredImageColor: "#1E2C54"
 language: en
 ---
 

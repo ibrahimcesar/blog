@@ -3,8 +3,7 @@ title: "Faster YouTube embeds with React Lite YouTube Embed component for React"
 description: My first open source project
 featured: true
 pubDate: "2019-12-03T10:50:00.000Z"
-featuredImage: npm-react-lite-youtube-embed.png
-image: react-lite-youtube-embed.png
+image: ~/assets/images/npm-react-lite-youtube-embed.png
 language: "en"
 ---
 

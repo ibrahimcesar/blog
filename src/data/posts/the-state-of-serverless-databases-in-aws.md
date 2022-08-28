@@ -2,11 +2,8 @@
 title: The State of Serverless Databases in AWS
 description: "The start on a series"
 featured: true
-permalink: "/blog/the-state-of-serverless-databases-in-aws/"
-featuredImage: databases.jpg
+image: ~/assets/images/databases.jpg
 pubDate: "2021-04-29T10:50:00.000Z"
-image: cover.png
-featuredImageColor: "#1E2C54"
 language: en
 ---
 

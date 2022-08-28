@@ -1,12 +1,9 @@
 ---
 title: Tupi or not Tupi?
 description: This is the question
-featured: true
-permalink: "/blog/tupi-or-not-tupi/"
 pubDate: "2021-03-11T10:50:00.000Z"
-featuredImage: tupi.jpg
-image: cover.jpg
-featuredImageColor: "#1E2C54"
+image: ~/assets/images/tupi.jpg
+featured: true
 ---
 
 

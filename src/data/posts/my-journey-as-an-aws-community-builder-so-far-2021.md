@@ -2,11 +2,8 @@
 title: My journey as an AWS Community Builder so far
 description: "6 months in"
 featured: true
-permalink: "/blog/my-journey-as-an-aws-community-builder-so-far-2021/"
-featuredImage: communitybuilder.png
+image: ~/assets/images/communitybuilder.png
 pubDate: "2021-04-27T10:50:00.000Z"
-image: cover.png
-featuredImageColor: "#1E2C54"
 language: en
 ---
 

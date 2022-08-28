@@ -2,10 +2,8 @@
 title: "Serverless is Ready, Developers Are Not"
 description: We are not ready. We couldn’t possibly be ready.
 featured: true
-permalink: "/blog/serverless-is-ready-developers-are-not/"
 pubDate: "2021-03-28T10:50:00.000Z"
-featuredImage: srdn.jpg
-image: serverless-ready.png
+image: ~/assets/images/srdn.jpg
 language: "en"
 ---
 

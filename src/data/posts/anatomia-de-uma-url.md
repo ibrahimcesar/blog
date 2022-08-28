@@ -3,10 +3,7 @@ title: "#webdev: Anatomia de uma URL"
 description: As peças e história de um protocolo
 featured: true
 pubDate: "2021-07-18T10:50:00.000Z"
-featuredImage: url.jpg
-image: url.png
-permalink: "/blog/anatomia-de-uma-url/"
-featuredImageColor: "#1E2C54"
+image: "~/assets/images/url.jpg"
 ---
 
 <p class="lead">Neste momento, enquanto lê, você está acessando uma <b>URL</b>. Ou ao menos o conteúdo desta página foi originalmente publicado em uma URL, sindicalizado em um feed RSS e catalogado, raspado e arquivado. Apesar de sua ubiquidade, sempre aprender ao examinar a história e a anatomia das partes que compõem uma URL.</p>
@@ -28,7 +25,7 @@ Ou seja, vamos tornar o termo URL como padrão. Tanto URI como IRI (_A Wild Reso
 > Há mais coisa entre os servidores e as URLs do que sonha nossa vã Filosofia!
 
 <figure class="extend">
-    <img src="{{ 'url-1.png' | media(page) }}" width="752" height="475" alt="URL" style="border: 1px solid #BBB" />
+    <img src="/assets/url-1.png" width="752" height="475" alt="URL" style="border: 1px solid #BBB" />
 </figure>
 
 ### Protocolo
@@ -52,7 +49,7 @@ Nem todas urls possuem _subdomínios_, que aparecem à frente dos domínios de a
 Não obrigatória. E assumida por alguns protocolos – HTTPS será a porta `443` e HTTP `80`. Geralmente importa mais para desenvolvedores, portas basicamente são alocações de comunnicação dentro de uma máquina e um servidor pode ter várias aplicações web por exemplo, servindo em portas diferentes. É um tópico que aparenta simplicidade [mas tem várias nuâncias e implicações](https://pt.wikipedia.org/wiki/Porta_(redes_de_computadores))! Mas será que em desenvolvimento não se pode dizer isso de qualquer coisa? 🤔
 
 <figure class="extend">
-    <img src="{{ 'url-2.png' | media(page) }}" width="752" height="475" alt="URL" style="border: 1px solid #BBB" />
+    <img src="/assets/url-2.png" width="752" height="475" alt="URL" style="border: 1px solid #BBB" />
 </figure>
 
 ### Caminho do recurso

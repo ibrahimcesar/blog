@@ -2,11 +2,8 @@
 title: "📘 #devbooks:  why's (poignant) Guide to Ruby"
 description: This books is a true gem
 featured: true
-permalink: "/blog/whys-poignant-guide-to-ruby/"
 pubDate: "2021-03-07T10:50:00.000Z"
-featuredImage: kindleandstuff.png
-image: devbooks-whys.png
-featuredImageColor: "#1E2C54"
+image: ~/assets/images/kindleandstuff.png
 language: "en"
 ---
 

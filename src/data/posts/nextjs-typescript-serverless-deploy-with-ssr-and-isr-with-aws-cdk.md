@@ -3,10 +3,7 @@ title: "Next.js TypeScript serverless deploy with SSR and ISR with AWS CDK"
 description: Incremental Static Regeneration is Next.js superpower
 featured: true
 pubDate: "2021-08-18T10:50:00.000Z"
-featuredImage: nextjs-lambda.png
-image: nextjs-serverless.png
-permalink: "/blog/nextjs-typescript-serverless-deploy-with-ssr-and-isr-with-aws-cdk/"
-featuredImageColor: "#1E2C54"
+image: ~/assets/images/nextjs-lambda.png
 language: "en"
 ---
 
@@ -325,7 +322,7 @@ And `[porygon].tsx`, to do Incremental Static Regeneration (ISR). This is an
 overview of the flow of ISR:
 
 <figure class="extend">
-    <img src="{{ 'flow-isr.png' | media(page) }}" width="752" height="475" alt="ISR" style="border: 1px solid #BBB" />
+    <img src="/assets/flow-isr.png" width="752" height="475" alt="ISR" style="border: 1px solid #BBB" />
     <figcaption>Incremental Static Regeneration on Next.js</figcaption>
 </figure>
 
@@ -537,7 +534,7 @@ of AWS CDK. This is the final infra created, made by the
 [awesome tool cdk-dia](https://github.com/pistazie/cdk-dia):
 
 <figure class="extend">
-    <img src="{{ 'diagram-min.png' | media(page) }}" width="752" height="475" alt="ISR" style="border: 1px solid #BBB" />
+    <img src="/assets/diagram-min.png" width="752" height="475" alt="ISR" style="border: 1px solid #BBB" />
     <figcaption>Our final infracstructure diagram made provisioned for our. <a href="https://ibrahimcesar.s3.amazonaws.com/images/diagram.png" target="_blank" title="CDK Diagram">Click here for a full version</a></figcaption>
 </figure>
 

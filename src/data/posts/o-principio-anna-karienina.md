@@ -3,10 +3,7 @@ title: O Princípio Anna Kariênina
 description: Todas as sessões felizes se parecem, cada sessão infeliz é infeliz à sua maneira. O Princípio Anna Kariêninca aplicado ao desenvolvimento
 featured: true
 pubDate: "2020-09-07T10:50:00.000Z"
-featuredImage: anna.jpg
-permalink: "/blog/o-principio-anna-karienina/"
-image: cover.jpg
-featuredImageColor: "#1E2C54"
+image: ~/assets/images/anna.jpg
 ---
 
 <p class="lead">A frase de abertura de "Anna Kariênina" de Tolstói é um dos inícios mais conhecidos da literatura mundial. Além da influência de sua obra se cunhou um princípio com base no mesmo, que acredito pode ser aplicado ao desenvolvimento web e cloud facilmente</p>
@@ -26,7 +23,7 @@ Até mesmo a Segunda Lei da Termodinâmica, que estabelece que qualquer estado o
 E veja as sessões dos seus usuários. Passava cada nova página testando contra os scores do Lighthouse. O ambiente de performance ainda tão rápido e em constante mudança que as métricas se alterarm profundamente.
 
 <figure class="extend">
-    <img src="{{ 'lighthouse-weight-changes.png' | media(page) }}" width="752" height="475" alt="Mudança de classificação entre versões do Lighthouse" style="border: 1px solid #BBB" />
+    <img src="/assets/lighthouse-weight-changes.png" width="752" height="475" alt="Mudança de classificação entre versões do Lighthouse" style="border: 1px solid #BBB" />
     <figcaption>Mudança de classificação entre versões do Lighthouse</figcaption>
 </figure>
 

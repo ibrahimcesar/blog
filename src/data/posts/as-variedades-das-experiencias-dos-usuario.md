@@ -2,11 +2,8 @@
 title: As Variedades das Experiências dos Usuários
 description: No dia a dia falamos muito de Experiência do Usuário™ (UX), mas o que realmente isso significa em termos práticos?
 featured: true
-permalink: "/blog/as-variedades-das-experiencias-dos-usuarios/"
-featuredImage: ux.jpg
-image: cover.jpg
+image: "~/assets/images/ux.jpg"
 pubDate: "2020-02-15T10:50:00.000Z"
-featuredImageColor: "#1E2C54"
 ---
 
 <p class="lead">Experiência do usuário é um dos atributos mais importantes para algumas empresas. Podem significar o sucesso e a falha de um projeto. E mesmo assim, parece  que sempre existem tensões a respeito do que ou de quais experiências estamos falando.</p>

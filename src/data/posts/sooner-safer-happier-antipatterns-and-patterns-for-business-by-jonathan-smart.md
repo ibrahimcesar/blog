@@ -2,11 +2,8 @@
 title: "📘 #devbooks:  Sooner, Safer, Sooner, Happier: Antipatterns and Patterns for Business Agility"
 description: As soon you start to read it, is safe to say, you'll be happy
 featured: true
-permalink: "/blog/sooner-safer-happier-antipatterns-and-patterns-for-business-by-jonathan-smart/"
 pubDate: "2021-07-10T10:50:00.000Z"
-featuredImage: agile-wall.jpg
-image: devbooks-sooner-safer-happier.png
-featuredImageColor: "#1E2C54"
+image: ~/assets/images/agile-wall.jpg
 language: "en"
 ---
 
@@ -25,14 +22,14 @@ The quote above is the review from Nicolas Brown and I can't agree more.
 Did you ever hear someone said something like "We use SCRUM™ here, but not _this_ and _that_"? Well, I had heard so many times I lost the count. But did you know that the _SCRUM™ Guide_ defines that "Scrum's roles, events, artifacts and rules are immutable and although implementating only parts of Scrum is possible, the result is not Scrum. Scrum exists only in its entirely". So, sorry, you _don't do SCRUM_. There's something with the word immutable that in the context of agile that makes me flinch and you? Several other frameworks brings the same.
 
 <figure class="extend">
-    <img src="{{ 'waterfall.png' | media(page) }}" width="752" height="475" alt="Waterfall model" style="border: 1px solid #BBB" />
+    <img src="/assets/waterfall.png" width="752" height="475" alt="Waterfall model" style="border: 1px solid #BBB" />
     <figcaption>The (in)famous waterfall model</figcaption>
 </figure>
 
 We are all striving to deliver better products and value, right? And we need fast feedback loops, which the _Waterfall Mode_ where the work only moves to the next area as in a Fordist montage line works against since an simple correction potentially discovered many times during the development and other phases puts a half-assed product in the market. Then _agile_ came in... and today we have this big set of frameworks, certifications, gurus and... _this_:
 
 <figure class="extend">
-    <img src="{{ 'SAFe_5.1_Portfolio_SAFe_ImageMap.png' | media(page) }}" width="752" height="475" alt="SAFe map" style="border: 1px solid #BBB" />
+    <img src="/assets/SAFe_5.1_Portfolio_SAFe_ImageMap.png" width="752" height="475" alt="SAFe map" style="border: 1px solid #BBB" />
     <figcaption>SAFe™ really makes Waterfall looks like a <b>great</b> idea.</figcaption>
 </figure>
 
@@ -57,7 +54,7 @@ This books is focused on _patterns_ and _antipatterns_.  So have a lot to offer,
 I found this illustration so rich to explain to my team the "spectrum of the agile" and why I think is best to be _agile_ than to do _Agile™_ sometimes meaning paid for some courses, get some certificates and pats on the back of ourselves. The [24th edition of the ThoughtWorks's Technology Radar](https://www.thoughtworks.com/radar) put _certain_ [enterprise agile framework](https://www.thoughtworks.com/radar/techniques?blipid=793) on the **Hold** area.
 
 <figure class="extend">
-    <img src="{{ 'agile-spectrum.png' | media(page) }}" width="752" height="475" alt="Agile Spectrum" style="border: 1px solid #BBB" />
+    <img src="/assets/agile-spectrum.png" width="752" height="475" alt="Agile Spectrum" style="border: 1px solid #BBB" />
     <figcaption>A great way to see the spectrum of agile from being agile to "do agile" in the unlimited practices (some of them, is SAFe to say even are not <em>agile</em>)</figcaption>
 </figure>
 

@@ -2,11 +2,8 @@
 title: "Open letter to AWS: Please, give us a price cap"
 description: "We need psychological safety. And financial!"
 featured: true
-permalink: "/blog/open-letter-to-aws-please-give-us-a-price-cap/"
-featuredImage: price.png
+image: ~/assets/images/price.png
 pubDate: "2021-05-05T10:50:00.000Z"
-image: cover.png
-featuredImageColor: "#1E2C54"
 language: en
 ---
 
