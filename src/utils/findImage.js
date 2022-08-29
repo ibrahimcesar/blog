@@ -1,7 +1,7 @@
 export const findImage = async (imageRoute) => {
   const images = import.meta.glob("../assets/images/*");
 
-  const key = imageRoute.replace("~/", "../");
+  const key = imageRoute ? imageRoute.replace("~/", "../") : "";
 
   const image =
     typeof imageRoute === "string" &&
