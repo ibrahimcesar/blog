@@ -32,3 +32,38 @@ a:hover {
     -webkit-animation: blinker 1s linear infinite;
     animation: blinker 1s linear infinite;
 }
+
+.callout {
+  position: relative;
+  border-radius: 0 0.5rem 0.5rem 0;
+  border: 1px solid var(--berry-medium);
+  border-left: 0;
+}
+
+.callout__icon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    padding: 0.25rem;
+    color: var(--berry-medium);
+    margin-left: 2px;
+    font-size: 3rem;
+}
+
+.callout__content {
+  padding: 1rem;
+  border-left: 4px solid var(--berry-medium);
+}
+
+blockquote {
+    font-style: italic;
+    padding-left: 2.25em;
+    border-left: 10px solid var(--plum-medium) !important;
+}
+
+blockquote > footer {
+    text-align: right !important;
+    font-size: 0.875em;
+}

@@ -1,13 +1,34 @@
 ---
-import Layout from "~/layouts/BaseLayout.astro";
-import { SITE } from "~/config.mjs";
-import Error404 from "~/components/widgets/Error404.astro";
+import Layout from "~/layouts/PageLayout.astro";
 
-const title = `Error 404 — ${SITE.name}`;
+
+
+const title = `Uses`;
 ---
 
 <Layout meta={{ title }}>
-  <main>
-    <Error404 />
+<main>
+    <section class="py-8 sm:py-16 lg:py-20 mx-auto">
+  <article>
+    <header>
+      <h1
+        class="px-4 sm:px-6 max-w-3xl mx-auto text-center text-5xl md:text-[3.50rem] font-bold leading-tighter tracking-tighter mb-6 md:mb-8"
+      >
+       {"{"} Uses {"}"}
+      </h1>
+    </header>
+    <div
+      class="container mx-auto px-4 sm:px-6 max-w-3xl prose prose-lg lg:prose-xl dark:prose-invert dark:prose-headings:text-slate-300 prose-md prose-headings:leading-tighter prose-headings:tracking-tighter prose-headings:font-bold prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-img:rounded-md prose-img:shadow-lg mt-8"
+    >
+      <p>/ɪ́brəhɪjm/</p>
+
+      <p>He/his</p>
+
+      <p>Enterprise Solutions Architect @ Amazon Web Services (AWS). I work in tech fort more than 10 years, and yes, I had to the deal to the now mythical Beast called “Internet Explorer 6”. I used tables, gifs and sliced images from Adobe Fireworks. Yes, I held the long retired “Webmaster” title from when dinosaurs walked in the Internet. Today, I’m working with Web development and Cloud, in a news media outlet in Brazil with technologies such as TypeScript, NextJS, Node.js, GraphQL, AWS Amplify and the bazillion other AWS services.</p>
+
+      <p>Get in touch and follow me on Twitter or LinkedIn.</p>
+    </div>
+    </article>
+    </section>
   </main>
 </Layout>

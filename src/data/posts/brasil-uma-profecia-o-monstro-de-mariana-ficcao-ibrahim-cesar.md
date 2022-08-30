@@ -57,7 +57,7 @@ socialImage: "/features/livros.png"
   </article>
 </section>
 
-> "Preparai a matança para os seus filhos por causa da maldade de seus pais, para que não se levantem, e nem possuam a terra, e encham a face do mundo de cidades."
+> Preparai a matança para os seus filhos por causa da maldade de seus pais, para que não se levantem, e nem possuam a terra, e encham a face do mundo de cidades.
 > <footer>– Isaías, 14:21</footer>
 > 
 > Sei bem que os deixei apreensivos ficando tanto tempo sem falar. Mas as ideias corriam de mim, em todas as direções, as palavras pareciam ser meras peças associadas arbitrariamente a sons guturais que nada significavam. Não conseguiria me expressar, nem que tentasse. Não era bloqueio, não era falta -- pelo contrário: era excesso, era abundância; eu transbordava. Tentavam todos sempre a tirar algo de mim e me enchiam de perguntas, as quais eu nem mesmo tomava plena consciência, quando muito lhes dava um olhar cansado, desinteressado, e os observava em silêncio, mexendo suas bocas com aqueles sons e não sabia se devia sentir pena ou desespero.  Meu diagnóstico era stress pós traumático. Não podiam estar mais errados.
