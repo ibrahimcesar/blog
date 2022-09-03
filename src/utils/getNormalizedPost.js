@@ -16,6 +16,7 @@ export const getNormalizedPost = async (post) => {
     featured: frontmatter.featured,
     videoTime: frontmatter.videoTime,
     socialImage: frontmatter.socialImage,
-    eventTime: frontmatter.eventTime
+    eventDate: frontmatter.eventDate,
+    language: frontmatter.language
   };
 };

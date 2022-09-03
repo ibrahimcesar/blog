@@ -7,15 +7,9 @@ const { post } = Astro.props;
 >
     <header>
       <h2 class="text-xl sm:text-2xl font-bold mb-2">
-          {post.title}
+          {post.eventDate && (<span class="font-monotext-2xl sm:text-3xl talk-date">🗓️ {post.eventDate}</span>)
+          } {post.title}
       </h2>
-      <!-- <div>
-        <span class="text-gray-500 dark:text-slate-400">
-          <time datetime={post.pubDate}>
-            {new Date(post.pubDate).toISOString().substring(0, 10)} — {post.eventTime}
-          </time>
-        </span>
-      </div> -->
     </header>
 
     <div class="text-md sm:text-lg flex-grow">

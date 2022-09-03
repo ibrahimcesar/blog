@@ -109,7 +109,7 @@ Espero que a web se consolide mais com o NUB, também. Já que a não ser uns po
 
 ### Impactos em desenvolvimento
 
-<div style="width:100%;height:0;padding-bottom:56%;position:relative;margin-bottom: 30px;"><iframe src="https://giphy.com/embed/O8oPnvoMi31mw" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></div>
+<div class="yt-frame"><iframe src="https://giphy.com/embed/O8oPnvoMi31mw" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></div>
 
 Como o software pode se preparar para esses novos usuários? De primeira, o que se chama **Adaptive Loading**.
 

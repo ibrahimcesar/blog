@@ -6,6 +6,8 @@ import { findImage } from "~/utils/findImage";
 const { post } = Astro.props;
 
 const image = await findImage(post.image);
+const isEnglish = post.language ? "en" : null;
+const classLanguage = isEnglish ? "en" : "br";
 ---
 
  <div class="mb-6 transition">
@@ -21,7 +23,7 @@ const image = await findImage(post.image);
             alt={post.description}
     />
   </a>
-
+  <span class={`font-mono text-xs font-semibold uppercase ${classLanguage}`}>📝 {isEnglish ? "en" : "pt-br"}</span>
   <h3 class="mb-2 text-xl font-bold leading-snug sm:text-2xl">
     <a
       href={`/blog/${post.slug}`}

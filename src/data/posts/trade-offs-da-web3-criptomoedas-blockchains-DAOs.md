@@ -109,15 +109,15 @@ Web 3 é [Pay to Play](https://en.wikipedia.org/wiki/Pay_to_play). Ouço muito d
 
 Para mim, até o momento NFTs me parecem uma nova versão da bolha de Tulipas, investimentos em _assets_ que a única esperança é de que alguém no futuro vai pagar mais pelo que você comprou hoje.
 
-<div style="width:100%;height:0;padding-bottom:56%;position:relative;margin-bottom: 30px;"><iframe width="560" height="315" src="https://www.youtube.com/embed/AKX3LVT9nrM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+<div class="yt-frame"><iframe width="560" height="315" src="https://www.youtube.com/embed/AKX3LVT9nrM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
 
 A maioria das iniciativas não são de artistas. Mas a maioria das NFTs não vejo como "obras" e mais _commodities_. A obra de arte na era de sua reprodutibilidade e multiplicidade técnica. São artes generativas que com um script conseguimos gerar 10.000+ permutações em poucos minutos misturando elementos, mas que no final são bem parecidos. Sem qualquer _alma_.
 
 Dois vídeos, um sobre o lado monetário e outro, o lado de quem trabalha e estudou com arte:
 
-<div style="width:100%;height:0;padding-bottom:56%;position:relative;margin-bottom: 30px;"><iframe width="560" height="315" src="https://www.youtube.com/embed/11eTOur4lPs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+<div class="yt-frame"><iframe width="560" height="315" src="https://www.youtube.com/embed/11eTOur4lPs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
 
-<div style="width:100%;height:0;padding-bottom:56%;position:relative;margin-bottom: 30px;"><iframe width="560" height="315" src="https://www.youtube.com/embed/VtxQL55Y8cM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+<div class="yt-frame""><iframe width="560" height="315" src="https://www.youtube.com/embed/VtxQL55Y8cM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
 
 ## Minha posição
 

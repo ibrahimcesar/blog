@@ -18,6 +18,7 @@ export async function getStaticPaths() {
 const { post } = Astro.props;
 
 const title = `${post.title} — ${SITE.name}`;
+const lang = post.language ? "en" : null;
 const description = post.description;
 const canonical = new URL(`blog/${post.slug}`, Astro.site);
 const featureImage = post.socialImage ? new URL(`${post.socialImage
@@ -32,6 +33,7 @@ const image = await findImage(post.image);
     description,
     canonical,
     image,
+    lang,
     featureImage
   }}
 >

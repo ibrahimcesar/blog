@@ -51,7 +51,6 @@ npm install -S @aws-cdk/aws-apigateway @aws-cdk/aws-lambda @aws-cdk/core aws-cdk
 Isto deverá popular nosso `package.json` com todas as dependências de nossa aplicação e deverá ficar parecido com o arquivo a seguir. Como o comando `npm install` sem determinar uma versão em particular instalará a versão mais recente, dependenndo de quando estiver rodando, suas versões podem ser diferentes das exibidas. Caso queira exatamente as mesmas em que foi realizado esta demonstração basta deixar apenas as minhas versões, sem o sinal `^` na frente, que indica que aquela versão é a _menor_ desejada mas pode ser instalado versões superiores. Definindo uma versão direta, o `npm` deverá instalar exatamente a versão definida.
 
 ```json
-
 {
   "name": "deveops-extreme",
   "version": "0.0.1",

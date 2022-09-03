@@ -1,17 +1,10 @@
 ---
-import { getImage } from "@astrojs/image";
-
-const { src: defaultImage } = await getImage({
-  // @ts-ignore
-  src: import("~/assets/images/default.png"),
-  width: 1200,
-  height: 628,
-});
+const defaultImage = "/blog-card.png"
 
 const {
-  title = "IbrahimCesar.cloud",
-  description = "",
-  image = defaultImage,
+  title = "Ibrahim Cesar's Blog",
+  description = "Solutions Architect",
+  image = new URL(defaultImage, Astro.site),
   featureImage,
   canonical,
 } = Astro.props;
@@ -28,21 +21,21 @@ const {
 <!-- Google / Search Engine Tags -->
 <meta itemprop="name" content={title} />
 <meta itemprop="description" content={description} />
-<meta itemprop="image" content={featureImage || defaultImage} />
+<meta itemprop="image" content={featureImage || image} />
 
 <!-- Facebook Meta Tags -->
 {canonical && <meta property="og:url" content={canonical} />}
 <meta property="og:type" content="website" />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
-<meta property="og:image" content={featureImage || defaultImage} />
+<meta property="og:image" content={featureImage || image} />
 
 <!-- Twitter Meta Tags -->
 {canonical && <meta name="twitter:url" content={canonical} />}
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
-<meta name="twitter:image" content={featureImage || defaultImage} />
+<meta name="twitter:image" content={featureImage || image} />
 
 <!-- Fonts -->
 <link
@@ -50,8 +43,12 @@ const {
   rel="stylesheet"
 />
 
-<!-- Google Site Verification -->
-<meta
-  name="google-site-verification"
-  content="orcPxI47GSa-cRvY11tUe6iGg2IO_RPvnA1q95iEM3M"
-/>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-V2LWX9607C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-V2LWX9607C');
+</script>

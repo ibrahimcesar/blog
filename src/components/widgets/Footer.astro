@@ -15,22 +15,21 @@ const {} = Astro.props;
         <div class="text-sm text-gray-600">
           <a
             class="text-gray-600 dark:text-gray-400 hover:underline transition duration-150 ease-in-out"
-            title="Terms of Use"
-            href="/terms-and-privacy"
-            >Terms and Privacy Policy
-          </a> ·
-          <a
-            class="text-gray-600 dark:text-gray-400 hover:underline transition duration-150 ease-in-out"
             rel="noopener noreferrer"
             title="Code for this blog & content!"
             target="_blank"
             href="https://github.com/ibrahimcesar/blog"
             >Source Code
-          </a>
+          </a>  ·
+          <a
+            class="text-gray-600 dark:text-gray-400 hover:underline transition duration-150 ease-in-out"
+            title="Terms of Use"
+            href="/terms-and-privacy"
+            >Terms and Privacy Policy
           </a>
         </div>
       </div>
-      <div class="col-span-6 md:col-span-3 lg:col-span-3">
+      <div class="col-span-6 md:col-span-2 lg:col-span-2">
         <div class="text-gray-800 dark:text-gray-300 font-medium mb-2">
           Find me
         </div>
@@ -69,7 +68,7 @@ const {} = Astro.props;
             </a>
         </ul>
       </div>
-      <div class="col-span-6 md:col-span-3 lg:col-span-3">
+      <div class="col-span-6 md:col-span-2 lg:col-span-2">
         <div class="text-gray-800 dark:text-gray-300 font-medium mb-2">
           Pages
         </div>
@@ -83,52 +82,69 @@ const {} = Astro.props;
               class="text-gray-600  dark:text-gray-400 transition duration-150 ease-in-out"
               href="/about"
               >About
-            </a> ·
+            </a> <!-- ·
             <a
               class="text-gray-600  dark:text-gray-400 transition duration-150 ease-in-out"
               href="/uses"
               >Uses
-            </a>
+            </a> -->
         </ul>
       </div>
 
-      <div class="col-span-12 md:col-span-3 lg:col-span-3">
-        <div class="text-gray-800 dark:text-gray-300 font-medium mb-2">
-          Subscribe to <b class="cloud-color">explicity:any</b>
-        </div>
-        <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
-          Get the latest news and articles to your inbox every month. Yes, the name is a TypeScript reference.
-        </p>
-        <form>
-          <div class="flex flex-wrap mb-4">
-            <div class="w-full">
-              <label class="block text-sm sr-only" for="newsletter"
-                >Email
-              </label>
-              <div class="relative flex items-center max-w-xs">
-                <input
-                  id="newsletter"
-                  type="email"
-                  class="form-input w-full text-gray-800 px-3 py-2 pr-12 text-sm border rounded-sm dark:bg-transparent dark:border-slate-600 dark:text-gray-400"
-                  placeholder="Your email"
-                />
-                <button
-                  type="submit"
-                  class="absolute inset-0 left-auto"
-                  aria-label="Subscribe"
-                >
-                  <span
-                    class="absolute inset-0 right-auto w-px -ml-px my-2 bg-gray-300 dark:bg-slate-600"
-                    aria-hidden="true"></span>
-
-                  <IconArrowRight
-                    class="w-5 h-5 text-blue-600 mx-3 flex-shrink-0"
-                  />
-                </button>
-              </div>
-            </div>
+      <div class="col-span-12 md:col-span-5 lg:col-span-5">
+          <div class="inline-block">
+            <a
+              href="https://www.credly.com/badges/d01a5f09-39af-4848-91e4-fd93c379429b/public_url" 
+              target="_blank"
+              title="Badge AWS Certified Solutions Architect – Professional" rel="noopener noreferrer"
+              target="_blank"
+            >
+              <img
+                src="https://user-images.githubusercontent.com/509054/163974327-950cf4d2-2f66-4a3c-b0de-2d043e97da98.png" 
+                alt="AWS Certified Solutions Architect – Professional" width="100px"
+              >
+            </a>
           </div>
-        </form>
+          <div class="inline-block">
+            <a
+              href="https://www.credly.com/badges/1bdb457f-b469-43c3-9e0e-24b221f12794/public_url" 
+              target="_blank"
+              title="Badge AWS Certified Solutions Architect – Associate" rel="noopener noreferrer"
+              target="_blank"
+            >
+              <img
+                src="https://user-images.githubusercontent.com/509054/163974636-84a0a90b-0290-443e-8682-309af7e8b17a.png"
+                alt="AWS Certified Solutions Architect – Associate" width="100px"
+              >
+            </a>
+          </div>
+          <div class="inline-block">
+            <a
+              href="https://www.credly.com/badges/1bdb457f-b469-43c3-9e0e-24b221f12794/public_url"
+              target="_blank" 
+              title="Badge AWS Certified Solutions Architect – Associate"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <img src="https://user-images.githubusercontent.com/509054/187105674-b59dadfa-f5a9-44ff-a4ca-82cb33418617.png"
+              alt="AWS Certified Developer – Associate" 
+              width="100px">
+            </a>
+          </div>
+          <div class="inline-block">
+            <a
+              href="https://www.credly.com/badges/8cd60a1b-b130-43b1-8cf4-442573171da6/public_url"
+              target="_blank"
+              title="Well-Architected Proficient"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+                <img
+                src="https://user-images.githubusercontent.com/509054/185424004-6d65981d-ce54-4d7f-8129-f2d452a20e8e.png" alt="Well-Architected Proficiente"
+                width="100px"
+                >
+            </a>
+          </div>
       </div>
     </div>
     <div class="md:flex md:items-center md:justify-between py-4 md:py-8">

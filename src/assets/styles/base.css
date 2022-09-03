@@ -21,6 +21,47 @@ a:hover {
   color: var(--cloud-blue);
 }
 
+.sec-talks a,
+.post a {
+  color: var(--berry-medium);
+  text-decoration: underline;
+}
+
+.post-title-color {
+  color: var(--plum-medium)
+}
+
+.post .twitter-tweet {
+  margin: auto;
+}
+
+.yt-frame {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  padding-top: 56.25%;
+  margin: 2rem 0;
+}
+
+.yt-frame iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.talk-date {
+  color: var(--cloud)
+}
+
+.sec-talks figure,
+.sec-talks .embed-container {
+  margin: 2rem 0;
+}
+
 @keyframes blinker {
   50% {
     opacity: 0;
@@ -61,9 +102,41 @@ blockquote {
     font-style: italic;
     padding-left: 2.25em;
     border-left: 10px solid var(--plum-medium) !important;
+    margin: 1rem 0;
 }
 
 blockquote > footer {
     text-align: right !important;
     font-size: 0.875em;
+}
+
+figcaption {
+  text-align: center;
+}
+
+code {
+  counter-reset: step;
+  counter-increment: step 0;
+}
+
+code .line::before {
+  content: counter(step);
+  counter-increment: step;
+  width: 1rem;
+  margin-right: 1.5rem;
+  display: inline-block;
+  text-align: right;
+  color: rgba(206, 227, 235, 0.7)
+}
+
+.en {
+  color: var(--cloud-blue)
+}
+
+.br {
+  color: var(--green-apple)
+}
+
+.line {
+  color: var(--berry-medium)
 }

@@ -8,7 +8,7 @@ const { meta = {} } = Astro.props;
 ---
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang={meta.lang ? "en" : "pt-br"}>
   <head>
     <MetaTags {...meta} />
   </head>

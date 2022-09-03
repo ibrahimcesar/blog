@@ -8,6 +8,12 @@ import { SITE } from "./src/config.mjs";
 
 // https://astro.build/config
 export default defineConfig({
+  markdown: {
+    shikiConfig: {
+      wrap: true,
+      theme: 'material-theme-palenight'
+    }
+  },
   // Astro uses this full URL to generate your sitemap and canonical URLs in your final build
   site: SITE.domain,
 
