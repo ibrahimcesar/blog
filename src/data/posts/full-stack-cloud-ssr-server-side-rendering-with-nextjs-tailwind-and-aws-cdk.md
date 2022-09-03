@@ -12,7 +12,7 @@ socialImage: "/features/fullstack-nextjs.png"
 
 I’m a huge fan of the work from [Nader Dabit](https://twitter.com/dabit3), which is the author of [Full Stack Serverless](https://www.amazon.com/Full-Stack-Serverless-Application-Development/dp/1492059897) – one concept I more and more identify myself. One of the many interesting projects he had done was one project called **Hands-on Workshop - Building a Serverless Multi-user Blogging Platform with Next.js, Tailwind, & AWS**, which explain itself:
 
-<style>.embed-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; } .embed-container iframe, .embed-container object, .embed-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }</style><div class='embed-container'>
+<div class='yt-frame'>
 <iframe title="YouTube" width="560" height="315" src="https://www.youtube.com/embed/13nYLmjZ0Ys" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>
 

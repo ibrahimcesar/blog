@@ -28,7 +28,7 @@ Which the book explained to me so straightforward, that even not nearly having a
 
 It was not only me that this book touched. A lot of developers started with the language thanks to this book and have an intringuing story itself with the disappearing of its author. This documentary (do not be scary to hear _documentary_ has less than 20 minutes, 4 pomodoros of idle time):
 
-<div class="wrap-video">
+<div class="yt-frame">
 <iframe width="560" height="315" src="https://www.youtube.com/embed/64anPPVUw5U" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>
 

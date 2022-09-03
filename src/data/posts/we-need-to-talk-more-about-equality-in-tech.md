@@ -14,7 +14,7 @@ socialImage: "/features/equality.png"
 
 Even if you cannot see there’s a context, a structural web of power relations codified in the public speech, gender norms, cultural products and in the market itself that are a byproduct of several instances of decision making that made the world what it is. Sexist. Racist. Abusive. And I know, is difficult to see, exactly because of that. It embedded us in it. Because, my friends, this is water.
 
-<style>.embed-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; } .embed-container iframe, .embed-container object, .embed-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }</style><div class='embed-container'>
+<div class='yt-frame'>
 <iframe title="YouTube" width="560" height="315" src="https://www.youtube.com/embed/8CrOL-ydFMI" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>
 

@@ -32,7 +32,7 @@ Existe um slide obrigatório em muitas palestras e talks sobre o tema. Algumas v
 
 Norman a alguns anos atrás foi questionado sobre isso:
 
-<style>.embed-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; } .embed-container iframe, .embed-container object, .embed-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }</style><div class='embed-container'>
+<div class='yt-frame'>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/9BdtGjoIN4E" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
 
 E ainda assim, temos departamentos e pessoas responsáveis pela UX ou o que é mais frequente em empresas menores, pessoas fazendo atividades de "UX" (ou ao menos usando ferramentas da disciplina de UX em seu trabalho). A minha sensação, que se limita a toda a minha experiência de trabalho e observações, é que no dia a dia se perde essa visão de experiência do usuário e vai se concentrando em fazer otimizações locais pois diversos departamentos vão empurrando funcionalidades, estratégias, inclusões que cada uma vai "adicionando" à experiência do usuário, mas cada uma sendo uma visão do que essa "experiência" deve ser.

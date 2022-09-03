@@ -78,59 +78,57 @@ I found this illustration so rich to explain to my team the "spectrum of the agi
 
 > Chapter by chapter summaries!
 
-<style>.embed-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; } .embed-container iframe, .embed-container object, .embed-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }</style>
-
-<div class='embed-container'>
+<div class='yt-frame'>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/hMuKd3HSFyU" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>
 
-<div class='embed-container'>
+<div class='yt-frame'>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/MwWizYjixNQ" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>
 
-<div class='embed-container'>
+<div class='yt-frame'>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/ftlSkwd5Too" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>
 
-<div class='embed-container'>
+<div class='yt-frame'>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/-RhUNAalOwM" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>
 
-<div class='embed-container'>
+<div class='yt-frame'>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/1xkknGh6Jw0" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>
 
-<div class='embed-container'>
+<div class='yt-frame'>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/9OCgtENMsCc" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>
 
-<div class='embed-container'>
+<div class='yt-frame'>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/xiT8S4kTt28" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>
 
-<div class='embed-container'>
+<div class='yt-frame'>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/IYryPAn1XaM" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>
 
-<div class='embed-container'>
+<div class='yt-frame'>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/O32APDaE4AY" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>
 
-<div class='embed-container'>
+<div class='yt-frame'>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Bvz0fwT_OCU" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>
 
-<div class='embed-container'>
+<div class='yt-frame'>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/myBGjJNfIHA" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>
 
-<div class='embed-container'>
+<div class='yt-frame'>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/nzJ6y5NsJGI" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>
 
 > Book club AMA with Jon Smart, Simon Rohrer and Zsolt Beren
 
-<div class='embed-container'>
+<div class='yt-frame'>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/933fBnHmem0" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>
 

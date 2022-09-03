@@ -42,7 +42,7 @@ The AWS Serverless Application Model (SAM) is an open-source framework for build
 
 SAM also provides the best way for testing your Lambdas locally (you'll find  yourself testing your lambdas builded in CDK though... SAM!). And I have to say that the work of [Eric Johnson](https://twitter.com/edjgeek) is amazing. The guy has such amazing energy and I learned a lot from his videos. One great introduction is this video, a crash course, that I recommend to anyone interested in SAM:
 
-<style>.embed-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; } .embed-container iframe, .embed-container object, .embed-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }</style><div class='embed-container'>
+<div class='yt-frame'>
 <iframe title="YouTube" width="560" height="315" src="https://www.youtube.com/embed/QBBewrKR1qg" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>
 
@@ -64,7 +64,7 @@ And is even possible know to work with [CDK and Terraform](https://www.hashicorp
 
 Besides [CDK Patterns](https://cdkpatterns.com/index.html), to anyone starting with this tutorial:
 
-<style>.embed-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; } .embed-container iframe, .embed-container object, .embed-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }</style><div class='embed-container'>
+<div class='yt-frame'>
 <iframe title="YouTube" width="560" height="315" src="https://www.youtube.com/embed/XVHGq2uJu9s" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>
 

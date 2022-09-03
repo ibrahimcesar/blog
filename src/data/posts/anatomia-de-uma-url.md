@@ -61,7 +61,7 @@ Não obrigatória. E assumida por alguns protocolos – HTTPS será a porta `443
 
 Um conjunto de `chave=valor` separados pelo sinal de igual `=`. Começam em `?` e se concatena cada próximo com `&`. Se um valor se repete, por exemplo, `?id=1&id=2`, cada sistema atua de uma forma. E há inclusives formas de se atacar um sistema web desta forma, o chamado **HTTP Parameter Pollution:** 
 
-<style>.embed-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; } .embed-container iframe, .embed-container object, .embed-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }</style><div class='embed-container'>
+<div class='yt-frame'>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/QVZBl8yxVX0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>
 

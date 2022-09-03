@@ -20,7 +20,7 @@ As [self-defined, Redis is](https://redis.io/):
 
 You can take [a look in several in-depth papers](https://redislabs.com/redis-enterprise/data-structures/) describing each data structure in order to make a better informed decision. Since it's open source we could theoretically implement it in a server but it would be a strange, if not wrong turn, in keeping in the Serverless lane. Here enters [Uptash, a Serverless database](https://upstash.com/) offering for Redis. In [Microblogging with Serverless Redis](https://dev.to/fllstck/microblogging-with-serverless-redis-2nl3) you can take a look how CRUD works and more framework-oriented, you could checkout [Lee Robinson](https://twitter.com/leeerob) has a great video on how to use it with Next.js:
 
-<style>.embed-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; } .embed-container iframe, .embed-container object, .embed-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }</style><div class='embed-container'>
+<div class='yt-frame'>
 <iframe title="YouTube" width="560" height="315" src="https://www.youtube.com/embed/FytxaSVQROc" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>
 

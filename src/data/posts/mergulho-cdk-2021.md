@@ -53,7 +53,7 @@ O paradigma de infra-estrutura, do qual a HCL (Hash Corp Language) utilizada pel
     <img src="/assets/cdk-aws-community-day-br-2021-.008-min.png" width="752" height="475" alt="" style="border: 1px solid #BBB" />
 </figure>
 
-<style>.embed-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; } .embed-container iframe, .embed-container object, .embed-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }</style><div class='embed-container'>
+<div class='yt-frame'>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/AYYTrDaEwLs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
 
 Troca de contexto é um dos grandes inimigos da produtividade de uma pessoa desenvolvedora. É aqui que o **AWS CDK**  entra. Tornando a colaboração entre Desenvolvimento e Operações ainda mais fluida e integrada. Para quem conhece o conceito de **flow** articulado por Mihaly Csikszentmihalyi em [Flow : A psicologia do alto desempenho e da felicidade](https://amzn.to/31Pawnh). Mihaly descobriu o flow, que é um estado mental de extrema concentração, onde nossas habilidades são refinadas e que existem em um contexto em que nossas habilidades são exigidas em grandes desafios, _golden spot_ para os desafios de infra-estrutura e desenvolvimento.
@@ -243,7 +243,7 @@ Preferencialmente um teste deve verificar _um e apenas um_ comportamento.
 
 [Testes são um assunto que precisam de um mergulho própio](https://docs.aws.amazon.com/pt_br/cdk/latest/guide/testing.html), mas aproveite a aderência e comunidade das linguagens suportadas e explore testar sua infraestrutura.
 
-<style>.embed-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; } .embed-container iframe, .embed-container object, .embed-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }</style><div class='embed-container'>
+<div class='yt-frame'>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/fWtuwGSoSOU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
 
 
@@ -307,7 +307,7 @@ No primeiro CDK Day teve um pequeno [protótipo de CDK para Azure](https://www.y
 
 E o CDK ganha mais e mais maturidade a cada dia. Um dos últimos, e grandes, lançamentos, foram os CDK Pipelines, que facilitaram ainda mais a criação de pipelines de entrega e deploy de aplicações CDK.
 
-<style>.embed-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; } .embed-container iframe, .embed-container object, .embed-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }</style><div class='embed-container'>
+<div class='yt-frame'>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/1ps0Wh19MHQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
 
 <figure class="extend">

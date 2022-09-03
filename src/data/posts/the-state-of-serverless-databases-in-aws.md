@@ -20,7 +20,7 @@ Still, RDS is the most familiar pattern to handle data and some could say, the �
 
 Jeremy Daly in **Building Resilient Serverless Systems with “Non-Serverless” Components** on Serverless Days 2020 made a great talk about still use RDS models with FaaS. Is not “easy-peasy” or plug and play, as you can see (I highly recommend this video, is also a crash course on FaaS architectures):
 
-<style>.embed-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; } .embed-container iframe, .embed-container object, .embed-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }</style><div class='embed-container'>
+<div class='yt-frame'>
 <iframe title="YouTube" width="560" height="315" src="https://www.youtube.com/embed/coygxBg2wTY" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>
 
