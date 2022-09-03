@@ -43,14 +43,14 @@ Other ways SAFe™ harmful? It violates the [very first agile value](https://agi
 
 Scaled Agile Framework® and SAFe™ are trademarks of Scaled Agile, Inc. When I just copied the title of their map, just "SAFe 5 for Lean Enterprises", of course they inject some text on my clipboard:
 
-```txt
+```bash
 © Scaled Agile, Inc.
 Include this copyright notice with the copied content.
 
 Read the FAQs on how to use SAFe content and trademarks here:
 https://www.scaledagile.com/about/about-us/permissions-faq/
 Explore Training at:
-https://www.scaledagile.com/training/calendar/"
+https://www.scaledagile.com/training/calendar/
 ```
 
 I use in my Markdown the highlight for `bs`, but I had to resume to just `txt`, I got the error `"bs" is not a valid Prism.js language`.
