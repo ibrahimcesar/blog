@@ -7,9 +7,6 @@
 Source code for [Ibrahim Cesar](https://ibrahimcesar.cloud) personal blog.
 
 
+## Source
 
-🚀 Based on the [AstroWind](https://github.com/onwidget/astrowind/) blog template for [Astro](https://astro.build)
-
-
-
-
+🚀 Based on the [AstroWind](https://github.com/onwidget/astrowind/) blog template for [Astro](https://astro.build).
