@@ -27,6 +27,19 @@ a:hover {
   text-decoration: underline;
 }
 
+.sec-talks h2,
+.sec-talks h3,
+.sec-talks h4 {
+  font-weight: bolder;
+  font-size: 1.5rem;
+  margin: 1rem 0;
+}
+
+.sec-talks h3,
+.sec-talks h4 {
+  color: var(--cloud-blue)
+}
+
 .post a[href^="http"]::after,
 .post a[href^="https://"]::after,
 .talks a[href^="http"]::after,
