@@ -1,6 +1,6 @@
 {
-  "name": "ibrahimcesar.cloud-blogtheme",
-  "description": "A template to make your website using Astro + Tailwind CSS.",
+  "name": "ibrahimcesar-blog",
+  "description": "Ibrahim Cesar's customized blog theme",
   "version": "1.0.0",
   "private": true,
   "scripts": {
