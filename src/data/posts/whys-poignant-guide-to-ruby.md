@@ -52,11 +52,16 @@ Some of the few talks by the author:
   <iframe title="YouTube" width="560" height="315" src="https://www.youtube.com/embed/f7HIbTijiYw" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>
 
+### 🎙️ Listen
+
+<div class="yt-frame">
+  <iframe style="border-radius:12px" src="https://open.spotify.com/embed/episode/1cL0cyQHHCblCVzqft1LYr?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+</div>
 
 ### 💻 Read More
 
 **[What we can learn from “_why”, the long lost open source developer](https://github.com/readme/featured/why-the-lucky-stiff)** by The ReadME Project  
-**[_Why: A Tale Of A Post-Modern Genius](https://www.smashingmagazine.com/2010/05/why-a-tale-of-a-post-modern-genius/)** by Smashing Magazine  
+**[_why: A Tale Of A Post-Modern Genius](https://www.smashingmagazine.com/2010/05/why-a-tale-of-a-post-modern-genius/)** by Smashing Magazine  
 **[A recommendation on the wild for this book](https://dev.to/beccasaurus/comment/h399)**  
-**[Thanks _Why](https://medium.com/@danamulder/on-whys-poignant-guide-to-ruby-3ca3f994be99)** by Dana Mulder
+**[Thanks _Why](https://medium.com/@danamulder/on-whys-poignant-guide-to-ruby-3ca3f994be99)** by Dana Mulder  
 **[_why's Estate](https://viewsourcecode.org/why/)**  
