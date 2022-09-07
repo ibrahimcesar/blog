@@ -8,7 +8,7 @@ language: "en"
 socialImage: "/features/the-software-elevator-redefining-the-architect-role-in-the-digital-enterprise-gregor-hohpe.png"
 ---
 
-> ⚠️ **MUST READ ALERT** A foundational reading for software architects, senior developers, enterprise architect, senior technologists, CTO's, senior technical architects and IT managers in this book, the author shares real-world advice and hard-learned lessons from actual IT transformations. His anecdotes help architects, senior developers, and other IT professionals prepare for a more complex but rewarding role in the enterprise.
+> ⚠️ **MUST READ ALERT**: A foundational reading for software architects, senior developers, enterprise architect, senior technologists, CTO's, senior technical architects and IT managers in this book, the author shares real-world advice and hard-learned lessons from actual IT transformations. His anecdotes help architects, senior developers, and other IT professionals prepare for a more complex but rewarding role in the enterprise.
 
 ## 📖 What
 
