@@ -1,5 +1,5 @@
 ---
-title: "📘 #devbooks:  The Software Architecture Elevator, by Gregor Hohpe"
+title: "📘 #devbooks:  The Software Architect Elevator, by Gregor Hohpe"
 description: "⚠️ MUST READ ALERT: A ride from IT engine room to the penthouse, to achieve our business goals"
 featured: true
 pubDate: "2022-09-07"
@@ -12,7 +12,7 @@ socialImage: "/features/the-software-elevator-redefining-the-architect-role-in-t
 
 ## 📖 What
 
-[**The Software Architecture Elevator**, by Gregor Hohpe](https://amzn.to/3x5mCpj) is one of the best books anyone can read on the 'IT architecture' (regardless of what type of architect you intend to be) for both folks who are starting and for those that already had established a career as an architect.
+[**The Software Architect Elevator**, by Gregor Hohpe](https://amzn.to/3x5mCpj) is one of the best books anyone can read on the 'IT architecture' (regardless of what type of architect you intend to be) for both folks who are starting and for those that already had established a career as an architect.
 
 The metaphor of the elevator is that the Enterprise Architect defined in the book as _"the glue between business and IT architecture"_ is necessary to combine organizational and technical knowledge to effect a change in their company's structure and processes, and to achieve that, they need to connect the IT engine room to the penthouse, where the business strategy came from.
 
