@@ -155,20 +155,6 @@ figcaption {
   text-align: center;
 }
 
-code {
-  counter-reset: step;
-  counter-increment: step 0;
-}
-
-code .line::before {
-  content: counter(step);
-  counter-increment: step;
-  width: 1rem;
-  margin-right: 1.5rem;
-  display: inline-block;
-  text-align: right;
-  color: rgba(206, 227, 235, 0.7)
-}
 
 .en {
   color: var(--cloud-blue)
