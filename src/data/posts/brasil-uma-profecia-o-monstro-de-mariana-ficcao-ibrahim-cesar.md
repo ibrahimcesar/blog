@@ -15,7 +15,7 @@ socialImage: "/features/livros.png"
     <img src="/assets/profecia.jpeg" width="752" height="475" alt="Brasil, uma profecia" style="border: 1px solid #BBB" />
 </figure>
 
-<section class="callout">
+<section class="callout" aria-label="concepção da ideia">
   <div class="callout__icon"><span role="img" aria-label="Ideia">💡</span></div>
   <article class="callout__content">
     <h3>Concepção</h3>
@@ -48,7 +48,7 @@ socialImage: "/features/livros.png"
     <img src="/assets/pttrn-min.jpg" width="752" height="475" alt="O Monstro de Mariana" style="border: 1px solid #BBB" />
 </figure>
 
-<section class="callout">
+<section class="callout" aria-label="concepção da ideia">
   <div class="callout__icon"><span role="img" aria-label="Ideia">💡</span></div>
   <article class="callout__content">
     <h3>Concepção</h3>

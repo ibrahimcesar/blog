@@ -61,7 +61,8 @@ a[href^="http"] .external::after
 .post a[href^="https://ibrahimcesar.cloud"]::after,
 .post a[href^="https://ibrahimcesar.com"]::after,
 .talks a[href^="https://ibrahimcesar.cloud"]::after,
-.talks a[href^="https://ibrahimcesar.com"]::after
+.talks a[href^="https://ibrahimcesar.com"]::after,
+a.social[href^="https://"]::after
 {
   display: none !important;
 }
