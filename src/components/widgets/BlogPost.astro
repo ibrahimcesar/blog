@@ -1,4 +1,6 @@
 ---
+import Share from "~/components/widgets/Share.astro";
+
 const { post } = Astro.props;
 const isEnglish = post.language ? "en" : null;
 const classLanguage = isEnglish ? "en" : "br";
@@ -18,11 +20,16 @@ const classLanguage = isEnglish ? "en" : "br";
       >
         {post.title}
       </h1>
+
+        <Share post={post} />
     </header>
     <div
       class="container mx-auto px-4 sm:px-6 max-w-3xl prose prose-lg lg:prose-xl dark:prose-invert dark:prose-headings:text-slate-300 prose-md prose-headings:leading-tighter prose-headings:tracking-tighter prose-headings:font-bold prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-img:rounded-md prose-img:shadow-lg mt-8 font-serif"
     >
       <Fragment set:html={post.body} />
     </div>
+    <footer>
+       <Share post={post} />
+    </footer>
   </article>
 </section>
