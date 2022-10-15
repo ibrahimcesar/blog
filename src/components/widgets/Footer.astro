@@ -4,6 +4,7 @@ const {} = Astro.props;
 
 <footer>
   <div class="max-w-6xl mx-auto px-4 sm:px-6">
+
     <div
       class="grid grid-cols-12 gap-4 gap-y-8 sm:gap-8 py-8 md:py-12 border-t border-gray-200 dark:border-slate-800"
     >
@@ -28,7 +29,12 @@ const {} = Astro.props;
           </a>
         </div>
       </div>
+    </div>
+
+    <div class="grid grid-cols-12 gap-4 gap-y-8">
+
       <div class="col-span-6 md:col-span-2 lg:col-span-2">
+
         <div class="text-gray-800 dark:text-gray-300 font-medium mb-2">
           Find me
         </div>
@@ -67,6 +73,7 @@ const {} = Astro.props;
             </a>
         </ul>
       </div>
+
       <div class="col-span-6 md:col-span-2 lg:col-span-2">
         <div class="text-gray-800 dark:text-gray-300 font-medium mb-2">
           Pages
@@ -81,16 +88,12 @@ const {} = Astro.props;
               class="text-gray-600  dark:text-gray-400 transition duration-150 ease-in-out"
               href="/whoiam"
               >About/Sobre
-            </a> <!-- ·
-            <a
-              class="text-gray-600  dark:text-gray-400 transition duration-150 ease-in-out"
-              href="/uses"
-              >Uses
-            </a> -->
+            </a>
         </ul>
       </div>
 
-      <div class="col-span-12 md:col-span-5 lg:col-span-5">
+      <div class="col-span-12 md:col-span-8 lg:col-span-8">
+
           <div class="inline-block">
             <a
               href="https://www.credly.com/badges/d01a5f09-39af-4848-91e4-fd93c379429b/public_url" 
@@ -99,14 +102,29 @@ const {} = Astro.props;
               target="_blank"
             >
               <img
-                src="https://user-images.githubusercontent.com/509054/163974327-950cf4d2-2f66-4a3c-b0de-2d043e97da98.png" 
+                src="https://user-images.githubusercontent.com/509054/163974327-950cf4d2-2f66-4a3c-b0de-2d043e97da98.png"
                 alt="AWS Certified Solutions Architect – Professional" width="100px"
               >
             </a>
           </div>
+
           <div class="inline-block">
             <a
-              href="https://www.credly.com/badges/1bdb457f-b469-43c3-9e0e-24b221f12794/public_url" 
+              href="https://www.credly.com/badges/f4fedbbf-cbec-4d39-a720-c7ca55d39032/public_url"
+              target="_blank"
+              title="AWS Certified Security – Specialty" rel="noopener noreferrer"
+              target="_blank"
+            >
+              <img
+                src="https://user-images.githubusercontent.com/509054/195915470-c99aa7c9-9e5e-48e4-8e48-f7a76be042ae.png"
+                alt="AWS Certified Security – Specialty" width="100px"
+              >
+            </a>
+          </div>
+
+          <div class="inline-block">
+            <a
+              href="https://www.credly.com/badges/1bdb457f-b469-43c3-9e0e-24b221f12794/public_url"
               target="_blank"
               title="Badge AWS Certified Solutions Architect – Associate" rel="noopener noreferrer"
               target="_blank"
@@ -117,10 +135,11 @@ const {} = Astro.props;
               >
             </a>
           </div>
+
           <div class="inline-block">
             <a
               href="https://www.credly.com/badges/1bdb457f-b469-43c3-9e0e-24b221f12794/public_url"
-              target="_blank" 
+              target="_blank"
               title="Badge AWS Certified Solutions Architect – Associate"
               rel="noopener noreferrer"
               target="_blank"
@@ -130,6 +149,7 @@ const {} = Astro.props;
               width="100px">
             </a>
           </div>
+
           <div class="inline-block">
             <a
               href="https://www.credly.com/badges/8cd60a1b-b130-43b1-8cf4-442573171da6/public_url"
@@ -144,14 +164,63 @@ const {} = Astro.props;
                 >
             </a>
           </div>
+
+          <div class="inline-block md:hidden lg:hidden">
+            <a
+              href="https://www.credly.com/badges/d1ddf3d6-95af-4246-9bb9-7e50e0530c11/public_url"
+              target="_blank"
+              title="Badge AWS Certified Cloud Practitioner"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+                <img
+                src="https://user-images.githubusercontent.com/509054/163974726-600afdfa-d161-4013-824d-20e168dc5efc.png" alt="Badge AWS Certified Cloud Practitioner"
+                width="100px"
+                >
+            </a>
+          </div>
+
+            <div class="inline-block">
+            <a
+              href="https://www.credly.com/badges/41622b3b-defc-4ee0-89a1-ce09ec30c8a5"
+              target="_blank"
+              title="AWS Learning: Storage Technologist"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+                <img
+                src="https://user-images.githubusercontent.com/509054/185421996-4bcd2342-e28f-410d-be0e-d363c7e12c56.png" alt="AWS Learning: Storage Technologist"
+                width="100px"
+                >
+            </a>
+          </div>
+
+          <div class="inline-block md:hidden">
+            <a
+              href="https://www.credly.com/badges/36bfeb46-c3b4-47d1-b290-8a12fe9af94f/public_url"
+              target="_blank"
+              title="AWS Learning: Storage Core"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+                <img
+                src="https://user-images.githubusercontent.com/509054/185421899-34a5b42d-92ee-4f1c-9414-3f555a5d9bae.png" alt="AWS Learning: Storage Core"
+                width="100px"
+                >
+            </a>
+          </div>
+
+
       </div>
     </div>
-    <div class="md:flex md:items-center md:justify-between py-4 md:py-8">
+
+
+    <div class="md:flex md:items-center md:justify-between py-8">
       <div class="text-sm text-gray-700 mr-4 dark:text-slate-400">
         &copy; 2020 — {new Date().getFullYear()} <em>All rights reserved</em>. Made with
       <span role="img" aria-label="pretzel">&nbsp;🥨&nbsp;</span>
       in São Paulo, Brazil. Built with <a rel="noopener noreferrer" href="https://astro.build" target="_blank" class="underline"><span class="external">Astro</span></a> hosted with <a rel="noopener noreferrer" href="https://aws.amazon.com/amplify/" target="_blank" class="underline"><span class="external">AWS with Amplify</span></a>.
       </div>
     </div>
-    </div>
+  </div>
 </footer>

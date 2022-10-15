@@ -1,7 +1,7 @@
 {
   "name": "ibrahimcesar-blog",
   "description": "Ibrahim Cesar's customized blog theme",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "private": true,
   "scripts": {
     "dev": "astro dev",
