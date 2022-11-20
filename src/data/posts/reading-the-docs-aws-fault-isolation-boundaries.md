@@ -7,7 +7,7 @@ pubDate: "2022-10-22T10:50:00.000Z"
 image: "~/assets/images/whatiscdk.png"
 socialImage: "/features/what-is-cdk.png"
 language: "en"
-#draft: true
+draft: true
 ---
 
 <section class="callout">
