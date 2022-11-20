@@ -109,7 +109,7 @@ This year I even contributed with code for CDK!
         <li><a href="https://amzn.to/3mLUlih" title="Implementing Domain-Driven Design">Implementing Domain-Driven Design</a>,also by Vaughn Vernon takes you far beyond "DDD-lite" approaches that embrace DDD solely as a technical toolset, and shows you how to fully leverage DDD’s "strategic design patterns" using Bounded Context, Context Maps, and the Ubiquitous Language. Is not as solid as Khononov’s book, but the breakdown could help a lot make more sense of the mind map DDD gives us to tackle complexity.</li>
         <li><a href="https://amzn.to/33ZPOlK" title="Domain-Driven Design Distilled">Domain-Driven Design Distilled</a> by Vaughn Vernon aims to be a concise, readable,and actionable book on DDD. "Distilled" is a term used even in Evan’s book and sometimes this book looks like a "DDD-lite" guide, but I think it serves as a good introduction</li>
         <li>The <a href="https://no-bs-ts.myshopify.com/" title="No BS TS Book">No BS TS</a> book covers every single video in the popular <a href="https://www.youtube.com/playlist?list=PLNqp92_EXZBJYFrpEzdO2EapvU0GOJ09n" title="No BS TS Playlist">No BS TS video series</a> by Jack Herrington. Everything from basic types to generics, using Typescript with React and into Design Patterns.</li>
-    <ol>
+    </ol>
   </article>
 </section>
 
