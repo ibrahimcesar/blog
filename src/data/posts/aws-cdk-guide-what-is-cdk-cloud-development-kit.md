@@ -10,6 +10,8 @@ language: "en"
 draft: true
 ---
 
+An introduction to work with AWS Cloud Development Kit (CDK).
+
 ```typescript ins={2,4-9}
  // 1️⃣ Resources are imported from 'aws-cdk-lib'
 import { App, Stack, StackProps } from 'aws-cdk-lib';
