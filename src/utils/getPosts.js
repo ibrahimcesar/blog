@@ -14,7 +14,10 @@ const load = async function () {
   const results = (await Promise.all(normalizedPosts)).sort(
     (a, b) => new Date(b.pubDate).valueOf() - new Date(a.pubDate).valueOf()
   );
-  return results;
+
+  const resultsFiltered = results.filter((post) => !post.draft);
+
+  return resultsFiltered;
 };
 
 let _posts;

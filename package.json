@@ -1,7 +1,7 @@
 {
   "name": "ibrahimcesar-blog",
   "description": "Ibrahim Cesar's customized blog theme",
-  "version": "1.0.2",
+  "version": "1.1.2",
   "private": true,
   "scripts": {
     "dev": "astro dev",
@@ -11,15 +11,25 @@
     "pretty": "prettier --write ."
   },
   "devDependencies": {
-    "@astrojs/image": "^0.3.3",
-    "@astrojs/rss": "^1.0.0",
+    "@astrojs/image": "^0.11.6",
+    "@astrojs/rss": "^1.0.3",
     "@astrojs/sitemap": "^1.0.0",
-    "@astrojs/tailwind": "^1.0.0",
-    "@tailwindcss/typography": "^0.5.4",
-    "astro": "^1.0.0",
+    "@astrojs/tailwind": "^2.1.2",
+    "@tailwindcss/typography": "^0.5.8",
+    "astro": "^1.6.10",
     "prettier": "^2.7.1",
-    "prettier-plugin-astro": "^0.5.0",
+    "prettier-plugin-astro": "^0.7.0",
     "reading-time": "^1.5.0",
-    "subfont": "^6.9.0"
+    "subfont": "^6.12.2"
+  },
+  "dependencies": {
+    "hast": "^1.0.0",
+    "hastscript": "^7.1.0",
+    "rehype-autolink-headings": "^6.1.1",
+    "rehype-slug": "^5.1.0",
+    "remark-gfm": "^3.0.1",
+    "remark-smartypants": "^2.0.0",
+    "unified": "^10.1.2",
+    "unist-util-visit": "^4.1.1"
   }
 }
