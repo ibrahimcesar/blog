@@ -7,8 +7,13 @@ const { post } = Astro.props;
 >
     <header>
       <h2 class="text-xl sm:text-2xl font-bold mb-2">
-          {post.eventDate && (<span class="font-monotext-2xl sm:text-3xl talk-date">🗓️ {post.eventDate}</span>)
-          } {post.title}
+          {
+            post.eventDate
+            && (
+              <span class="font-monotext-2xl sm:text-3xl talk-date">🗓️ {post.eventDate}</span>
+            )
+          }
+          {post.title}
       </h2>
     </header>
 

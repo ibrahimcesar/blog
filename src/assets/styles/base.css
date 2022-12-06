@@ -30,9 +30,11 @@ a:hover {
 .sec-talks h2,
 .sec-talks h3,
 .sec-talks h4 {
+  margin-top: 1rem;
   font-weight: bolder;
   font-size: 1.5rem;
   margin: 1rem 0;
+  display: inline;
 }
 
 .sec-talks h3,
