@@ -536,7 +536,7 @@ of AWS CDK. This is the final infra created, made by the
 
 <figure class="extend">
     <img src="/assets/diagram-min.png" width="752" height="475" alt="ISR" style="border: 1px solid #BBB" />
-    <figcaption>Our final infracstructure diagram made provisioned for our. <a href="https://ibrahimcesar.s3.amazonaws.com/images/diagram.png" target="_blank" title="CDK Diagram">Click here for a full version</a></figcaption>
+    <!-- <figcaption>Our final infracstructure diagram made provisioned for our. <a href="https://ibrahimcesar.s3.amazonaws.com/images/diagram.png" target="_blank" title="CDK Diagram">Click here for a full version</a></figcaption> -->
 </figure>
 
 Earlier this year AWS launched the Amplify SSR support for Next.js but... is
