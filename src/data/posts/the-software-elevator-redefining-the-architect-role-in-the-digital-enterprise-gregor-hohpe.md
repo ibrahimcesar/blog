@@ -3,7 +3,7 @@ title: "📘 #devbooks:  The Software Architect Elevator, by Gregor Hohpe"
 description: "⚠️ MUST READ ALERT: A ride from IT engine room to the penthouse, to achieve our business goals"
 featured: true
 pubDate: "2022-09-07"
-image: ~/assets/images/the-software-elevator-redefining-the-architect-role-in-the-digital-enterprise-gregor-hohpe.jpeg
+image: ~/assets/images/the-software-elevator-redefining-the-architect-role-in-the-digital-enterprise-gregor-hohpe.jpg
 language: "en"
 socialImage: "/features/the-software-architect-elevator-redefining-the-architect-role-in-the-digital-enterprise-gregor-hohpe"
 ---

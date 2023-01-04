@@ -64,7 +64,7 @@ export default defineConfig({
 						}),
 					content: (heading) => [
 						h(
-							`span.anchor-icon`,
+							'span.anchor-icon',
 							{
 								ariaHidden: 'true',
 							},

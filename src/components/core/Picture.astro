@@ -9,7 +9,9 @@ const {
   aspectRatio = 1,
   formats = ["avif", "webp"],
   loading = "lazy",
+  fit="fit",
   decoding = "async",
+  background="background",
   class: className = "",
   ...attrs
 } = Astro.props;
@@ -17,10 +19,13 @@ const {
 let picture = null;
 try {
   picture = await getPicture({
+    alt,
     src,
+    fit,
     widths,
     formats,
     aspectRatio,
+    background
   })
 }
 catch (e) {
