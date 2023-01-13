@@ -28,7 +28,9 @@
   margin-left: 1rem;
 }
 
-.heading-wrapper h2 {
+.heading-wrapper h2,
+.heading-wrapper h3,
+.heading-wrapper h4 {
   display: inline-block;
 }
 
