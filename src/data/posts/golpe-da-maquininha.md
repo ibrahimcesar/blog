@@ -8,7 +8,7 @@ socialImage: "/features/golpe-banner.png"
 ---
 
 
-Em 27 de Novembro de 2022, às 15h55 eu sofri um golpe, sendo vítima de estelionato.
+Em 27 de outubro de 2022, às 15h55 eu sofri um golpe, sendo vítima de estelionato.
 
 Havia comprado através de uma floricultura digital um produto — desci correndo já que logo às 16h eu teria uma reunião de equipe. O entregar me diz que preciso pagar a taxa de entrega, R$ 15,99. Sempre tive muito cuidado com isso, já havia ouvido falar do famoso "golpe da maquininha". Minha esposa que conhecia e confiava na floricultura então pouco ponderei a respeito.
 
