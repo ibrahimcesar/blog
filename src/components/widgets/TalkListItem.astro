@@ -7,6 +7,7 @@ const { post } = Astro.props;
 >
     <header>
       <h2 class="text-xl sm:text-2xl font-bold mb-2">
+          <span>{new Date().toISOString() >= post.pubDate ? "✅": "🌟 Inscreva-se!"}</span>
           {
             post.eventDate
             && (
