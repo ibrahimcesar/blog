@@ -4,7 +4,7 @@ description:  "O IAM é como a Força na AWS:  Rodeia e permeia tudo em nossos s
 featured: true
 pubDate: "2023-10-06T10:50:00.000Z"
 image: ~/assets/images/03_iam.png
-socialImage: "/features/devboks-aws.png"
+socialImage: "/features/iam-cover.png"
 ---
 
 > "Com grandes poderes vem grandes responsabilidades"
@@ -25,7 +25,9 @@ permissões criadas e gerenciadas para todos os serviços e recursos.
 
 ## Modelo de responsabilidade compartilhada
 
-![Modelo de Responsabilidade Compatilhada. Fonte: AWS](../images/02_srm.jpg)
+<figure class="extend">
+    <img src="/assets/posts/iam/02_srm.jpg" alt="Modelo de Responsabilidade Compatilhada. Fonte: AWS" style="border: 1px solid #BBB" />
+</figure>
 
 É extremamente importante entender onde começam e onde terminam as
 responsabilidades de cada parte, em se tratando da utilização dos serviços da
@@ -56,7 +58,7 @@ pelo cliente, principalmente os chamados serviços gerenciados em que AWS assume
 uma responsabilidade maior em determinadas áreas, como encriptação ou alta
 disponibilidade, por exemplo.
 
-> ### Zumbis nos termos de serviços
+> **Zumbis nos termos de serviços**
 >
 > Embora extremamente importante, as páginas de termos de uso, de serviço e
 > privacidade costumam estar entre as páginas mais negligenciadas por pessoas na
@@ -155,7 +157,9 @@ No caso de um vazamento, por exemplo, de uma credencial, a superfície de ação
 
 ## Visão geral do Identity and Access Manager (IAM)
 
-![Visão de como o IAM opera controle de acesso](../images/03_iam_visao_geral.png)
+<figure class="extend">
+    <img src="/assets/posts/iam/03_iam_visao_geral.png" alt="Identity and Access Management" style="border: 1px solid #BBB" />
+</figure>
 
 O IAM fornece uma forma de controle centralizada para determinar políticas de
 acesso a usuários, grupos e papéis. Entretanto, além das políticas do IAM, existem as chamadas **permissões de acesso em nível de recurso**, que também fazem uso de
@@ -243,7 +247,6 @@ uso das palavras capitalizadas.
 - **Effect (Efeito)**: por padrão, todo acesso é negado. Para permitir acesso a
   qualquer recurso é necessário ter este elemento definido para permissão
   `"Effect": "Allow"`.
-<!--V: Tente reescrever o item "Principal", que está meio embolado, com muita repetição do termo "política"-->
 - **Principal**: políticas baseadas em recursos são políticas para trabalhar com
   _roles_ ou papéis e este elemento determina qual _role_ pode assumir esta
   política. Para acessos entre contas, por exemplo, aqui pode ser passada a
@@ -281,30 +284,40 @@ conflitante ou outro recurso superior que a nega (_DENY_).
 Se houver uma negação explícita a uma ação, sempre resultará em negação.
 Entretanto, a lógica de avaliação de políticas é mais complexa e esta heurística
 embora seja uma ferramenta útil e prática, não descreve em profundidade todos os passos de avaliação de políticas, que exploramos a seguir.
-<!--V: A última frase repete o que já foi dito no parágrafo anterior.-->
 
-![Primeiro passo](../images/03_aval_deny.png)
+<figure class="extend">
+    <img src="/assets/posts/iam/03_aval_deny.png" alt="Identity and Access Management" style="border: 1px solid #BBB" />
+</figure>
 
-<!--V: Tem um verbo sobrando aqui na frase.-->
 A primeira avaliação determina inicia como negada, verifica todas políticas e no caso de uma negação explícita a decisão final é a negação de acesso, em caso contrário, segue com a avaliação
 
-![Segundo passo](../images/03_aval_scp.png)
+<figure class="extend">
+    <img src="/assets/posts/iam/03_aval_scp.png" alt="Identity and Access Management" style="border: 1px solid #BBB" />
+</figure>
 
 Avançando-se, determina-se a existência de alguma _service control policy_ (SCPs) ou política de controle de serviços. São um tipo especial de permissões atribuídas a contas dentro de uma organização, que pode ser composta de diversas contas com SCPs diferentes, e que permitem ou negam acesso a serviços ou recursos de uma forma global, ignorando qualquer outro tipo de acesso definido dentro daquela determinada conta.
 
-![Terceiro passo](../images/03_aval_resource.png)
+<figure class="extend">
+    <img src="/assets/posts/iam/03_aval_resource.png" alt="Identity and Access Management" style="border: 1px solid #BBB" />
+</figure>
 
 A próxima avaliação ocorre no nível do recurso sendo acessado. Havendo um _DENY_, o processo de avaliação é imediatamente encerrado.
 
-![Quarto passo](../images/03_aval_identity.png)
+<figure class="extend">
+    <img src="/assets/posts/iam/03_aval_identity.png" alt="Identity and Access Management" style="border: 1px solid #BBB" />
+</figure>
 
 Em seguida, a identidade (usuários e papéis) são avaliados com a combinação de suas políticas associadas e as políticas associadas aos seus grupos, caso estes façam parte de algum grupo. Note que nesta interação se um grupo do qual o usuário faz parte nega uma ação, mesmo que seu usuário tenha um determinado acesso, ele é negado. Uma negação sempre prevalece a uma permissão.
 
-![Quinto passo](../images/03_aval_boundary.png)
+<figure class="extend">
+    <img src="/assets/posts/iam/03_aval_boundary.png" alt="Identity and Access Management" style="border: 1px solid #BBB" />
+</figure>
 
 Após avaliar as identidades, resta avaliar se existe algum tipo de limite de permissão para haver um controle mais específico e controlado do raio de ação, cujo uso veremos em breve.
 
-![Sexto passo](../images/03_aval_sessions.png)
+<figure class="extend">
+    <img src="/assets/posts/iam/03_aval_sessions.png" alt="Identity and Access Management" style="border: 1px solid #BBB" />
+</figure>
 
 E por fim, ao se a validar sessão atual, geralmente empregada em _roles_, caso seu cookie ainda é válido no navegador, utilizando o STS para esta avaliação.
 
@@ -500,7 +513,11 @@ _Permission boundaries_ ou fronteiras de permissão são políticas específicas
 
 Inicialmente parece um conceito complexo, mas se trata de uma poderosa ferramenta para empregar o princípio de menor privilégio. Imagine que existam dois usuários, Ana que possui as seguintes políticas: A, B, C e D. Bruno, nosso segundo usuário possui B, C e D. E termos Carla, com acesso a C, D, E. Uma fronteira de permissão que apenas permite as ações C e D, limitaria todos a realizar apenas estas políticas específicas no determinado recurso, não importando a existência de outras permissões.
 
-![Visualização da avaliação das fronteiras de permissão](../images/03_permission_boundaries.png)
+
+<figure class="extend">
+    <img src="/assets/posts/iam/03_permission_boundaries.png" alt="Identity and Access Management" style="border: 1px solid #BBB" />
+</figure>
+
 
 Este conjunto reduzido de permissões, por assim dizer, pode ser associado a um usuário, papéis, organizações, grupos de usuários e sessões federadas de usuários.
 
