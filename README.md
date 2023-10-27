@@ -3,7 +3,6 @@
 # Blog
 
 </div>
-
 - Built with [Astro](https://astro.build)
 - Hosted with [AWS Amplify](https://docs.aws.amazon.com/amplify/latest/userguide/welcome.html)
 - Source code for [Ibrahim Cesar](https://ibrahimcesar.cloud) personal blog
