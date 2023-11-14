@@ -1,47 +1,22 @@
 ---
-import { getPicture } from "@astrojs/image";
+import { Image } from 'astro:assets';
 
 const {
   src,
   alt,
   sizes,
   widths,
-  aspectRatio = 1,
-  formats = ["avif", "webp"],
-  loading = "lazy",
-  fit="fit",
-  decoding = "async",
-  background="background",
   class: className = "",
-  ...attrs
 } = Astro.props;
-
-let picture = null;
-try {
-  picture = await getPicture({
-    alt,
-    src,
-    fit,
-    widths,
-    formats,
-    aspectRatio,
-    background
-  })
-}
-catch (e) {
-  console.log(e);
-}
-
-const { image = {}, sources = [] } = picture || {}
 ---
 
-{ (src && image?.src) &&
-<picture {...attrs}>
-  {sources.map((attrs) =>
-  <source {...attrs} {sizes} />)}
-  <img {...image} {loading} {decoding} {alt} class={className} />
-</picture>
-}
+<Image
+  src={src}
+  widths={widths}
+  alt={alt}
+  loading = "lazy"
+  decoding = "async"
+/>
 
 <style>
   img {
