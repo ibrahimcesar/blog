@@ -10,13 +10,13 @@ const {
 } = Astro.props;
 ---
 
-<Image
+{ src ? <Image
   src={src}
   widths={widths}
   alt={alt}
   loading = "lazy"
   decoding = "async"
-/>
+/> : null }
 
 <style>
   img {
