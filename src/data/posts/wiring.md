@@ -6,6 +6,7 @@ pubDate: "2023-11-21T10:50:00.000Z"
 image: ~/assets/images/agile-wall.jpg
 language: en
 socialImage: "/features/devboks-sooner-safer-happier.png"
+draft: true
 ---
 
 <p class="lead"></p>
