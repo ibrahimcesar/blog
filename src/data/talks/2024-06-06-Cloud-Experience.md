@@ -1,7 +1,7 @@
 ---
 title: "Cloud Experience 2024 Belo Horizonte - GenAI Edition: Amazon Q Developer"
-pubDate: "2024-06-05T07:55:00.000Z"
-eventDate: "2024-06-11 18h30"
+pubDate: "2024-06-06T07:55:00.000Z"
+eventDate: "2024-06-06"
 ---
 
 
