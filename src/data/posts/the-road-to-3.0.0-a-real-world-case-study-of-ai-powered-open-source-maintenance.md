@@ -1,6 +1,6 @@
 ---
 title: "The Road to 3.0.0: A Real-World Case Study of AI-Powered Open Source Maintenance"
-description: How Claude Code found 21 improvements in react-lite-youtube-embed: critical bugs, performance wins, and SLSA Level 3 security. A real open source case study.
+description: "How Claude Code found 21 improvements in react-lite-youtube-embed: critical bugs, performance wins, and SLSA Level 3 security. A real open source case study"
 featured: true
 pubDate: "2021-10-16T10:50:00.000Z"
 image: ~/assets/images/safe.jpg
