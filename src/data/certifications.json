@@ -16,21 +16,21 @@
       "src": "/certs/well-architected-proficient.png"
     },
     {
-      "href": "https://www.credly.com/badges/3489f3ba-6b26-420e-a38a-d7a26e0f50dc/public_url",
-      "title": "AWS Certified Machine Learning - Specialty",
-      "src": "/certs/aws-certified-machine-learning-specialty.png"
+      "href": "https://www.credly.com/badges/b46e75f0-3838-4133-b62f-8eecf4338b81/public_url",
+      "title": "AWS Certified Security - Specialty",
+      "src": "/certs/aws-certified-security-specialty.png"
     }
   ],
   "alwaysVisibleAss": [
     {
-      "href": "https://www.credly.com/badges/b46e75f0-3838-4133-b62f-8eecf4338b81/public_url",
-      "title": "AWS Certified Security - Specialty",
-      "src": "/certs/aws-certified-security-specialty.png"
+      "href": "https://www.credly.com/badges/3489f3ba-6b26-420e-a38a-d7a26e0f50dc/public_url",
+      "title": "AWS Certified Machine Learning - Specialty",
+      "src": "/certs/aws-certified-machine-learning-specialty.png"
     },
     {
       "href": "https://www.credly.com/badges/a229e88f-f0b5-46fe-be56-ac2f1d884c29/public_url",
       "title": "AWS Certified Data Analytics – Specialty",
-      "src": "https://user-images.githubusercontent.com/509054/187105674-b59dadfa-f5a9-44ff-a4ca-82cb33418617.png"
+      "src": "/certs/aws-certified-data-analytics-specialty.png"
     },
     {
       "href": "https://www.credly.com/badges/d657610e-f06b-4c47-9ba5-b53edd895024/public_url",
@@ -38,12 +38,17 @@
       "src": "/certs/aws-certified-solutions-architect-associate.png"
     },
     {
-      "href": "https://www.credly.com/badges/03f205a7-487d-4d78-b93d-df8970b9ec33/public_url",
-      "title": "AWS Certified SysOps Administrator – Associate",
-      "src": "/certs/aws-certified-sysops-administrator-associate.png"
+      "href": "https://www.credly.com/badges/d657610e-f06b-4c47-9ba5-b53edd895024/public_url",
+      "title": "AWS Certified Solutions Architect – Associate",
+      "src": "/certs/aws-certified-solutions-architect-associate.png"
     }
   ],
   "additional": [
+    {
+      "href": "https://www.credly.com/badges/03f205a7-487d-4d78-b93d-df8970b9ec33/public_url",
+      "title": "AWS Certified SysOps Administrator – Associate",
+      "src": "/certs/aws-certified-sysops-administrator-associate.png"
+    },
     {
       "href": "https://www.credly.com/badges/f9501e3a-6618-4029-a9a2-e853dfb9ffb1/public_url",
       "title": "AWS Certified Machine Learning Engineer – Associate",
