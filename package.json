@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro build && npx pagefind --site dist && subfont -ir --no-fallbacks --root dist",
+    "build": "astro build && npx pagefind --site dist",
     "preview": "astro preview",
     "pretty": "prettier --write ."
   },
