@@ -1,0 +1,87 @@
+{
+  "$ref": "#/definitions/talks",
+  "definitions": {
+    "talks": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "pubDate": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "integer",
+              "format": "unix-time"
+            }
+          ]
+        },
+        "description": {
+          "type": "string"
+        },
+        "eventDate": {
+          "type": "string"
+        },
+        "videoTime": {
+          "type": "string"
+        },
+        "videoUrl": {
+          "type": "string",
+          "format": "uri"
+        },
+        "slidesUrl": {
+          "type": "string",
+          "format": "uri"
+        },
+        "event": {
+          "type": "string"
+        },
+        "location": {
+          "type": "string"
+        },
+        "language": {
+          "type": "string",
+          "enum": [
+            "en",
+            "pt-br"
+          ],
+          "default": "pt-br"
+        },
+        "tags": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "default": []
+        },
+        "featured": {
+          "type": "boolean",
+          "default": false
+        },
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "title",
+        "pubDate"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

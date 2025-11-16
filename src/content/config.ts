@@ -1,5 +1,11 @@
 import { z, defineCollection } from 'astro:content';
 
+// Transform comma-separated string to array or keep array as-is
+const tagsSchema = z.union([
+  z.array(z.string()),
+  z.string().transform((str) => str.split(',').map(tag => tag.trim()).filter(Boolean))
+]).default([]);
+
 // Posts collection schema
 const postsCollection = defineCollection({
   type: 'content',
@@ -19,7 +25,7 @@ const postsCollection = defineCollection({
     socialImage: z.string().optional(),
 
     // New taxonomy fields
-    tags: z.array(z.string()).default([]),
+    tags: tagsSchema,
     category: z.string().optional(),
 
     // Metadata fields
@@ -62,7 +68,7 @@ const talksCollection = defineCollection({
     event: z.string().optional(), // Event name
     location: z.string().optional(), // Physical or virtual location
     language: z.enum(['en', 'pt-br']).default('pt-br'),
-    tags: z.array(z.string()).default([]),
+    tags: tagsSchema,
     featured: z.boolean().default(false),
   }),
 });

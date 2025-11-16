@@ -1,7 +1,7 @@
 ---
 title: Full Stack Cloud SSR with Next.js, Tailwind, and AWS CDK
 description: "A spin in the workshop!"
-featured: trues
+featured: true
 image: ~/assets/images/ssr.png
 pubDate: "2021-03-14T10:50:00.000Z"
 language: en
