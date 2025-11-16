@@ -8,7 +8,8 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro build && npx pagefind --site dist && subfont -ir --no-fallbacks --root dist",
+    "build": "astro build && npx pagefind --site dist",
+    "build:fonts": "npm run build && subfont -ir --no-fallbacks --root dist",
     "preview": "astro preview",
     "pretty": "prettier --write .",
     "new:post": "node scripts/new-post.js"
