@@ -1,5 +1,6 @@
 ---
 import Share from "~/components/widgets/Share.astro";
+import Tags from "~/components/widgets/Tags.astro";
 
 const { post, image } = Astro.props;
 const isEnglish = post.data.language ? "en" : null;
@@ -20,6 +21,12 @@ const classLanguage = isEnglish ? "en" : "br";
       >
         {post.data.title}
       </h1>
+
+      {post.data.tags && post.data.tags.length > 0 && (
+        <div class="max-w-3xl mx-auto flex justify-center mb-6">
+          <Tags tags={post.data.tags} size="sm" />
+        </div>
+      )}
 
         <Share post={post} />
     </header>

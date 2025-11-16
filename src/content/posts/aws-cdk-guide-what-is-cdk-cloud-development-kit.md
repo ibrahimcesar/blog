@@ -1,13 +1,14 @@
 ---
 title: What is AWS Cloud Development Kit (CDK)
-tags: cdk, aws
+tags: ["AWS", "CDK", "Infrastructure as Code", "Cloud", "DevOps"]
+category: "AWS"
 description: "AWS CDK (Cloud Development Kit) is an open source framework to provision infrastructure in the Cloud by writing code in Python, TypeScript, JavaScript, .NET, Java"
 featured: true
 pubDate: "2022-10-22T10:50:00.000Z"
 image: "~/assets/images/whatiscdk.png"
 socialImage: "/features/what-is-cdk.png"
 language: "en"
-draft: true
+draft: false
 ---
 
 ```typescript ins={2,4-9}

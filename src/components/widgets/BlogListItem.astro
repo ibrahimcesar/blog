@@ -1,5 +1,6 @@
 ---
 import Picture from "~/components/core/Picture.astro";
+import Tags from "~/components/widgets/Tags.astro";
 import { findImage } from "~/utils/findImage";
 
 const { post } = Astro.props;
@@ -38,6 +39,11 @@ const image = await findImage(post.data.image);
     <p class="text-md sm:text-lg flex-grow">
       {post.data.excerpt || post.data.description}
     </p>
+    {post.data.tags && post.data.tags.length > 0 && (
+      <div class="mt-3">
+        <Tags tags={post.data.tags} size="xs" />
+      </div>
+    )}
     <footer class="flex items-center mt-4">
       <div>
         <span class="text-gray-500 dark:text-slate-400">
