@@ -62,6 +62,8 @@ customHeaders:
         value: 'nosniff'
       - key: 'Referrer-Policy'
         value: 'strict-origin-when-cross-origin'
+      - key: 'X-Clacks-Overhead'
+        value: 'GNU Terry Pratchett'
 
 # Security headers for enhanced protection
 # These are automatically applied by Amplify but documented here for reference

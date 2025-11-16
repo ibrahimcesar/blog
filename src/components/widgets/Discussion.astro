@@ -1,0 +1,55 @@
+---
+import type { Post } from "~/utils/getPostsCollection";
+
+interface Props {
+  post: Post;
+}
+
+const { post } = Astro.props;
+const discussionUrl = post.data.discussionUrl;
+
+if (!discussionUrl) {
+  return null;
+}
+
+const isEnglish = post.data.language === "en";
+
+// Detect platform from URL
+let platform = "discussion";
+let platformName = isEnglish ? "this platform" : "esta plataforma";
+
+if (discussionUrl.includes("linkedin.com")) {
+  platform = "linkedin";
+  platformName = "LinkedIn";
+} else if (discussionUrl.includes("bsky.app") || discussionUrl.includes("bluesky")) {
+  platform = "bluesky";
+  platformName = "Bluesky";
+} else if (discussionUrl.includes("twitter.com") || discussionUrl.includes("x.com")) {
+  platform = "x";
+  platformName = "X";
+} else if (discussionUrl.includes("github.com")) {
+  platform = "github";
+  platformName = "GitHub";
+}
+
+const title = isEnglish ? "Join the Conversation" : "Participe da Conversa";
+const description = isEnglish
+  ? `Have ideas, questions, or feedback? Join the conversation on ${platformName}`
+  : `Tem ideias, perguntas ou comentários? Participe da conversa no ${platformName}`;
+const buttonText = isEnglish ? `Discuss on ${platformName}` : `Discutir no ${platformName}`;
+---
+
+{discussionUrl && (
+  <section class="discussion-box max-w-3xl mx-auto my-8 p-6 border-2 border-blue-500 dark:border-blue-400 rounded-lg bg-blue-50 dark:bg-slate-800">
+    <h2 class="text-2xl font-bold mb-3 text-gray-900 dark:text-gray-100">{title}</h2>
+    <p class="text-gray-700 dark:text-gray-300 mb-4">{description}</p>
+    <a
+      href={discussionUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="inline-block px-6 py-3 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white font-semibold rounded-lg transition duration-150 ease-in-out"
+    >
+      {buttonText} →
+    </a>
+  </section>
+)}
