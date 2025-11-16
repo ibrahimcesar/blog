@@ -1,5 +1,6 @@
 ---
 import Share from "~/components/widgets/Share.astro";
+import Discussion from "~/components/widgets/Discussion.astro";
 import Tags from "~/components/widgets/Tags.astro";
 import TableOfContents from "~/components/widgets/TableOfContents.astro";
 import SeriesNavigation from "~/components/widgets/SeriesNavigation.astro";
@@ -48,6 +49,7 @@ const showRelated = relatedPosts && relatedPosts.length > 0;
     </div>
     <footer>
        <Share post={post} />
+       <Discussion post={post} />
     </footer>
   </article>
 </section>
