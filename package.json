@@ -4,12 +4,14 @@
   "homepage": "https://ibrahimcesar.cloud",
   "version": "1.3.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro build && npx pagefind --site dist && subfont -ir --no-fallbacks --root dist",
     "preview": "astro preview",
-    "pretty": "prettier --write ."
+    "pretty": "prettier --write .",
+    "new:post": "node scripts/new-post.js"
   },
   "devDependencies": {
     "@astrojs/rss": "^4.0.13",
