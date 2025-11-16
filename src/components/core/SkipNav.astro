@@ -1,0 +1,52 @@
+---
+// Skip navigation link for accessibility
+// Allows keyboard users to skip directly to main content
+---
+
+<a
+  href="#main-content"
+  class="skip-nav"
+  aria-label="Skip to main content"
+>
+  Skip to main content
+</a>
+
+<style>
+  .skip-nav {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    z-index: 100;
+    padding: 8px 16px;
+    background: #1e293b; /* slate-800 */
+    color: white;
+    text-decoration: none;
+    border-radius: 0 0 4px 0;
+    font-weight: 600;
+    transition: top 0.2s ease-in-out;
+  }
+
+  .skip-nav:focus {
+    top: 0;
+    outline: 2px solid #3b82f6; /* blue-500 */
+    outline-offset: 2px;
+  }
+
+  .skip-nav:hover:focus {
+    background: #0f172a; /* slate-900 */
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .skip-nav {
+      background: #0f172a; /* slate-900 */
+    }
+
+    .skip-nav:focus {
+      outline-color: #60a5fa; /* blue-400 */
+    }
+
+    .skip-nav:hover:focus {
+      background: #1e293b; /* slate-800 */
+    }
+  }
+</style>

@@ -86,4 +86,12 @@ export default defineConfig({
     }),
     sitemap()
   ],
+
+  vite: {
+    build: {
+      rollupOptions: {
+        external: ['/pagefind/pagefind.js', '/pagefind/pagefind-ui.js']
+      }
+    }
+  }
 });
