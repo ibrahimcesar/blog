@@ -1,0 +1,96 @@
+---
+// Discussion call-to-action component
+// Encourages readers to join the conversation on external platforms
+
+const { post } = Astro.props;
+
+const discussionUrl = post.data.discussionUrl;
+const isEnglish = post.data.language === "en";
+
+// Don't render if no discussion URL is provided
+if (!discussionUrl) {
+  return null;
+}
+
+// Detect platform from URL for icon/label
+let platform = "discussion";
+let platformName = isEnglish ? "this post" : "esta publicação";
+
+if (discussionUrl.includes("linkedin.com")) {
+  platform = "linkedin";
+  platformName = "LinkedIn";
+} else if (discussionUrl.includes("bsky.app") || discussionUrl.includes("bluesky")) {
+  platform = "bluesky";
+  platformName = "Bluesky";
+} else if (discussionUrl.includes("twitter.com") || discussionUrl.includes("x.com")) {
+  platform = "twitter";
+  platformName = "Twitter/X";
+} else if (discussionUrl.includes("mastodon")) {
+  platform = "mastodon";
+  platformName = "Mastodon";
+} else if (discussionUrl.includes("reddit.com")) {
+  platform = "reddit";
+  platformName = "Reddit";
+}
+
+const title = isEnglish ? "Join the Discussion" : "Participe da Discussão";
+const description = isEnglish
+  ? `Have ideas, questions, or feedback about this post? I'd love to hear from you! Join the conversation on ${platformName} — your comments and perspectives enrich the dialogue.`
+  : `Tem ideias, perguntas ou comentários sobre este post? Adoraria ouvir você! Participe da conversa no ${platformName} — seus comentários e perspectivas enriquecem o diálogo.`;
+const buttonText = isEnglish ? `Comment on ${platformName}` : `Comentar no ${platformName}`;
+---
+
+<section aria-label="discussion" class="max-w-3xl mx-auto mt-12 mb-8 px-4 sm:px-6">
+  <div class="discussion-box bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border-2 border-blue-200 dark:border-blue-800 rounded-xl p-6 md:p-8 shadow-sm hover:shadow-md transition-shadow duration-200">
+    <div class="flex items-start gap-4">
+      <!-- Icon -->
+      <div class="flex-shrink-0 mt-1">
+        <div class="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900/40 flex items-center justify-center">
+          <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="flex-1">
+        <h2 class="text-xl md:text-2xl font-bold text-gray-900 dark:text-gray-100 mb-3">
+          {title}
+        </h2>
+        <p class="text-gray-700 dark:text-gray-300 mb-5 leading-relaxed">
+          {description}
+        </p>
+
+        <!-- CTA Button -->
+        <a
+          href={discussionUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors duration-200 shadow-sm hover:shadow focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
+        >
+          <span>{buttonText}</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .discussion-box {
+    animation: slideIn 0.3s ease-out;
+  }
+
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
