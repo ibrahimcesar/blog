@@ -4,6 +4,7 @@ import Layout from "~/layouts/PageLayout.astro";
 import { SITE } from "~/config.mjs";
 
 import HighlightedPosts from "~/components/widgets/HighlightedPosts.astro";
+import SchemaOrg from "~/components/core/SchemaOrg.astro";
 
 const title = `${SITE.name} — Solutions Architect`;
 const description =
@@ -12,6 +13,7 @@ const canonical = new URL("", Astro.site);
 ---
 
 <Layout meta={{ title, description, canonical }}>
+  <SchemaOrg type="WebSite" />
   <main>
     <HighlightedPosts />
   </main>

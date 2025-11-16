@@ -1,0 +1,116 @@
+---
+import { SITE } from "~/config.mjs";
+
+interface Props {
+  type: "BlogPosting" | "WebSite" | "Blog" | "Person";
+  post?: any;
+  url?: string;
+}
+
+const { type, post, url } = Astro.props;
+
+// Author/Person schema
+const personSchema = {
+  "@type": "Person",
+  "name": "Ibrahim Cesar",
+  "url": SITE.domain,
+  "sameAs": [
+    "https://github.com/ibrahimcesar",
+    "https://twitter.com/ibrahimcesar",
+    "https://www.linkedin.com/in/ibrahimcesar/"
+  ]
+};
+
+// Generate schema based on type
+let schema: any;
+
+if (type === "BlogPosting" && post) {
+  const postUrl = `${SITE.domain}/blog/${post.slug}`;
+  const imageUrl = post.data.socialImage
+    ? `${SITE.domain}${post.data.socialImage}`
+    : post.data.image
+    ? `${SITE.domain}${post.data.image.replace('~', '')}`
+    : `${SITE.domain}/default-og.png`;
+
+  schema = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": post.data.title,
+    "description": post.data.description,
+    "image": imageUrl,
+    "datePublished": post.data.pubDate.toISOString(),
+    "dateModified": post.data.updatedDate?.toISOString() || post.data.pubDate.toISOString(),
+    "author": personSchema,
+    "publisher": {
+      "@type": "Person",
+      "name": "Ibrahim Cesar",
+      "url": SITE.domain
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": postUrl
+    },
+    "url": postUrl,
+    "inLanguage": post.data.language === "en" ? "en-US" : "pt-BR",
+  };
+
+  // Add keywords if tags exist
+  if (post.data.tags && post.data.tags.length > 0) {
+    schema.keywords = post.data.tags.join(", ");
+  }
+
+  // Add article section if category exists
+  if (post.data.category) {
+    schema.articleSection = post.data.category;
+  }
+
+  // Add series information if exists
+  if (post.data.series) {
+    schema.isPartOf = {
+      "@type": "CreativeWorkSeries",
+      "name": post.data.series
+    };
+  }
+
+} else if (type === "WebSite") {
+  schema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": SITE.name,
+    "url": SITE.domain,
+    "description": "Tech blog about AWS, Cloud, Serverless, and Software Development",
+    "author": personSchema,
+    "inLanguage": ["en-US", "pt-BR"],
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": `${SITE.domain}/search?q={search_term_string}`
+      },
+      "query-input": "required name=search_term_string"
+    }
+  };
+
+} else if (type === "Blog") {
+  schema = {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "name": `${SITE.name} Blog`,
+    "url": `${SITE.domain}/blog`,
+    "description": "Articles about AWS, Cloud, Serverless, TypeScript, and Software Development",
+    "author": personSchema,
+    "publisher": personSchema,
+    "inLanguage": ["en-US", "pt-BR"]
+  };
+
+} else if (type === "Person") {
+  schema = {
+    "@context": "https://schema.org",
+    ...personSchema
+  };
+}
+---
+
+{schema && (
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+)}

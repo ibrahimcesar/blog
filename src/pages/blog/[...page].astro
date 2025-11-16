@@ -5,6 +5,7 @@ import { SITE } from "~/config.mjs";
 import { getPosts } from "~/utils/getPostsCollection";
 
 import BlogList from "~/components/widgets/BlogList.astro";
+import SchemaOrg from "~/components/core/SchemaOrg.astro";
 
 export async function getStaticPaths({ paginate }) {
   const posts = await getPosts();
@@ -26,6 +27,7 @@ const canonical = new URL(page.url.current, Astro.site);
 ---
 
 <Layout meta={{ title, description, canonical }}>
+  <SchemaOrg type="Blog" />
   <main>
     <BlogList page={page} />
   </main>
