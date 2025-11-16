@@ -1,10 +1,13 @@
 ---
 import Share from "~/components/widgets/Share.astro";
 import Tags from "~/components/widgets/Tags.astro";
+import TableOfContents from "~/components/widgets/TableOfContents.astro";
+import type { TocHeading } from "~/utils/getTableOfContents";
 
-const { post, image } = Astro.props;
+const { post, image, toc = [] } = Astro.props;
 const isEnglish = post.data.language ? "en" : null;
 const classLanguage = isEnglish ? "en" : "br";
+const showToc = toc && toc.length > 0;
 ---
 
 <section class="py-8 sm:py-16 lg:py-20 mx-auto post">
@@ -33,6 +36,7 @@ const classLanguage = isEnglish ? "en" : "br";
     <div
       class="container mx-auto px-4 sm:px-6 max-w-3xl prose prose-l lg:prose-l dark:prose-invert dark:prose-headings:text-slate-300 prose-md prose-headings:leading-tighter prose-headings:tracking-tighter prose-headings:font-bold prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-img:rounded-md prose-img:shadow-lg mt-8 font-serif"
     >
+      {showToc && <TableOfContents headings={toc} title={isEnglish ? "Table of Contents" : "Índice"} />}
       <slot />
     </div>
     <footer>

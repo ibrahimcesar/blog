@@ -1,0 +1,260 @@
+---
+import type { TocHeading } from "~/utils/getTableOfContents";
+
+interface Props {
+  headings: TocHeading[];
+  title?: string;
+}
+
+const { headings, title = "Table of Contents" } = Astro.props;
+
+// Don't render if there are no headings
+if (!headings || headings.length === 0) {
+  return null;
+}
+---
+
+<nav class="toc" aria-label="Table of Contents">
+  <div class="toc-header">
+    <h2 class="toc-title">{title}</h2>
+  </div>
+  <ul class="toc-list">
+    {
+      headings.map((heading) => (
+        <li class={`toc-item toc-depth-${heading.depth}`}>
+          <a href={`#${heading.slug}`} class="toc-link">
+            {heading.text}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</nav>
+
+<style>
+  .toc {
+    background: #f8fafc; /* slate-50 */
+    border: 1px solid #e2e8f0; /* slate-200 */
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 2rem 0;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .toc {
+      background: #1e293b; /* slate-800 */
+      border-color: #334155; /* slate-700 */
+    }
+  }
+
+  .toc-header {
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid #e2e8f0; /* slate-200 */
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .toc-header {
+      border-bottom-color: #334155; /* slate-700 */
+    }
+  }
+
+  .toc-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: #0f172a; /* slate-900 */
+    margin: 0;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .toc-title {
+      color: #f1f5f9; /* slate-100 */
+    }
+  }
+
+  .toc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc-item {
+    margin: 0;
+  }
+
+  .toc-link {
+    display: block;
+    padding: 0.5rem 0;
+    color: #475569; /* slate-600 */
+    text-decoration: none;
+    transition: all 0.2s ease-in-out;
+    border-left: 2px solid transparent;
+    padding-left: 0.75rem;
+  }
+
+  .toc-link:hover {
+    color: #3b82f6; /* blue-500 */
+    border-left-color: #3b82f6; /* blue-500 */
+    background: #f1f5f9; /* slate-100 */
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .toc-link {
+      color: #cbd5e1; /* slate-300 */
+    }
+
+    .toc-link:hover {
+      color: #60a5fa; /* blue-400 */
+      border-left-color: #60a5fa; /* blue-400 */
+      background: #0f172a; /* slate-900 */
+    }
+  }
+
+  /* Indentation for different heading depths */
+  .toc-depth-2 .toc-link {
+    padding-left: 0.75rem;
+    font-weight: 600;
+  }
+
+  .toc-depth-3 .toc-link {
+    padding-left: 1.5rem;
+    font-size: 0.9375rem;
+  }
+
+  .toc-depth-4 .toc-link {
+    padding-left: 2.25rem;
+    font-size: 0.875rem;
+  }
+
+  .toc-depth-5 .toc-link {
+    padding-left: 3rem;
+    font-size: 0.875rem;
+  }
+
+  .toc-depth-6 .toc-link {
+    padding-left: 3.75rem;
+    font-size: 0.8125rem;
+  }
+
+  /* Active link highlighting (can be enhanced with JavaScript) */
+  .toc-link:focus {
+    outline: 2px solid #3b82f6; /* blue-500 */
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .toc-link:focus {
+      outline-color: #60a5fa; /* blue-400 */
+    }
+  }
+
+  /* Responsive: stick to top on larger screens */
+  @media (min-width: 1280px) {
+    .toc {
+      position: sticky;
+      top: 5rem;
+      max-height: calc(100vh - 8rem);
+      overflow-y: auto;
+    }
+  }
+
+  /* Custom scrollbar for ToC on large screens */
+  @media (min-width: 1280px) {
+    .toc::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .toc::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .toc::-webkit-scrollbar-thumb {
+      background: #cbd5e1; /* slate-300 */
+      border-radius: 4px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .toc::-webkit-scrollbar-thumb {
+        background: #475569; /* slate-600 */
+      }
+    }
+  }
+</style>
+
+<script>
+  // Add active state to current section in viewport
+  function initTableOfContents() {
+    const tocLinks = document.querySelectorAll('.toc-link');
+    if (!tocLinks.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const id = entry.target.getAttribute('id');
+          const tocLink = document.querySelector(`.toc-link[href="#${id}"]`);
+
+          if (entry.isIntersecting && tocLink) {
+            // Remove active class from all links
+            tocLinks.forEach((link) => link.classList.remove('active'));
+            // Add active class to current link
+            tocLink.classList.add('active');
+          }
+        });
+      },
+      {
+        rootMargin: '-80px 0px -80% 0px',
+      }
+    );
+
+    // Observe all headings that are in the ToC
+    tocLinks.forEach((link) => {
+      const href = link.getAttribute('href');
+      if (href && href.startsWith('#')) {
+        const id = href.substring(1);
+        const heading = document.getElementById(id);
+        if (heading) {
+          observer.observe(heading);
+        }
+      }
+    });
+
+    // Smooth scroll when clicking ToC links
+    tocLinks.forEach((link) => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const href = link.getAttribute('href');
+        if (href && href.startsWith('#')) {
+          const target = document.querySelector(href);
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            // Update URL without triggering navigation
+            history.pushState(null, '', href);
+          }
+        }
+      });
+    });
+  }
+
+  // Initialize on page load
+  if (document.readyState === 'complete') {
+    initTableOfContents();
+  } else {
+    window.addEventListener('DOMContentLoaded', initTableOfContents);
+  }
+</script>
+
+<style is:global>
+  .toc-link.active {
+    color: #3b82f6 !important; /* blue-500 */
+    border-left-color: #3b82f6 !important; /* blue-500 */
+    font-weight: 600;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .toc-link.active {
+      color: #60a5fa !important; /* blue-400 */
+      border-left-color: #60a5fa !important; /* blue-400 */
+    }
+  }
+</style>

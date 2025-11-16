@@ -2,6 +2,7 @@
 import { SITE } from "~/config.mjs";
 import { getPosts } from "~/utils/getPostsCollection";
 import { findImage } from "~/utils/findImage";
+import { getTableOfContents } from "~/utils/getTableOfContents";
 import { render } from 'astro:content';
 
 import Layout from "~/layouts/PageLayout.astro";
@@ -18,6 +19,11 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await render(post);
+
+// Get table of contents if enabled for this post
+const toc = post.data.tableOfContents !== false
+  ? await getTableOfContents(post)
+  : [];
 
 const title = `${post.data.title} — ${SITE.name}`;
 const lang = post.data.language ? "en" : null;
@@ -39,7 +45,7 @@ const image = await findImage(post.data.image);
   }}
 >
   <main>
-    <BlogPost post={post} image={image}>
+    <BlogPost post={post} image={image} toc={toc}>
       <Content />
     </BlogPost>
   </main>
