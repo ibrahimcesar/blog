@@ -1,6 +1,7 @@
 ---
 import Layout from "~/layouts/BaseLayout.astro";
 
+import SkipNav from "~/components/core/SkipNav.astro";
 import Header from "~/components/widgets/Header.astro";
 import Footer from "~/components/widgets/Footer.astro";
 
@@ -8,7 +9,10 @@ const { meta } = Astro.props;
 ---
 
 <Layout meta={meta}>
+  <SkipNav />
   <Header />
-  <slot />
+  <main id="main-content">
+    <slot />
+  </main>
   <Footer />
 </Layout>

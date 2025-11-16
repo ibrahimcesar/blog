@@ -1,6 +1,7 @@
 ---
 import "~/assets/styles/base.css";
 
+import { ViewTransitions } from "astro:transitions";
 import MetaTags from "~/components/core/MetaTags.astro";
 import BasicScripts from "~/components/core/BasicScripts.astro";
 
@@ -11,6 +12,7 @@ const { meta = {} } = Astro.props;
 <html lang={meta.lang ? "en" : "pt-br"}>
   <head>
     <MetaTags {...meta} />
+    <ViewTransitions />
   </head>
 
   <body

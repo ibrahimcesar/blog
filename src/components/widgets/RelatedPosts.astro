@@ -1,0 +1,415 @@
+---
+import type { Post } from "~/utils/getPostsCollection";
+
+interface Props {
+  posts: Post[];
+  currentPost: Post;
+}
+
+const { posts, currentPost } = Astro.props;
+
+// Don't render if no related posts
+if (!posts || posts.length === 0) {
+  return null;
+}
+
+const isEnglish = currentPost.data.language === "en";
+---
+
+<aside class="related-posts" aria-label="Related Posts">
+  <div class="related-header">
+    <svg
+      class="related-icon"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+      <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+    </svg>
+    <h2 class="related-title">
+      {isEnglish ? "Related Articles" : "Artigos Relacionados"}
+    </h2>
+  </div>
+
+  <div class="related-grid">
+    {
+      posts.map((post) => {
+        // Find shared tags
+        const sharedTags = post.data.tags.filter((tag) =>
+          currentPost.data.tags.includes(tag)
+        );
+        const hasSharedCategory =
+          post.data.category &&
+          currentPost.data.category &&
+          post.data.category === currentPost.data.category;
+
+        return (
+          <article class="related-card">
+            <a href={`/blog/${post.slug}`} class="related-link">
+              <div class="related-content">
+                {post.data.image && (
+                  <div class="related-image-container">
+                    <img
+                      src={post.data.image}
+                      alt={post.data.title}
+                      class="related-image"
+                      loading="lazy"
+                    />
+                  </div>
+                )}
+
+                <div class="related-text">
+                  <h3 class="related-post-title">{post.data.title}</h3>
+
+                  {post.data.description && (
+                    <p class="related-description">{post.data.description}</p>
+                  )}
+
+                  <div class="related-meta">
+                    <time
+                      datetime={post.data.pubDate.toISOString()}
+                      class="related-date"
+                    >
+                      {post.data.pubDate.toISOString().substring(0, 10)}
+                    </time>
+
+                    {post.readingTime && (
+                      <>
+                        <span class="meta-separator">•</span>
+                        <span class="related-reading-time">
+                          {post.readingTime}
+                        </span>
+                      </>
+                    )}
+                  </div>
+
+                  {(sharedTags.length > 0 || hasSharedCategory) && (
+                    <div class="related-badges">
+                      {hasSharedCategory && (
+                        <span class="badge badge-category">
+                          {post.data.category}
+                        </span>
+                      )}
+                      {sharedTags.slice(0, 2).map((tag) => (
+                        <span class="badge badge-tag">{tag}</span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div class="related-arrow">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+              </div>
+            </a>
+          </article>
+        );
+      })
+    }
+  </div>
+</aside>
+
+<style>
+  .related-posts {
+    margin: 4rem 0 2rem;
+    padding: 2.5rem;
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .related-posts {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      border-color: #334155;
+    }
+  }
+
+  .related-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #e2e8f0;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .related-header {
+      border-bottom-color: #334155;
+    }
+  }
+
+  .related-icon {
+    width: 1.75rem;
+    height: 1.75rem;
+    color: #3b82f6; /* blue-500 */
+    flex-shrink: 0;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .related-icon {
+      color: #60a5fa; /* blue-400 */
+    }
+  }
+
+  .related-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #0f172a; /* slate-900 */
+    margin: 0;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .related-title {
+      color: #f1f5f9; /* slate-100 */
+    }
+  }
+
+  .related-grid {
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .related-grid {
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+  }
+
+  .related-card {
+    position: relative;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.3s ease-in-out;
+    border: 1px solid #e2e8f0;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .related-card {
+      background: #1e293b; /* slate-800 */
+      border-color: #334155; /* slate-700 */
+    }
+  }
+
+  .related-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    border-color: #3b82f6; /* blue-500 */
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .related-card:hover {
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      border-color: #60a5fa; /* blue-400 */
+    }
+  }
+
+  .related-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+    padding: 1.25rem;
+    gap: 1rem;
+  }
+
+  .related-content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .related-image-container {
+    width: 100%;
+    height: 160px;
+    margin-bottom: 1rem;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .related-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .related-card:hover .related-image {
+    transform: scale(1.05);
+  }
+
+  .related-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .related-post-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #0f172a; /* slate-900 */
+    margin: 0;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .related-post-title {
+      color: #f1f5f9; /* slate-100 */
+    }
+  }
+
+  .related-description {
+    font-size: 0.875rem;
+    color: #64748b; /* slate-500 */
+    margin: 0;
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .related-description {
+      color: #94a3b8; /* slate-400 */
+    }
+  }
+
+  .related-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    color: #64748b; /* slate-500 */
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .related-meta {
+      color: #94a3b8; /* slate-400 */
+    }
+  }
+
+  .related-date,
+  .related-reading-time {
+    font-family: monospace;
+  }
+
+  .meta-separator {
+    color: #cbd5e1; /* slate-300 */
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .meta-separator {
+      color: #475569; /* slate-600 */
+    }
+  }
+
+  .related-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 0.25rem 0.625rem;
+    border-radius: 12px;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+  }
+
+  .badge-category {
+    background: #dbeafe; /* blue-100 */
+    color: #1e40af; /* blue-800 */
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .badge-category {
+      background: #1e3a8a; /* blue-900 */
+      color: #93c5fd; /* blue-300 */
+    }
+  }
+
+  .badge-tag {
+    background: #f3e8ff; /* purple-100 */
+    color: #6b21a8; /* purple-800 */
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .badge-tag {
+      background: #581c87; /* purple-900 */
+      color: #d8b4fe; /* purple-300 */
+    }
+  }
+
+  .related-arrow {
+    flex-shrink: 0;
+    width: 1.5rem;
+    height: 1.5rem;
+    color: #94a3b8; /* slate-400 */
+    transition: all 0.3s ease-in-out;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .related-arrow {
+      color: #64748b; /* slate-500 */
+    }
+  }
+
+  .related-card:hover .related-arrow {
+    color: #3b82f6; /* blue-500 */
+    transform: translateX(4px);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .related-card:hover .related-arrow {
+      color: #60a5fa; /* blue-400 */
+    }
+  }
+
+  /* Mobile adjustments */
+  @media (max-width: 640px) {
+    .related-posts {
+      padding: 1.5rem;
+      margin: 3rem -1rem 1rem;
+      border-radius: 0;
+      border-left: none;
+      border-right: none;
+    }
+
+    .related-title {
+      font-size: 1.25rem;
+    }
+
+    .related-link {
+      padding: 1rem;
+    }
+
+    .related-image-container {
+      height: 120px;
+    }
+  }
+</style>
