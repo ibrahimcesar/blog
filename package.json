@@ -24,6 +24,7 @@
     "subfont": "^7.2.1"
   },
   "dependencies": {
+    "astro-expressive-code": "^0.41.3",
     "hast": "^1.0.0",
     "hastscript": "^9.0.1",
     "rehype-autolink-headings": "^7.1.0",

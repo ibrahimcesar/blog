@@ -2,6 +2,7 @@ import { defineConfig } from "astro/config";
 
 import tailwind from "@astrojs/tailwind";
 import sitemap from "@astrojs/sitemap";
+import expressiveCode from "astro-expressive-code";
 
 import { h } from 'hastscript';
 
@@ -79,6 +80,18 @@ export default defineConfig({
   site: SITE.domain,
 
   integrations: [
+    expressiveCode({
+      themes: ['github-dark', 'github-light'],
+      defaultProps: {
+        wrap: true,
+        showLineNumbers: false,
+      },
+      styleOverrides: {
+        borderRadius: '0.5rem',
+        borderWidth: '1px',
+      },
+      useDarkModeMediaQuery: true,
+    }),
     tailwind({
       config: {
         applyBaseStyles: false,
