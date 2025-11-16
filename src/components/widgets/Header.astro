@@ -1,5 +1,6 @@
 ---
 import { IconSun, IconGithub, IconMenu, IconRSS } from "~/components/icons";
+import IconSearch from "~/components/icons/IconSearch.astro";
 import Logo from "~/components/widgets/Logo.astro";
 import Avatar from "~/components/widgets/Avatar.astro";
 const {} = Astro.props;
@@ -50,7 +51,14 @@ const {} = Astro.props;
             >Talks
           </a>
         </li>
-          <li>
+        <li>
+          <a
+            class="font-medium hover:text-gray-900 dark:hover:text-white px-4 py-3 flex items-center transition duration-150 ease-in-out"
+            href="/tags"
+            >Tags
+          </a>
+        </li>
+        <li>
           <a
             class="font-medium hover:text-gray-900 dark:hover:text-white px-4 py-3 flex items-center transition duration-150 ease-in-out"
             href="/whoiam"
@@ -72,6 +80,14 @@ const {} = Astro.props;
         class="md:self-center flex items-center mb-4 md:mb-0"
       >
         <div class="hidden items-center mr-3 md:flex">
+          <a
+            class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 inline-flex items-center"
+            aria-label="Search"
+            href="/search"
+            title="Search posts"
+          >
+            <IconSearch class="w-5 h-5" />
+          </a>
           <button
             type="button"
             class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 inline-flex items-center"
