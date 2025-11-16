@@ -1,6 +1,6 @@
 ---
 import { SITE } from "~/config.mjs";
-import { getPosts } from "~/utils/getPostsCollection";
+import { getPosts, getPostsBySeries } from "~/utils/getPostsCollection";
 import { findImage } from "~/utils/findImage";
 import { getTableOfContents } from "~/utils/getTableOfContents";
 import { render } from 'astro:content';
@@ -25,6 +25,11 @@ const toc = post.data.tableOfContents !== false
   ? await getTableOfContents(post)
   : [];
 
+// Get series posts if this post is part of a series
+const seriesPosts = post.data.series
+  ? await getPostsBySeries(post.data.series)
+  : [];
+
 const title = `${post.data.title} — ${SITE.name}`;
 const lang = post.data.language ? "en" : null;
 const description = post.data.description;
@@ -45,7 +50,7 @@ const image = await findImage(post.data.image);
   }}
 >
   <main>
-    <BlogPost post={post} image={image} toc={toc}>
+    <BlogPost post={post} image={image} toc={toc} seriesPosts={seriesPosts}>
       <Content />
     </BlogPost>
   </main>

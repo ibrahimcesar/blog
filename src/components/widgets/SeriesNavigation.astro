@@ -1,0 +1,390 @@
+---
+import type { Post } from "~/utils/getPostsCollection";
+
+interface Props {
+  currentPost: Post;
+  seriesPosts: Post[];
+  seriesName: string;
+}
+
+const { currentPost, seriesPosts, seriesName } = Astro.props;
+
+// Find current post index
+const currentIndex = seriesPosts.findIndex((p) => p.slug === currentPost.slug);
+const totalPosts = seriesPosts.length;
+
+// Get previous and next posts
+const previousPost = currentIndex > 0 ? seriesPosts[currentIndex - 1] : null;
+const nextPost = currentIndex < totalPosts - 1 ? seriesPosts[currentIndex + 1] : null;
+
+// Don't render if this is the only post in the series
+if (totalPosts <= 1) {
+  return null;
+}
+
+const isEnglish = currentPost.data.language === "en";
+---
+
+<nav class="series-nav" aria-label="Series Navigation">
+  <div class="series-header">
+    <div class="series-badge">
+      <svg
+        class="series-icon"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+      </svg>
+      <span class="series-label">{isEnglish ? "Series" : "Série"}</span>
+    </div>
+    <h3 class="series-title">{seriesName}</h3>
+    <p class="series-progress">
+      {isEnglish ? "Part" : "Parte"} {currentIndex + 1} {isEnglish ? "of" : "de"} {totalPosts}
+    </p>
+  </div>
+
+  <div class="series-posts">
+    <ol class="series-list">
+      {
+        seriesPosts.map((post, index) => {
+          const isCurrent = post.slug === currentPost.slug;
+          const isCompleted = index < currentIndex;
+
+          return (
+            <li class={`series-item ${isCurrent ? "current" : ""} ${isCompleted ? "completed" : ""}`}>
+              {isCurrent ? (
+                <span class="series-link current" aria-current="page">
+                  <span class="series-number">{index + 1}</span>
+                  <span class="series-post-title">{post.data.title}</span>
+                  <span class="current-indicator">
+                    {isEnglish ? "(You are here)" : "(Você está aqui)"}
+                  </span>
+                </span>
+              ) : (
+                <a href={`/blog/${post.slug}`} class="series-link">
+                  <span class="series-number">{index + 1}</span>
+                  <span class="series-post-title">{post.data.title}</span>
+                  {isCompleted && (
+                    <svg
+                      class="completed-icon"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  )}
+                </a>
+              )}
+            </li>
+          );
+        })
+      }
+    </ol>
+  </div>
+
+  <div class="series-nav-buttons">
+    {
+      previousPost ? (
+        <a href={`/blog/${previousPost.slug}`} class="nav-button prev">
+          <svg
+            class="nav-icon"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+          <div class="nav-content">
+            <span class="nav-label">{isEnglish ? "Previous" : "Anterior"}</span>
+            <span class="nav-title">{previousPost.data.title}</span>
+          </div>
+        </a>
+      ) : (
+        <div class="nav-button prev disabled">
+          <svg
+            class="nav-icon"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+          <div class="nav-content">
+            <span class="nav-label">{isEnglish ? "No previous post" : "Sem post anterior"}</span>
+          </div>
+        </div>
+      )
+    }
+
+    {
+      nextPost ? (
+        <a href={`/blog/${nextPost.slug}`} class="nav-button next">
+          <div class="nav-content">
+            <span class="nav-label">{isEnglish ? "Next" : "Próximo"}</span>
+            <span class="nav-title">{nextPost.data.title}</span>
+          </div>
+          <svg
+            class="nav-icon"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </a>
+      ) : (
+        <div class="nav-button next disabled">
+          <div class="nav-content">
+            <span class="nav-label">{isEnglish ? "No next post" : "Sem próximo post"}</span>
+          </div>
+          <svg
+            class="nav-icon"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </div>
+      )
+    }
+  </div>
+</nav>
+
+<style>
+  .series-nav {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 12px;
+    padding: 2rem;
+    margin: 3rem 0;
+    color: white;
+    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+  }
+
+  .series-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .series-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .series-icon {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .series-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0.5rem 0;
+    color: white;
+  }
+
+  .series-progress {
+    font-size: 0.875rem;
+    opacity: 0.9;
+    margin: 0;
+  }
+
+  .series-posts {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .series-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .series-item {
+    position: relative;
+  }
+
+  .series-link {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.875rem 1rem;
+    border-radius: 6px;
+    text-decoration: none;
+    color: white;
+    transition: all 0.2s ease-in-out;
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .series-link:not(.current):hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateX(4px);
+  }
+
+  .series-link.current {
+    background: rgba(255, 255, 255, 0.25);
+    font-weight: 600;
+    cursor: default;
+  }
+
+  .series-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    font-weight: 700;
+    font-size: 0.875rem;
+    flex-shrink: 0;
+  }
+
+  .series-item.current .series-number {
+    background: white;
+    color: #667eea;
+  }
+
+  .series-item.completed .series-number {
+    background: rgba(34, 197, 94, 0.3); /* green-500 with opacity */
+  }
+
+  .series-post-title {
+    flex: 1;
+    font-size: 0.9375rem;
+  }
+
+  .current-indicator {
+    font-size: 0.75rem;
+    opacity: 0.8;
+    font-style: italic;
+  }
+
+  .completed-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    color: #22c55e; /* green-500 */
+    flex-shrink: 0;
+  }
+
+  .series-nav-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  @media (max-width: 640px) {
+    .series-nav-buttons {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .nav-button {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    text-decoration: none;
+    color: white;
+    transition: all 0.2s ease-in-out;
+    border: 2px solid transparent;
+  }
+
+  .nav-button:not(.disabled):hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: scale(1.02);
+  }
+
+  .nav-button.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .nav-button.prev {
+    justify-content: flex-start;
+  }
+
+  .nav-button.next {
+    justify-content: flex-end;
+    text-align: right;
+  }
+
+  .nav-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    flex-shrink: 0;
+  }
+
+  .nav-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .nav-label {
+    font-size: 0.75rem;
+    opacity: 0.8;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+  }
+
+  .nav-title {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  /* Dark mode adjustments (series nav already has dark background) */
+  @media (prefers-color-scheme: dark) {
+    .series-nav {
+      box-shadow: 0 10px 25px rgba(102, 126, 234, 0.2);
+    }
+  }
+</style>
