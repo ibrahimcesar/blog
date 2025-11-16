@@ -21,6 +21,9 @@ pnpm-debug.log*
 # macOS-specific files
 .DS_Store
 
+# Claude AI context file
+CLAUDE.md
+
 # Logs
 logs
 *.log

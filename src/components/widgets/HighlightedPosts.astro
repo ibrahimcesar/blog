@@ -1,11 +1,9 @@
 ---
 import HighlightedPost from "./HighlightedPost.astro";
 
-import { getPosts } from "~/utils/getPosts";
+import { getFeaturedPosts } from "~/utils/getPostsCollection";
 
-const posts = await getPosts();
-
-const featured = posts.filter(post => post.featured)
+const featured = await getFeaturedPosts();
 
 const { } = Astro.props;
 ---

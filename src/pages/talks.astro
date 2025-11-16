@@ -2,9 +2,9 @@
 import Layout from "~/layouts/PageLayout.astro";
 import TalkListItem from "~/components/widgets/TalkListItem.astro";
 
-import { getTalks } from "~/utils/getTalks";
+import { getTalks } from "~/utils/getTalksCollection";
 
-const page = await getTalks("talks");
+const page = await getTalks();
 
 const { } = Astro.props;
 ---
@@ -21,9 +21,9 @@ const { } = Astro.props;
   </header>
   <ul>
     {
-      page.map((post) => (
+      page.map((talk) => (
         <li class="mb-10 md:mb-16">
-          <TalkListItem post={post} />
+          <TalkListItem talk={talk} />
         </li>
       ))
     }

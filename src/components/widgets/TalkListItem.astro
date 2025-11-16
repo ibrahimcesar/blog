@@ -1,5 +1,8 @@
 ---
-const { post } = Astro.props;
+import { render } from 'astro:content';
+
+const { talk } = Astro.props;
+const { Content } = await render(talk);
 ---
 
 <article
@@ -7,19 +10,19 @@ const { post } = Astro.props;
 >
     <header>
       <h2 class="text-xl sm:text-2xl font-bold mb-2">
-          <span>{new Date().toISOString() >= post.pubDate ? "✅": "🌟 Inscreva-se!"}</span>
+          <span>{new Date().toISOString() >= talk.data.pubDate.toISOString() ? "✅": "🌟 Inscreva-se!"}</span>
           {
-            post.eventDate
+            talk.data.eventDate
             && (
-              <span class="font-monotext-2xl sm:text-3xl talk-date">🗓️ {post.eventDate}</span>
+              <span class="font-monotext-2xl sm:text-3xl talk-date">🗓️ {talk.data.eventDate}</span>
             )
           }
-          {post.title}
+          {talk.data.title}
       </h2>
     </header>
 
     <div class="text-md sm:text-lg flex-grow">
-      <Fragment set:html={post.body} />
+      <Content />
     </div>
     <footer class="flex items-center mt-4">
     </footer>

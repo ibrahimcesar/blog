@@ -2,8 +2,8 @@
 const { post } = Astro.props;
 
 const url = post.slug;
-const title = post.title;
-const description = post.description;
+const title = post.data.title;
+const description = post.data.description;
 ---
 
 <section aria-label="share this post" class="text-center mt-4">

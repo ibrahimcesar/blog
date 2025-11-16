@@ -4,7 +4,7 @@ import { findImage } from "~/utils/findImage";
 
 const { post } = Astro.props;
 
-const image = await findImage(post.image);
+const image = await findImage(post.data.image);
 ---
 
 <article
@@ -19,7 +19,7 @@ const image = await findImage(post.image);
         class="absolute inset-0 w-full h-full object-cover mb-6 rounded shadow-lg"
         widths={[400, 768]}
         sizes="(max-width: 767px) 400px, 768px"
-        alt={post.description}
+        alt={post.data.description}
         aspectRatio={1}
       />
     </div>
@@ -31,19 +31,19 @@ const image = await findImage(post.image);
           class="hover:text-blue-600 underline underline-offset-4 decoration-1 decoration-dotted transition ease-in duration-200"
           href={`/blog/${post.slug}`}
         >
-          {post.title}
+          {post.data.title}
         </a>
       </h2>
     </header>
     <p class="text-md sm:text-lg flex-grow">
-      {post.excerpt || post.description}
+      {post.data.excerpt || post.data.description}
     </p>
     <footer class="flex items-center mt-4">
       <div>
         <span class="text-gray-500 dark:text-slate-400">
-          <time datetime={post.pubDate}>
+          <time datetime={post.data.pubDate.toISOString()}>
             {
-              new Date(post.pubDate).toLocaleDateString("en-us", {
+              post.data.pubDate.toLocaleDateString("en-us", {
                 year: "numeric",
                 month: "short",
                 day: "numeric",

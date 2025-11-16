@@ -5,8 +5,8 @@ import { findImage } from "~/utils/findImage";
 
 const { post } = Astro.props;
 
-const image = await findImage(post.image);
-const isEnglish = post.language ? "en" : null;
+const image = await findImage(post.data.image);
+const isEnglish = post.data.language ? "en" : null;
 const classLanguage = isEnglish ? "en" : "br";
 ---
 
@@ -14,13 +14,13 @@ const classLanguage = isEnglish ? "en" : "br";
 
    <a
       href={`/blog/${post.slug}`}
-      title={post.title}>
+      title={post.data.title}>
     <Picture
             src={image}
             class="object-cover w-full h-64 mb-6 rounded shadow-lg bg-gray-400 dark:bg-slate-700"
             widths={[400, 768]}
             sizes="(max-width: 767px) 400px, 768px"
-            alt={post.description}
+            alt={post.data.description}
     />
   </a>
   <span class={`font-mono text-xs font-semibold uppercase ${classLanguage}`}>📝 {isEnglish ? "en" : "pt-br"}</span>
@@ -29,11 +29,11 @@ const classLanguage = isEnglish ? "en" : "br";
       href={`/blog/${post.slug}`}
       class="hover:text-blue-600 underline underline-offset-4 decoration-1 decoration-dotted transition ease-in duration-200"
     >
-      {post.title}
+      {post.data.title}
     </a>
     </h3>
 
     <p class="text-gray-700 dark:text-gray-400">
-      {post.description}
+      {post.data.description}
     </p>
 </div>
