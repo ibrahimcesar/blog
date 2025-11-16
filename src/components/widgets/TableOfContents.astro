@@ -15,36 +15,109 @@ if (!headings || headings.length === 0) {
 ---
 
 <nav class="toc" aria-label="Table of Contents">
-  <div class="toc-header">
-    <h2 class="toc-title">{title}</h2>
+  <button class="toc-toggle" aria-label="Toggle Table of Contents" aria-expanded="false">
+    <svg class="toc-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="8" y1="6" x2="21" y2="6"></line>
+      <line x1="8" y1="12" x2="21" y2="12"></line>
+      <line x1="8" y1="18" x2="21" y2="18"></line>
+      <line x1="3" y1="6" x2="3.01" y2="6"></line>
+      <line x1="3" y1="12" x2="3.01" y2="12"></line>
+      <line x1="3" y1="18" x2="3.01" y2="18"></line>
+    </svg>
+    <span class="toc-toggle-text">{title}</span>
+  </button>
+  <div class="toc-content">
+    <div class="toc-header">
+      <h2 class="toc-title">{title}</h2>
+    </div>
+    <ul class="toc-list">
+      {
+        headings.map((heading) => (
+          <li class={`toc-item toc-depth-${heading.depth}`}>
+            <a href={`#${heading.slug}`} class="toc-link">
+              {heading.text}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
   </div>
-  <ul class="toc-list">
-    {
-      headings.map((heading) => (
-        <li class={`toc-item toc-depth-${heading.depth}`}>
-          <a href={`#${heading.slug}`} class="toc-link">
-            {heading.text}
-          </a>
-        </li>
-      ))
-    }
-  </ul>
 </nav>
 
 <style>
   .toc {
-    background: #f8fafc; /* slate-50 */
-    border: 1px solid #e2e8f0; /* slate-200 */
-    border-radius: 8px;
-    padding: 1.5rem;
-    margin: 2rem 0;
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 50;
+    max-width: 320px;
+  }
+
+  .toc-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #3b82f6; /* blue-500 */
+    color: white;
+    border: none;
+    border-radius: 24px;
+    padding: 0.75rem 1.25rem;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease-in-out;
+    font-weight: 600;
+    font-size: 0.875rem;
+  }
+
+  .toc-toggle:hover {
+    background: #2563eb; /* blue-600 */
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
   }
 
   @media (prefers-color-scheme: dark) {
-    .toc {
+    .toc-toggle {
+      background: #60a5fa; /* blue-400 */
+      color: #0f172a; /* slate-900 */
+    }
+
+    .toc-toggle:hover {
+      background: #3b82f6; /* blue-500 */
+    }
+  }
+
+  .toc-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    flex-shrink: 0;
+  }
+
+  .toc-content {
+    display: none;
+    background: #ffffff;
+    border: 1px solid #e2e8f0; /* slate-200 */
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    max-height: calc(100vh - 12rem);
+    overflow-y: auto;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .toc-content {
       background: #1e293b; /* slate-800 */
       border-color: #334155; /* slate-700 */
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
     }
+  }
+
+  .toc.expanded .toc-content {
+    display: block;
+  }
+
+  .toc.expanded .toc-toggle {
+    border-radius: 12px;
   }
 
   .toc-header {
@@ -90,6 +163,7 @@ if (!headings || headings.length === 0) {
     transition: all 0.2s ease-in-out;
     border-left: 2px solid transparent;
     padding-left: 0.75rem;
+    font-size: 0.875rem;
   }
 
   .toc-link:hover {
@@ -118,25 +192,25 @@ if (!headings || headings.length === 0) {
 
   .toc-depth-3 .toc-link {
     padding-left: 1.5rem;
-    font-size: 0.9375rem;
+    font-size: 0.8125rem;
   }
 
   .toc-depth-4 .toc-link {
     padding-left: 2.25rem;
-    font-size: 0.875rem;
+    font-size: 0.75rem;
   }
 
   .toc-depth-5 .toc-link {
     padding-left: 3rem;
-    font-size: 0.875rem;
+    font-size: 0.75rem;
   }
 
   .toc-depth-6 .toc-link {
     padding-left: 3.75rem;
-    font-size: 0.8125rem;
+    font-size: 0.6875rem;
   }
 
-  /* Active link highlighting (can be enhanced with JavaScript) */
+  /* Active link highlighting */
   .toc-link:focus {
     outline: 2px solid #3b82f6; /* blue-500 */
     outline-offset: 2px;
@@ -149,35 +223,45 @@ if (!headings || headings.length === 0) {
     }
   }
 
-  /* Responsive: stick to top on larger screens */
-  @media (min-width: 1280px) {
-    .toc {
-      position: sticky;
-      top: 5rem;
-      max-height: calc(100vh - 8rem);
-      overflow-y: auto;
+  /* Custom scrollbar for ToC */
+  .toc-content::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .toc-content::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .toc-content::-webkit-scrollbar-thumb {
+    background: #cbd5e1; /* slate-300 */
+    border-radius: 4px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .toc-content::-webkit-scrollbar-thumb {
+      background: #475569; /* slate-600 */
     }
   }
 
-  /* Custom scrollbar for ToC on large screens */
-  @media (min-width: 1280px) {
-    .toc::-webkit-scrollbar {
-      width: 4px;
+  /* Mobile adjustments */
+  @media (max-width: 640px) {
+    .toc {
+      bottom: 1rem;
+      right: 1rem;
+      max-width: calc(100vw - 2rem);
     }
 
-    .toc::-webkit-scrollbar-track {
-      background: transparent;
+    .toc-toggle-text {
+      display: none;
     }
 
-    .toc::-webkit-scrollbar-thumb {
-      background: #cbd5e1; /* slate-300 */
-      border-radius: 4px;
+    .toc-toggle {
+      padding: 0.75rem;
+      border-radius: 50%;
     }
 
-    @media (prefers-color-scheme: dark) {
-      .toc::-webkit-scrollbar-thumb {
-        background: #475569; /* slate-600 */
-      }
+    .toc.expanded .toc-toggle {
+      border-radius: 50%;
     }
   }
 </style>
@@ -185,8 +269,44 @@ if (!headings || headings.length === 0) {
 <script>
   // Add active state to current section in viewport
   function initTableOfContents() {
+    const toc = document.querySelector('.toc');
+    const tocToggle = document.querySelector('.toc-toggle');
     const tocLinks = document.querySelectorAll('.toc-link');
-    if (!tocLinks.length) return;
+
+    if (!tocLinks.length || !tocToggle || !toc) return;
+
+    // Toggle ToC visibility
+    tocToggle.addEventListener('click', () => {
+      const isExpanded = toc.classList.toggle('expanded');
+      tocToggle.setAttribute('aria-expanded', isExpanded.toString());
+    });
+
+    // Close ToC when clicking a link
+    tocLinks.forEach((link) => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const href = link.getAttribute('href');
+        if (href && href.startsWith('#')) {
+          const target = document.querySelector(href);
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            // Update URL without triggering navigation
+            history.pushState(null, '', href);
+            // Close ToC after clicking a link
+            toc.classList.remove('expanded');
+            tocToggle.setAttribute('aria-expanded', 'false');
+          }
+        }
+      });
+    });
+
+    // Close ToC when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!toc.contains(e.target as Node)) {
+        toc.classList.remove('expanded');
+        tocToggle.setAttribute('aria-expanded', 'false');
+      }
+    });
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -218,22 +338,6 @@ if (!headings || headings.length === 0) {
         }
       }
     });
-
-    // Smooth scroll when clicking ToC links
-    tocLinks.forEach((link) => {
-      link.addEventListener('click', (e) => {
-        e.preventDefault();
-        const href = link.getAttribute('href');
-        if (href && href.startsWith('#')) {
-          const target = document.querySelector(href);
-          if (target) {
-            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            // Update URL without triggering navigation
-            history.pushState(null, '', href);
-          }
-        }
-      });
-    });
   }
 
   // Initialize on page load
@@ -242,6 +346,9 @@ if (!headings || headings.length === 0) {
   } else {
     window.addEventListener('DOMContentLoaded', initTableOfContents);
   }
+
+  // Re-initialize on Astro page transitions
+  document.addEventListener('astro:page-load', initTableOfContents);
 </script>
 
 <style is:global>
