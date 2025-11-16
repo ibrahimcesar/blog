@@ -1,6 +1,6 @@
 ---
 import { SITE } from "~/config.mjs";
-import { getPosts, getPostsBySeries } from "~/utils/getPostsCollection";
+import { getPosts, getPostsBySeries, getRelatedPosts } from "~/utils/getPostsCollection";
 import { findImage } from "~/utils/findImage";
 import { getTableOfContents } from "~/utils/getTableOfContents";
 import { render } from 'astro:content';
@@ -30,6 +30,9 @@ const seriesPosts = post.data.series
   ? await getPostsBySeries(post.data.series)
   : [];
 
+// Get related posts (limit to 3)
+const relatedPosts = await getRelatedPosts(post, 3);
+
 const title = `${post.data.title} — ${SITE.name}`;
 const lang = post.data.language ? "en" : null;
 const description = post.data.description;
@@ -50,7 +53,7 @@ const image = await findImage(post.data.image);
   }}
 >
   <main>
-    <BlogPost post={post} image={image} toc={toc} seriesPosts={seriesPosts}>
+    <BlogPost post={post} image={image} toc={toc} seriesPosts={seriesPosts} relatedPosts={relatedPosts}>
       <Content />
     </BlogPost>
   </main>
