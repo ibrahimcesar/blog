@@ -91,29 +91,9 @@ const {} = Astro.props;
             AWS Certifications
           </div>
 
-          <!-- Professional & Specialty Certifications (Always Visible) -->
+          <!-- Visible Certifications -->
           <div class="mb-3">
-            {certifications.alwaysVisiblePro.map((cert) => (
-              <div class="inline-block">
-                <a
-                  href={cert.href}
-                  target="_blank"
-                  title={cert.title}
-                  rel="noopener noreferrer"
-                >
-                  <img
-                    src={cert.src}
-                    alt={cert.title}
-                    width="100px"
-                  >
-                </a>
-              </div>
-            ))}
-          </div>
-
-          <!-- Associate Certifications (Always Visible) -->
-          <div class="mb-3">
-            {certifications.alwaysVisibleAss.map((cert) => (
+            {certifications.visible.map((cert) => (
               <div class="inline-block">
                 <a
                   href={cert.href}
@@ -151,16 +131,28 @@ const {} = Astro.props;
             ))}
           </div>
 
-          <!-- Show More/Less Button -->
-          <button
-            id="toggle-badges"
-            class="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 underline transition duration-150 ease-in-out mt-2"
-            aria-expanded="false"
-            aria-controls="additional-badges"
-            data-original-text={`Show ${certifications.additional.length} more badges`}
-          >
-            Show {certifications.additional.length} more badges
-          </button>
+          <!-- Show More/Less Button and Credly Link -->
+          <div class="mt-2">
+            <button
+              id="toggle-badges"
+              class="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 underline transition duration-150 ease-in-out"
+              aria-expanded="false"
+              aria-controls="additional-badges"
+              data-original-text={`Show ${certifications.additional.length} more badges`}
+            >
+              Show {certifications.additional.length} more badges
+            </button>
+            <span class="text-sm text-gray-600 dark:text-gray-400 mx-2">·</span>
+            <a
+              href="https://www.credly.com/users/ibrahimcesar"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 underline transition duration-150 ease-in-out"
+              title="View all my badges on Credly"
+            >
+              <span class="external">View all 54 badges on Credly</span>
+            </a>
+          </div>
         </div>
       </div>
     </div>
