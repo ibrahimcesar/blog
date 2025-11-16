@@ -1,0 +1,72 @@
+---
+import Layout from "~/layouts/PageLayout.astro";
+import { SITE } from "~/config.mjs";
+import { getTagCounts } from "~/utils/getPostsCollection";
+
+const tagCounts = await getTagCounts();
+const sortedTags = Object.entries(tagCounts).sort((a, b) => b[1] - a[1]);
+
+const title = `Tags — ${SITE.name}`;
+const description = "Browse posts by topic. Explore cloud computing, AWS, serverless, and software development content.";
+const canonical = new URL("tags", Astro.site);
+---
+
+<Layout meta={{ title, description, canonical }}>
+  <main>
+    <section class="px-4 sm:px-6 py-12 sm:py-16 lg:py-20 mx-auto max-w-4xl">
+      <header class="mb-12">
+        <h1
+          class="text-center text-5xl md:text-6xl font-bold leading-tighter tracking-tighter mb-4"
+        >
+          📑 Browse by Tag
+        </h1>
+        <p class="text-center text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+          Explore {sortedTags.length} topics across {Object.values(tagCounts).reduce((a, b) => a + b, 0)} posts
+        </p>
+      </header>
+
+      <div class="flex flex-wrap gap-4 justify-center">
+        {
+          sortedTags.map(([tag, count]) => {
+            // Calculate size based on count (min 1rem, max 2.5rem)
+            const minSize = 1;
+            const maxSize = 2.5;
+            const maxCount = Math.max(...Object.values(tagCounts));
+            const size = minSize + ((count / maxCount) * (maxSize - minSize));
+
+            return (
+              <a
+                href={`/tags/${tag.toLowerCase()}`}
+                class="inline-flex items-center gap-2 px-4 py-2 rounded-full
+                       bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20
+                       border border-blue-200 dark:border-blue-800
+                       hover:from-blue-100 hover:to-purple-100 dark:hover:from-blue-900/40 dark:hover:to-purple-900/40
+                       hover:scale-105 hover:shadow-md
+                       transition-all duration-200
+                       group"
+                style={`font-size: ${size}rem;`}
+                title={`${count} post${count !== 1 ? 's' : ''}`}
+              >
+                <span class="font-semibold text-blue-700 dark:text-blue-300 group-hover:text-purple-700 dark:group-hover:text-purple-300">
+                  {tag}
+                </span>
+                <span class="text-xs font-mono px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-200">
+                  {count}
+                </span>
+              </a>
+            );
+          })
+        }
+      </div>
+
+      <div class="mt-16 text-center">
+        <a
+          href="/blog"
+          class="inline-flex items-center gap-2 text-blue-600 dark:text-blue-400 hover:underline"
+        >
+          ← Back to all posts
+        </a>
+      </div>
+    </section>
+  </main>
+</Layout>

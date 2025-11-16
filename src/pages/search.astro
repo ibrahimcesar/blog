@@ -1,0 +1,42 @@
+---
+import Layout from "~/layouts/PageLayout.astro";
+import Search from "~/components/widgets/Search.astro";
+import { SITE } from "~/config.mjs";
+
+const title = `Search — ${SITE.name}`;
+const description = "Search through all blog posts and talks";
+const canonical = new URL("search", Astro.site);
+---
+
+<Layout meta={{ title, description, canonical }}>
+  <main>
+    <section class="px-4 sm:px-6 py-12 sm:py-16 lg:py-20 mx-auto max-w-5xl">
+      <header class="mb-12 text-center">
+        <h1
+          class="text-5xl md:text-6xl font-bold leading-tighter tracking-tighter mb-4"
+        >
+          🔍 Search
+        </h1>
+        <p class="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+          Find posts about cloud, AWS, serverless, and more
+        </p>
+      </header>
+
+      <Search />
+
+      <div class="mt-12 text-center text-sm text-gray-500 dark:text-gray-400">
+        <p>
+          Search powered by
+          <a
+            href="https://pagefind.app/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-blue-600 dark:text-blue-400 hover:underline"
+          >
+            Pagefind
+          </a>
+        </p>
+      </div>
+    </section>
+  </main>
+</Layout>

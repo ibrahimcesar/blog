@@ -1,0 +1,87 @@
+---
+import { getTagCounts } from "~/utils/getPostsCollection";
+
+const { limit, variant = "compact" } = Astro.props;
+
+const tagCounts = await getTagCounts();
+let sortedTags = Object.entries(tagCounts).sort((a, b) => b[1] - a[1]);
+
+// Apply limit if specified
+if (limit) {
+  sortedTags = sortedTags.slice(0, limit);
+}
+
+const maxCount = Math.max(...Object.values(tagCounts));
+---
+
+{variant === "cloud" ? (
+  <!-- Tag Cloud Style - varying sizes -->
+  <div class="flex flex-wrap gap-3 justify-center">
+    {
+      sortedTags.map(([tag, count]) => {
+        const minSize = 0.875; // text-sm
+        const maxSize = 1.5;   // text-2xl
+        const size = minSize + ((count / maxCount) * (maxSize - minSize));
+
+        return (
+          <a
+            href={`/tags/${tag.toLowerCase()}`}
+            class="inline-block px-3 py-1 rounded-lg
+                   bg-gray-100 dark:bg-gray-800
+                   hover:bg-blue-100 dark:hover:bg-blue-900/30
+                   text-gray-700 dark:text-gray-300
+                   hover:text-blue-700 dark:hover:text-blue-400
+                   transition-colors duration-200"
+            style={`font-size: ${size}rem;`}
+            title={`${count} post${count !== 1 ? 's' : ''}`}
+          >
+            {tag}
+          </a>
+        );
+      })
+    }
+  </div>
+) : variant === "pills" ? (
+  <!-- Pills Style - uniform size with badges -->
+  <div class="flex flex-wrap gap-2">
+    {
+      sortedTags.map(([tag, count]) => (
+        <a
+          href={`/tags/${tag.toLowerCase()}`}
+          class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm
+                 bg-blue-50 dark:bg-blue-900/20
+                 border border-blue-200 dark:border-blue-800
+                 hover:bg-blue-100 dark:hover:bg-blue-900/40
+                 text-blue-700 dark:text-blue-300
+                 hover:scale-105
+                 transition-all duration-200"
+          title={`${count} post${count !== 1 ? 's' : ''}`}
+        >
+          <span class="font-medium">{tag}</span>
+          <span class="text-xs px-1.5 py-0.5 rounded-full bg-blue-100 dark:bg-blue-900/50">
+            {count}
+          </span>
+        </a>
+      ))
+    }
+  </div>
+) : (
+  <!-- Compact Style - simple list -->
+  <div class="flex flex-wrap gap-2">
+    {
+      sortedTags.map(([tag, count]) => (
+        <a
+          href={`/tags/${tag.toLowerCase()}`}
+          class="inline-flex items-center gap-1 text-sm
+                 text-gray-600 dark:text-gray-400
+                 hover:text-blue-600 dark:hover:text-blue-400
+                 hover:underline underline-offset-2
+                 transition-colors duration-200"
+        >
+          <span>#{tag}</span>
+          <span class="text-xs text-gray-400 dark:text-gray-500">({count})</span>
+        </a>
+      ))
+    }
+  </div>
+)}

@@ -1,0 +1,83 @@
+---
+import Layout from "~/layouts/PageLayout.astro";
+import BlogListItem from "~/components/widgets/BlogListItem.astro";
+import { SITE } from "~/config.mjs";
+import { getAllTags, getPostsByTag } from "~/utils/getPostsCollection";
+
+export async function getStaticPaths() {
+  const allTags = await getAllTags();
+
+  return allTags.map((tag) => ({
+    params: { tag: tag.toLowerCase() },
+    props: { tag },
+  }));
+}
+
+const { tag } = Astro.props;
+const posts = await getPostsByTag(tag);
+
+const title = `Posts tagged "${tag}" — ${SITE.name}`;
+const description = `${posts.length} post${posts.length !== 1 ? 's' : ''} about ${tag}`;
+const canonical = new URL(`tags/${tag.toLowerCase()}`, Astro.site);
+---
+
+<Layout meta={{ title, description, canonical }}>
+  <main>
+    <section class="px-4 sm:px-6 py-12 sm:py-16 lg:py-20 mx-auto max-w-4xl">
+      <header class="mb-12">
+        <div class="text-center mb-4">
+          <a
+            href="/tags"
+            class="inline-flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400"
+          >
+            ← All tags
+          </a>
+        </div>
+
+        <h1
+          class="text-center text-4xl md:text-5xl font-bold leading-tighter tracking-tighter mb-4"
+        >
+          <span class="inline-flex items-center gap-3">
+            <span class="text-3xl">🏷️</span>
+            <span class="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              {tag}
+            </span>
+          </span>
+        </h1>
+
+        <p class="text-center text-lg text-gray-600 dark:text-gray-400">
+          {posts.length} post{posts.length !== 1 ? "s" : ""} tagged with <strong>{tag}</strong>
+        </p>
+      </header>
+
+      {posts.length === 0 ? (
+        <div class="text-center py-12">
+          <p class="text-xl text-gray-500 dark:text-gray-400">
+            No posts found with this tag.
+          </p>
+        </div>
+      ) : (
+        <div class="space-y-12">
+          {posts.map((post) => (
+            <BlogListItem post={post} />
+          ))}
+        </div>
+      )}
+
+      <div class="mt-16 text-center space-x-6">
+        <a
+          href="/tags"
+          class="inline-flex items-center gap-2 text-blue-600 dark:text-blue-400 hover:underline"
+        >
+          ← Browse all tags
+        </a>
+        <a
+          href="/blog"
+          class="inline-flex items-center gap-2 text-blue-600 dark:text-blue-400 hover:underline"
+        >
+          View all posts →
+        </a>
+      </div>
+    </section>
+  </main>
+</Layout>
