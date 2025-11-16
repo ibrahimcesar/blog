@@ -10,33 +10,47 @@ const { id = "search" } = Astro.props;
 <script>
   // Load Pagefind UI dynamically
   async function loadPagefind() {
-    const pagefind = await import("/pagefind/pagefind.js");
-    await pagefind.options({
-      excerptLength: 15,
-    });
+    try {
+      // Check if pagefind files exist (only available after build)
+      const pagefind = await import("/pagefind/pagefind.js");
+      await pagefind.options({
+        excerptLength: 15,
+      });
 
-    const { PagefindUI } = await import("/pagefind/pagefind-ui.js");
+      const { PagefindUI } = await import("/pagefind/pagefind-ui.js");
 
-    new PagefindUI({
-      element: "#pagefind__search",
-      showSubResults: true,
-      showImages: false,
-      excerptLength: 30,
-      resetStyles: false,
-      translations: {
-        placeholder: "Search posts...",
-        clear_search: "Clear",
-        load_more: "Load more results",
-        search_label: "Search this site",
-        filters_label: "Filters",
-        zero_results: "No results for [SEARCH_TERM]",
-        many_results: "[COUNT] results for [SEARCH_TERM]",
-        one_result: "[COUNT] result for [SEARCH_TERM]",
-        alt_search: "No results for [SEARCH_TERM]. Showing results for [DIFFERENT_TERM] instead",
-        search_suggestion: "No results for [SEARCH_TERM]. Try one of the following searches:",
-        searching: "Searching for [SEARCH_TERM]...",
-      },
-    });
+      new PagefindUI({
+        element: "#pagefind__search",
+        showSubResults: true,
+        showImages: false,
+        excerptLength: 30,
+        resetStyles: false,
+        translations: {
+          placeholder: "Search posts...",
+          clear_search: "Clear",
+          load_more: "Load more results",
+          search_label: "Search this site",
+          filters_label: "Filters",
+          zero_results: "No results for [SEARCH_TERM]",
+          many_results: "[COUNT] results for [SEARCH_TERM]",
+          one_result: "[COUNT] result for [SEARCH_TERM]",
+          alt_search: "No results for [SEARCH_TERM]. Showing results for [DIFFERENT_TERM] instead",
+          search_suggestion: "No results for [SEARCH_TERM]. Try one of the following searches:",
+          searching: "Searching for [SEARCH_TERM]...",
+        },
+      });
+    } catch (error) {
+      // Pagefind not available (dev mode), show friendly message
+      const searchEl = document.getElementById("pagefind__search");
+      if (searchEl) {
+        searchEl.innerHTML = `
+          <div style="text-align: center; padding: 2rem; color: var(--pagefind-ui-text);">
+            <p style="font-size: 1.125rem; margin-bottom: 1rem;">🔍 Search is only available in production builds</p>
+            <p style="font-size: 0.875rem; color: #6b7280;">Run <code style="background: #f3f4f6; padding: 0.25rem 0.5rem; border-radius: 0.25rem; font-family: monospace;">npm run build && npm run preview</code> to test search functionality</p>
+          </div>
+        `;
+      }
+    }
   }
 
   if (document.readyState === "complete") {
