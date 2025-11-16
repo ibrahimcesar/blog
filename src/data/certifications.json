@@ -38,9 +38,9 @@
       "src": "/certs/aws-certified-solutions-architect-associate.png"
     },
     {
-      "href": "https://www.credly.com/badges/d657610e-f06b-4c47-9ba5-b53edd895024/public_url",
-      "title": "AWS Certified Solutions Architect – Associate",
-      "src": "/certs/aws-certified-solutions-architect-associate.png"
+      "href": "https://www.credly.com/badges/81e155c6-e7d5-4a83-81ea-dd48672c74df/public_url",
+      "title": "AWS Certified AI Practitioner",
+      "src": "/certs/aws-certified-ai-practitioner.png"
     }
   ],
   "additional": [
@@ -68,11 +68,6 @@
       "href": "https://www.credly.com/badges/abca4112-7358-43f2-a23d-bf03760052a7/public_url",
       "title": "AWS Certified Cloud Practitioner",
       "src": "/certs/aws-certified-cloud-practitioner.png"
-    },
-    {
-      "href": "https://www.credly.com/badges/81e155c6-e7d5-4a83-81ea-dd48672c74df/public_url",
-      "title": "AWS Certified AI Practitioner",
-      "src": "/certs/aws-certified-ai-practitioner.png"
     }
   ]
 }
