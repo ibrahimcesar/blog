@@ -1,0 +1,74 @@
+# AWS Amplify Custom Headers Configuration
+# This file configures HTTP headers for optimal caching and security
+# Apply these settings in the Amplify Console under "Rewrites and redirects"
+
+customHeaders:
+  # Cache static assets (JS, CSS, images) for 1 year
+  # These files have content hashes in their names, so they're safe to cache long-term
+  - pattern: '/_astro/**'
+    headers:
+      - key: 'Cache-Control'
+        value: 'public, max-age=31536000, immutable'
+      - key: 'X-Content-Type-Options'
+        value: 'nosniff'
+
+  # Cache images, fonts, and other assets
+  - pattern: '/assets/**'
+    headers:
+      - key: 'Cache-Control'
+        value: 'public, max-age=31536000, immutable'
+      - key: 'X-Content-Type-Options'
+        value: 'nosniff'
+
+  # Cache Pagefind search index files
+  - pattern: '/pagefind/**'
+    headers:
+      - key: 'Cache-Control'
+        value: 'public, max-age=86400, must-revalidate'
+
+  # HTML pages: no cache (always fresh content)
+  - pattern: '**.html'
+    headers:
+      - key: 'Cache-Control'
+        value: 'public, max-age=0, must-revalidate'
+      - key: 'X-Frame-Options'
+        value: 'DENY'
+      - key: 'X-Content-Type-Options'
+        value: 'nosniff'
+      - key: 'Referrer-Policy'
+        value: 'strict-origin-when-cross-origin'
+      - key: 'Permissions-Policy'
+        value: 'camera=(), microphone=(), geolocation=()'
+
+  # RSS and sitemap: cache for 1 hour
+  - pattern: '/rss.xml'
+    headers:
+      - key: 'Cache-Control'
+        value: 'public, max-age=3600'
+      - key: 'Content-Type'
+        value: 'application/xml; charset=utf-8'
+
+  - pattern: '/sitemap*.xml'
+    headers:
+      - key: 'Cache-Control'
+        value: 'public, max-age=3600'
+      - key: 'Content-Type'
+        value: 'application/xml; charset=utf-8'
+
+  # Default fallback for all other files
+  - pattern: '**/*'
+    headers:
+      - key: 'X-Content-Type-Options'
+        value: 'nosniff'
+      - key: 'Referrer-Policy'
+        value: 'strict-origin-when-cross-origin'
+
+# Security headers for enhanced protection
+# These are automatically applied by Amplify but documented here for reference
+securityHeaders:
+  strictTransportSecurity:
+    override: false
+    value: 'max-age=31536000; includeSubDomains; preload'
+  contentSecurityPolicy:
+    override: false
+    value: "default-src 'self'; script-src 'self' 'unsafe-inline' https://giscus.app https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://www.google-analytics.com; frame-src https://giscus.app"
