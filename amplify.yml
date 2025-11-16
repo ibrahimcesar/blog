@@ -15,4 +15,3 @@ frontend:
     paths:
       - node_modules/**/*
       - .astro/**/*
-      - dist/_astro/**/*
