@@ -5,6 +5,8 @@ pubDate: "2021-03-11T10:50:00.000Z"
 image: ~/assets/images/tupi.jpg
 featured: true
 socialImage: "/features/brazil.jpg"
+category: "Technology & Society"
+tags: ["Language", "English", "Programming", "Education", "Career"]
 ---
 
 

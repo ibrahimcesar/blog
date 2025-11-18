@@ -6,6 +6,8 @@ image: ~/assets/images/sp.jpg
 pubDate: "2020-11-28T10:50:00.000Z"
 language: en
 socialImage: "/features/serverless-transformation.png"
+tags: ["Serverless", "AWS", "Transformation", "Case Study", "News"]
+category: "Serverless"
 ---
 
 > “Why is more important than how.”

@@ -1,10 +1,12 @@
 ---
-title: O que aprendi ao co-fundar uma startup da  “economia colaborativa” e por que saí dela
+title: O que aprendi ao co-fundar uma startup da  "economia colaborativa" e por que saí dela
 description: Ilusões perdidas
 featured: true
 pubDate: "2015-09-15T10:50:00.000Z"
 image: "~/assets/images/blumpa.jpeg"
 socialImage: "/features/blumpa.jpeg"
+category: "Technology & Society"
+tags: ["Startup", "Business", "Experience", "Leadership", "Technology"]
 ---
 
 _Este é um texto que escrevi em 2015 e [publiquei no Medium](https://medium.youpix.com.br/o-que-aprendi-ao-co-fundar-uma-startup-da-economia-colaborativa-e-por-que-sa%C3%AD-dela-9d7d1854937a). Muito tempo se passou, meus pensamentos, opiniões evoluiram em diferentes direções aqui e ali, nem todos os links funcionam mais, mas arquivo o texto exatamente como escrevi na época._

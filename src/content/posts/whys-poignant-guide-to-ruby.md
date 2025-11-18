@@ -6,6 +6,8 @@ pubDate: "2021-03-07T10:50:00.000Z"
 image: ~/assets/images/kindleandstuff.png
 language: "en"
 socialImage: "/features/devboks-whys.png"
+category: "Books & Learning"
+tags: ["Books", "Ruby", "Programming", "Learning", "Classics"]
 ---
 
 > This books is a gem! With humor, examples in clear and plain language, a deep love for the subject. This mysterious author introduced a generation tho tthe Ruby language and is at the same time an technical book on first steps on a language and an work of art.  

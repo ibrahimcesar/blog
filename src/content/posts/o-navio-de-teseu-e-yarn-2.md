@@ -4,6 +4,8 @@ description: "Phil Karlton é creditado com frase de que só existem duas coisas
 featured: false
 pubDate: "2020-01-26T10:50:00.000Z"
 image: ~/assets/images/retro.jpg
+category: "Technology & Society"
+tags: ["JavaScript", "Package Managers", "Philosophy", "Yarn", "Development"]
 ---
 
 <p class="lead">Phil Karlton é creditado com frase de que só existem duas coisas difíceis em Ciência da Computação: invalidação de cache e escolher nomes das coisas. E escolher nomes também passa por muito do que entendemos por coisas e como elas se relacionam com o mundo. O recente lançamento do Yarn 2 traz à luz muitas dessas questões.</p>

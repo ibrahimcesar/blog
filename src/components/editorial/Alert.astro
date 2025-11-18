@@ -1,0 +1,158 @@
+---
+/**
+ * Alert Component
+ *
+ * An attention-grabbing alert for critical information
+ *
+ * @param {string} type - Type of alert: "success" | "error" | "warning" | "info" (default: "info")
+ * @param {string} title - Optional title for the alert
+ * @param {boolean} dismissible - Whether the alert can be dismissed (default: false)
+ *
+ * @example
+ * ```astro
+ * <Alert type="warning" title="Security Notice">
+ *   Never store AWS credentials in your code!
+ * </Alert>
+ * ```
+ */
+
+const { type = "info", title, dismissible = false } = Astro.props;
+
+const alertStyles = {
+  success: { icon: "✅", color: "green" },
+  error: { icon: "❌", color: "red" },
+  warning: { icon: "⚠️", color: "yellow" },
+  info: { icon: "ℹ️", color: "blue" }
+};
+
+const { icon, color } = alertStyles[type];
+const alertId = dismissible ? `alert-${Math.random().toString(36).substr(2, 9)}` : null;
+---
+
+<div class={`alert alert-${color}`} id={alertId} role="alert">
+  <div class="alert-content">
+    <span class="alert-icon" aria-hidden="true">{icon}</span>
+    <div class="alert-text">
+      {title && <strong class="alert-title">{title}</strong>}
+      <div class="alert-message">
+        <slot />
+      </div>
+    </div>
+  </div>
+  {dismissible && (
+    <button class="alert-dismiss" onclick={`document.getElementById('${alertId}').style.display='none'`} aria-label="Dismiss alert">
+      ×
+    </button>
+  )}
+</div>
+
+<style>
+  .alert {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin: 2rem 0;
+    padding: 1.25rem 1.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid;
+  }
+
+  .alert-green {
+    background: #d1fae5;
+    border-color: #10b981;
+    color: #065f46;
+  }
+
+  .alert-red {
+    background: #fee2e2;
+    border-color: #ef4444;
+    color: #7f1d1d;
+  }
+
+  .alert-yellow {
+    background: #fef3c7;
+    border-color: #f59e0b;
+    color: #78350f;
+  }
+
+  .alert-blue {
+    background: #dbeafe;
+    border-color: #3b82f6;
+    color: #1e3a8a;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .alert-green {
+      background: #065f46;
+      border-color: #34d399;
+      color: #d1fae5;
+    }
+
+    .alert-red {
+      background: #7f1d1d;
+      border-color: #f87171;
+      color: #fee2e2;
+    }
+
+    .alert-yellow {
+      background: #78350f;
+      border-color: #fbbf24;
+      color: #fef3c7;
+    }
+
+    .alert-blue {
+      background: #1e3a8a;
+      border-color: #60a5fa;
+      color: #dbeafe;
+    }
+  }
+
+  .alert-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    flex: 1;
+  }
+
+  .alert-icon {
+    font-size: 1.5rem;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .alert-text {
+    flex: 1;
+  }
+
+  .alert-title {
+    display: block;
+    font-size: 1.125rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  .alert-message {
+    line-height: 1.6;
+  }
+
+  .alert-message :global(p:last-child) {
+    margin-bottom: 0;
+  }
+
+  .alert-dismiss {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0;
+    margin-left: 1rem;
+    color: inherit;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+  }
+
+  .alert-dismiss:hover {
+    opacity: 1;
+  }
+</style>

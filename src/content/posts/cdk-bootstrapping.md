@@ -1,5 +1,7 @@
 ---
 title: "⛅ #jornadaaws: CDK Bootstrapping"
+category: AWS
+tags: ["AWS", "CDK", "Infrastructure as Code", "Tutorial"]
 description: Instalando e iniciando o Bootstrapping do CDK em sua conta
 featured: true
 pubDate: "2021-10-20T10:50:00.000Z"

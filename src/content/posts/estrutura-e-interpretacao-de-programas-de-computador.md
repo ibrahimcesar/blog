@@ -5,6 +5,8 @@ featured: true
 pubDate: "2021-07-20T10:50:00.000Z"
 image: ~/assets/images/sicp.jpg
 socialImage: "/features/scip.png"
+category: "Books & Learning"
+tags: ["Books", "Programming", "Computer Science", "Learning", "Classics"]
 ---
 
 <p class="lead"><b>Structure and Interpretation

@@ -6,6 +6,8 @@ image: ~/assets/images/yt.jpg
 pubDate: "2021-05-18T10:50:00.000Z"
 language: en
 socialImage: "/features/react-opensource.png"
+tags: ["Open Source", "React", "Privacy", "Maintenance"]
+category: "Web Development"
 ---
 
 <p class="lead">An Open Source story</p>

@@ -6,6 +6,8 @@ pubDate: "2021-05-16T10:50:00.000Z"
 image: ~/assets/images/girl-window-reading.png
 language: "en"
 socialImage: "/features/devboks-effectivets.png"
+category: "Books & Learning"
+tags: ["TypeScript", "Books", "Development", "Learning", "Best Practices"]
 ---
 
 > If practical books are your type, this is for you! A practical, hands-on guide to write and _think_ better about TypeScript. AND also gives us the background, the _trade offs_ and glances to the internals: ["Effective TypeScript: 62 Specific Ways to Improve Your TypeScript"](https://effectivetypescript.com/)  by [Dan Vanderkam](https://twitter.com/danvdk)

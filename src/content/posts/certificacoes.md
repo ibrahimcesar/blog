@@ -1,5 +1,7 @@
 ---
 title: Certificações AWS — Por quê e de que forma
+category: AWS
+tags: ["AWS", "Certification", "Career", "Learning", "Professional Development"]
 description: Não existe algoritmo de compressão para experiência. — Andy Jassy
 featured: true
 pubDate: "2022-04-08T10:50:00.000Z"

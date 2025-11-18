@@ -6,6 +6,8 @@ pubDate: "2020-12-11T10:50:00.000Z"
 image: "~/assets/images/10livros2020.jpg"
 featuredImageColor: "#1E2C54"
 socialImage: "/features/spiderman.jpg"
+category: "Books & Learning"
+tags: ["Books", "Reading", "Technology", "Learning", "2020"]
 ---
 
 <p class="lead">Ainda que o ano não tenha exatamente acabado e deseje terminar mais algumas leituras, resolvi refletir um pouco sobre minhas leituras desse ano – o que lemos acaba refletindo muito de como estamos crescendo e nos desenvolvendo, assim como nos dá pistas de onde seguir no futuro. <a href="https://www.goodreads.com/author/show/18545177.Ibrahim_Cesar" target="_blank">Utilizo o GoodReads</a> para manter meu controle de leituras. Minha <a href="https://www.goodreads.com/challenges/11621-2020-reading-challenge">meta para este ano era ler 25 livros</a>. Como já li 45 até agora, bati minha meta com certa folga, mas <a href="https://www.goodreads.com/challenges/8863-2019-reading-challenge">em 2019, com uma meta de 50</a> eu passei raspando e certamente esse ano não bateria. Sem qualquer ordem em particular, abaixo meus dez livros favoritos de 2020:</p>

@@ -9,14 +9,15 @@ const { meta = {} } = Astro.props;
 ---
 
 <!DOCTYPE html>
-<html lang={meta.lang ? "en" : "pt-br"}>
+<html lang={meta.lang ? "en" : "pt-br"} transition:animate="none">
   <head>
     <MetaTags {...meta} />
     <ViewTransitions />
   </head>
 
   <body
-    class="antialiased text-gray-900 dark:text-slate-300 tracking-tight bg-white dark:bg-slate-900"
+    class="antialiased text-slate-900 dark:text-slate-100 tracking-tight bg-white dark:bg-slate-900"
+    transition:animate="none"
   >
     <slot />
     <BasicScripts />

@@ -16,11 +16,11 @@ const canonical = new URL("tags", Astro.site);
     <section class="px-4 sm:px-6 py-12 sm:py-16 lg:py-20 mx-auto max-w-4xl">
       <header class="mb-12">
         <h1
-          class="text-center text-5xl md:text-6xl font-bold leading-tighter tracking-tighter mb-4"
+          class="text-center text-5xl md:text-6xl font-bold leading-tighter tracking-tighter mb-4 text-slate-900 dark:text-white"
         >
           📑 Browse by Tag
         </h1>
-        <p class="text-center text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+        <p class="text-center text-xl text-slate-700 dark:text-slate-300 max-w-2xl mx-auto">
           Explore {sortedTags.length} topics across {Object.values(tagCounts).reduce((a, b) => a + b, 0)} posts
         </p>
       </header>

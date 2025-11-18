@@ -1,58 +1,100 @@
 ---
 import Layout from "~/layouts/PageLayout.astro";
 
-const { meta={} } = Astro.props;
+const { meta = {} } = Astro.props;
 ---
 
 <Layout meta={meta}>
   <main>
     <section class="py-8 sm:py-16 lg:py-20 mx-auto">
-  <article>
-    <header>
-      <div class="grid place-items-center mb-6">
-        <img src="https://raw.githubusercontent.com/MartinHeinz/MartinHeinz/master/wave.gif" width="82px"/>
-      </div>
+      <article>
+        <header>
+          <div class="grid place-items-center mb-6">
+            <img
+              src="https://raw.githubusercontent.com/MartinHeinz/MartinHeinz/master/wave.gif"
+              width="82px"
+            />
+          </div>
 
-      <h1
-        class="px-4 sm:px-6 max-w-3xl mx-auto text-center text-5xl md:text-[3.50rem] font-bold leading-tighter tracking-tighter mb-6 md:mb-8"
-      >
-       <p class="mb-1">Olá! Hello! Hola! Ciao!</p>
-       <p>こんにちは ! 你好 !</p>
-      </h1>
-    </header>
-    <p class="en uppercase font-mono text-md text-center font-bold">{"{"} en {"}"}</p>
-    <div
-      class="container mx-auto px-4 sm:px-6 max-w-3xl prose prose-lg lg:prose-xl dark:prose-invert dark:prose-headings:text-slate-300 prose-md prose-headings:leading-tighter prose-headings:tracking-tighter prose-headings:font-bold prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-img:rounded-md prose-img:shadow-lg mt-8"
-    >
-    <p>/ɪ́brəhɪjm/</p>
+          <h1
+            class="px-4 sm:px-6 max-w-3xl mx-auto text-center text-5xl md:text-[3.50rem] font-bold leading-tighter tracking-tighter mb-6 md:mb-8 text-slate-900 dark:text-white"
+          >
+            <p class="mb-1">Olá! Hello! Hola! Ciao!</p>
+            <p>こんにちは ! 你好 !</p>
+          </h1>
+        </header>
+        <p class="en uppercase font-mono text-md text-center font-bold">
+          {"{"} en {"}"}
+        </p>
+        <div
+          class="container mx-auto px-4 sm:px-6 max-w-3xl prose prose-lg lg:prose-xl dark:prose-invert dark:prose-headings:text-slate-300 prose-md prose-headings:leading-tighter prose-headings:tracking-tighter prose-headings:font-bold prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-img:rounded-md prose-img:shadow-lg mt-8"
+        >
+          <p>/ɪ́brəhɪjm/</p>
 
-      <p>He/his</p>
+          <p>He/his</p>
 
-      <p>Working in tech more than 15 years, and yes, I had to the deal to the now mythical Beast called “Internet Explorer 6”. I used tables, gifs and sliced images from Adobe Fireworks. I held the long retired “Webmaster” title from when dinosaurs walked on the Internet.</p>
+          <p>
+            Working in tech more than 15 years, and yes, I had to the deal to
+            the now mythical Beast called “Internet Explorer 6”. I used tables,
+            gifs and sliced images from Adobe Fireworks. I held the long retired
+            “Webmaster” title from when dinosaurs walked on the Internet.
+          </p>
 
-      <p>Today I work as <em>Enterprise Solutions Architect</em> @ <a href="https://aws.amazon.com" rel="noopener noreferrer" target="_blank">Amazon Web Services (AWS)</a>.</p>
+          <p>
+            Today I work as <em>Enterprise Solutions Architect</em> @ <a
+              href="https://aws.amazon.com"
+              rel="noopener noreferrer"
+              target="_blank">Amazon Web Services (AWS)</a
+            >.
+          </p>
 
-      <p>Get in touch and follow me on <a href="https://www.linkedin.com/in/ibrahimcesar/?locale=en_US" rel="noopener noreferrer" target="_blank">LinkedIn</a>.</p>
+          <p>
+            Get in touch and follow me on <a
+              href="https://www.linkedin.com/in/ibrahimcesar/?locale=en_US"
+              rel="noopener noreferrer"
+              target="_blank">LinkedIn</a
+            >.
+          </p>
+        </div>
+        <div class="text-center line mt-6">--------------------------</div>
+        <p class="br uppercase font-mono text-md text-center font-bold mt-3">
+          {"{"} pt-br {"}"}
+        </p>
+        <div
+          class="container mx-auto px-4 sm:px-6 max-w-3xl prose prose-lg lg:prose-xl dark:prose-invert dark:prose-headings:text-slate-300 prose-md prose-headings:leading-tighter prose-headings:tracking-tighter prose-headings:font-bold prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-img:rounded-md prose-img:shadow-lg mt-8"
+        >
+          <p>/ɪ́brəhɪjm/</p>
 
-      </div>
-      <div class="text-center line mt-6">--------------------------</div>
-    <p class="br uppercase font-mono text-md text-center font-bold mt-3">{"{"} pt-br {"}"}</p>
-      <div
-      class="container mx-auto px-4 sm:px-6 max-w-3xl prose prose-lg lg:prose-xl dark:prose-invert dark:prose-headings:text-slate-300 prose-md prose-headings:leading-tighter prose-headings:tracking-tighter prose-headings:font-bold prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-img:rounded-md prose-img:shadow-lg mt-8"
-    >
-      <p>/ɪ́brəhɪjm/</p>
+          <p>Ele/dele</p>
 
-      <p>Ele/dele</p>
+          <p>
+            Nem de exatas, nem de humanas. Com experiência gestão de produtos
+            digitais, gestão de times de desenvolvimento, testes e documentação
+            & experiência do usuário desde quando os dinossauros caminhavam pela
+            Internet.
+          </p>
 
-      <p>Nem de exatas, nem de humanas. Com experiência gestão de produtos digitais, gestão de times de desenvolvimento, testes e documentação & experiência do usuário desde quando os dinossauros caminhavam pela Internet.</p>
+          <p>
+            Hoje trabalho como <em>Enterprise Solutions Architect</em> na <a
+              href="https://aws.amazon.com"
+              rel="noopener noreferrer"
+              target="_blank">Amazon Web Services (AWS)</a
+            >.
+          </p>
 
-      <p>Hoje trabalho como <em>Enterprise Solutions Architect</em> na <a href="https://aws.amazon.com" rel="noopener noreferrer" target="_blank">Amazon Web Services (AWS)</a>.</p>
-
-     <p>Me acompanhe e me acione no <a href="https://twitter.com/ibrahimcesar" rel="noopener noreferrer" target="_blank">Twitter</a> ou <a href="https://www.linkedin.com/in/ibrahimcesar/" rel="noopener noreferrer" target="_blank">LinkedIn</a>.</p>
-
-
-    </div>
-    </article>
+          <p>
+            Me acompanhe e me acione no <a
+              href="https://bluesky.com/ibrahimcesar.cloud"
+              rel="noopener noreferrer"
+              target="_blank">Bluesky</a
+            > ou <a
+              href="https://www.linkedin.com/in/ibrahimcesar/"
+              rel="noopener noreferrer"
+              target="_blank">LinkedIn</a
+            >.
+          </p>
+        </div>
+      </article>
     </section>
   </main>
 </Layout>

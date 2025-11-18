@@ -5,6 +5,8 @@ featured: true
 pubDate: "2021-05-02T10:50:00.000Z"
 image: ~/assets/images/workingalone.jpg
 socialImage: "/features/pandemia.png"
+category: "Leadership & Culture"
+tags: ["Leadership", "Psychology", "Remote Work", "Teams", "Wellbeing"]
 ---
 > Segurança psicológica não existe em um vácuo. Afinal cada de um de nós vive em uma complexa trama de papéis e relações com outras pessoas e o mundo ao redor e não podemos simplesmente deixar nossos problemas de lado ou esperar que que uma área afeta a outra. Fazemos o nosso melhor, mas é impossível. E o que fazer vivendo em nossos tempos de pandemia? A pergunta, que acredito, gostaríamos que fosse apenas retórica ou exploração de uma hipótese, revirou nossa realidade de penas para o ar – ao menos a realidade de nós, privilegiados o bastante, para poder trabalhar a distância, de forma remota. Distopia é cada vez mais, rotina. Como ficar bem. _Eu não estou bem_. E vocês, como estão?
 

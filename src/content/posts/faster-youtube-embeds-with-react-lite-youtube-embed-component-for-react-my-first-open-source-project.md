@@ -6,6 +6,8 @@ pubDate: "2019-12-03T10:50:00.000Z"
 image: ~/assets/images/npm-react-lite-youtube-embed.png
 socialImage: "/features/react-lite-youtube-embed.jpeg"
 language: "en"
+tags: ["React", "Open Source", "Performance", "YouTube", "JavaScript"]
+category: "Web Development"
 ---
 
 After attending [Chrome Dev Summit 2019](https://www.youtube.com/watch?v=F1UP7wRCPH8&list=PLNYkxOF6rcIDA1uGhqy45bqlul0VcvKMr) in San Francisco I started to think a lot in contribute to open source. I already translate docs before (for Meteor), strings for Ubuntu, and just started to help translate the Web Almanac to Brazilian Portuguese, but I felt incomplete without make a "code contribution".

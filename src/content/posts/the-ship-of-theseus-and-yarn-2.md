@@ -6,6 +6,8 @@ pubDate: "2020-01-27T10:50:00.000Z"
 image: ~/assets/images/theseus.jpg
 socialImage: "/features/ship.png"
 language: "en"
+category: "Technology & Society"
+tags: ["Philosophy", "Yarn", "Package Managers", "Open Source", "Identity"]
 ---
 
 The [launch of Yarn 2](https://dev.to/arcanis/introducing-yarn-2-4eh1), besides `breaking changes` features and a programming language from 1972 to its core, bring back also a philosophical discussion with more than 2000 years!

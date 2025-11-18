@@ -5,6 +5,7 @@ import sitemap from "@astrojs/sitemap";
 import expressiveCode from "astro-expressive-code";
 
 import { h } from 'hastscript';
+import { toString } from 'hast-util-to-string';
 
 import { SITE } from "./src/config.mjs";
 

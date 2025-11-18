@@ -5,6 +5,8 @@ featured: true
 pubDate: "2020-12-17T10:50:00.000Z"
 image: ~/assets/images/artOfCode.jpg
 socialImage: "/features/art-of-code.jpg"
+category: "Books & Learning"
+tags: ["Programming", "Talks", "Video", "Code", "Philosophy"]
 ---
 
 <div class='yt-frame'>

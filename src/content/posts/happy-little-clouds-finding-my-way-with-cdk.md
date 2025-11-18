@@ -6,6 +6,8 @@ image: ~/assets/images/happy.png
 pubDate: "2021-04-30T10:50:00.000Z"
 language: en
 socialImage: "/features/happy-little-clouds.png"
+category: "Leadership & Culture"
+tags: ["AWS", "CDK", "Cloud", "Infrastructure", "Learning", "Journey"]
 ---
 
 <figure class="extend">

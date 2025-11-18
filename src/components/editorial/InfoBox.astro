@@ -1,0 +1,129 @@
+---
+/**
+ * InfoBox Component
+ *
+ * A highlighted box for important information or tips
+ *
+ * @param {string} title - Optional title for the info box
+ * @param {string} type - Type of info: "info" | "tip" | "warning" | "note" (default: "info")
+ *
+ * @example
+ * ```astro
+ * <InfoBox title="Did you know?" type="tip">
+ *   AWS Lambda functions can run for up to 15 minutes!
+ * </InfoBox>
+ * ```
+ */
+
+const { title, type = "info" } = Astro.props;
+
+const icons = {
+  info: "ℹ️",
+  tip: "💡",
+  warning: "⚠️",
+  note: "📝"
+};
+
+const icon = icons[type];
+---
+
+<aside class={`info-box info-box-${type}`} role="complementary">
+  <div class="info-box-header">
+    <span class="info-box-icon" aria-hidden="true">{icon}</span>
+    {title && <h4 class="info-box-title">{title}</h4>}
+  </div>
+  <div class="info-box-content">
+    <slot />
+  </div>
+</aside>
+
+<style>
+  .info-box {
+    margin: 2rem 0;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    border-left: 4px solid;
+  }
+
+  .info-box-info {
+    background: #dbeafe;
+    border-left-color: #3b82f6;
+  }
+
+  .info-box-tip {
+    background: #d1fae5;
+    border-left-color: #10b981;
+  }
+
+  .info-box-warning {
+    background: #fef3c7;
+    border-left-color: #f59e0b;
+  }
+
+  .info-box-note {
+    background: #e0e7ff;
+    border-left-color: #6366f1;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .info-box-info {
+      background: #1e3a8a;
+      border-left-color: #60a5fa;
+    }
+
+    .info-box-tip {
+      background: #065f46;
+      border-left-color: #34d399;
+    }
+
+    .info-box-warning {
+      background: #78350f;
+      border-left-color: #fbbf24;
+    }
+
+    .info-box-note {
+      background: #3730a3;
+      border-left-color: #818cf8;
+    }
+  }
+
+  .info-box-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .info-box-icon {
+    font-size: 1.5rem;
+    line-height: 1;
+  }
+
+  .info-box-title {
+    margin: 0;
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: #1e293b;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .info-box-title {
+      color: #f1f5f9;
+    }
+  }
+
+  .info-box-content {
+    color: #334155;
+    line-height: 1.7;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .info-box-content {
+      color: #e2e8f0;
+    }
+  }
+
+  .info-box-content :global(p:last-child) {
+    margin-bottom: 0;
+  }
+</style>

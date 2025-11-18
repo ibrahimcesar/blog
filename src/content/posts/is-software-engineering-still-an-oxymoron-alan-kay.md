@@ -5,6 +5,8 @@ featured: true
 pubDate: "2021-11-25T10:50:00.000Z"
 image: ~/assets/images/kay.jpg
 socialImage: "/features/alan-key.jpeg"
+category: "Books & Learning"
+tags: ["Software Engineering", "Philosophy", "Technology", "Talks", "Alan Kay"]
 ---
 
 <div class='yt-frame'>

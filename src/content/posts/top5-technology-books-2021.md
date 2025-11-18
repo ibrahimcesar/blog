@@ -6,6 +6,8 @@ pubDate: "2021-12-30T10:50:00.000Z"
 image: ~/assets/images/books2021.jpg
 language: en
 socialImage: "/features/top5-2021.png"
+category: "Books & Learning"
+tags: ["Books", "2021", "Technology", "Reading", "Recommendations"]
 ---
 
 <p class="lead">My top five picks on technological / technical books I read in 2021 and some honorable mentions. I also read some fiction and non-fiction, in fact I finished a great science fiction series, <em>Remembrance of Earth’s Past</em> made up of three books: <em>The Three-Body Problem</em>, <em>The Dark Forest</em> and <em>Death’s End</em> by the Chinese author Liu Cixin, which is one of greatest science fiction series I ever read (I’m a big fan of Russian literature and science fiction). But for this list I picked the top tech-related ones.</p>

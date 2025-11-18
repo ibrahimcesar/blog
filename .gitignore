@@ -129,4 +129,9 @@ dist
 
 # TernJS port file
 .tern-port
+
+# Percy
+.percy/
+percy-screenshots/
+
 .vscode/branch-timer.json

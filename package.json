@@ -9,12 +9,15 @@
     "start": "astro dev",
     "build": "astro build && npx pagefind --site dist",
     "preview": "astro preview",
-    "pretty": "prettier --write ."
+    "pretty": "prettier --write .",
+    "percy": "percy snapshot dist",
+    "percy:local": "npm run build && percy snapshot dist"
   },
   "devDependencies": {
     "@astrojs/rss": "^4.0.13",
     "@astrojs/sitemap": "^3.6.0",
     "@astrojs/tailwind": "^6.0.2",
+    "@percy/cli": "^1.30.3",
     "@tailwindcss/typography": "^0.5.19",
     "astro": "^5.15.8",
     "pagefind": "^1.4.0",
@@ -26,6 +29,7 @@
   "dependencies": {
     "astro-expressive-code": "^0.41.3",
     "hast": "^1.0.0",
+    "hast-util-to-string": "^3.0.1",
     "hastscript": "^9.0.1",
     "rehype-autolink-headings": "^7.1.0",
     "rehype-slug": "^6.0.0",
