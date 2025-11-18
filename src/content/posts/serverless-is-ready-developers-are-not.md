@@ -1,11 +1,13 @@
 ---
 title: "Serverless is Ready, Developers Are Not"
-description: We are not ready. We couldn’t possibly be ready.
+description: We are not ready. We couldn't possibly be ready.
 featured: true
 pubDate: "2021-03-28T10:50:00.000Z"
 image: ~/assets/images/srdn.jpg
 language: "en"
 socialImage: "/features/serverless-ready.png"
+tags: ["Serverless", "AWS", "Lambda", "Architecture", "Learning Curve"]
+category: "Serverless"
 ---
 
 <p class="lead">Inspired by <a href="https://dev.to/andrewbrown" alt="Andrew Brown" target="_blank">Andrew Brown who outlined a course that <a href="https://twitter.com/andrewbrown/status/1344032358371098627" alt="Tweet" target="_blank">he shared on Twitter</a> and by an ongoing reflection on my own experiences with cloud and serverless adoption at the company I work for, I decided to share a little about my perceptions on the current shift in landscape and what it means to be a developer in this context.</p>

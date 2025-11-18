@@ -5,6 +5,8 @@ featured: true
 image: ~/assets/images/kidd.jpg
 pubDate: "2020-12-24T11:06:00.000Z"
 socialImage: "/features/timnit-gebru.jpg"
+category: "Technology & Society"
+tags: ["AI", "Ethics", "Bias", "Algorithms", "Social Impact"]
 ---
 
 <p class="lead">A pesquisadora Celeste Kidd, postou <a href="https://twitter.com/celestekidd/status/1341936884767854593">uma thread sobre viéses em algoritmos e a recente demissão de Timnit Gebru</a> que farão parte de seu discurso de abertura no evento <a href="https://twitter.com/hashtag/AIDebate2">#AIDebate2</a>, resolvi traduzir livremente para trazer esse tema, que é um dos mais importantes que nós enquanto sociedade vamos enfrentar e já estamos lidando com muitas de suas consequências. Todo o discurso abaixo é de Celeste Kidd:</p>

@@ -1,0 +1,98 @@
+---
+/**
+ * Lead Component
+ *
+ * An introductory paragraph with larger, prominent text to draw readers in.
+ * Typically used at the beginning of an article to summarize or introduce the topic.
+ *
+ * @example
+ * ```astro
+ * <Lead>
+ *   Web3, NFTs, cryptocurrencies, Bitcoin, Ethereum, blockchains, DAOs —
+ *   this post explores the trade-offs of these emerging technologies.
+ * </Lead>
+ * ```
+ */
+---
+
+<p class="lead">
+  <slot />
+</p>
+
+<style>
+  .lead {
+    font-size: 1.375rem;
+    line-height: 1.7;
+    font-weight: 400;
+    color: #334155;
+    margin: 1.5rem 0 2rem;
+    max-width: 75ch;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .lead {
+      color: #cbd5e1;
+    }
+  }
+
+  .lead :global(em) {
+    font-style: italic;
+    color: #1e293b;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .lead :global(em) {
+      color: #f1f5f9;
+    }
+  }
+
+  .lead :global(strong),
+  .lead :global(b) {
+    font-weight: 700;
+    color: #0f172a;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .lead :global(strong),
+    .lead :global(b) {
+      color: #f8fafc;
+    }
+  }
+
+  .lead :global(a) {
+    color: #c9208a;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 2px;
+    transition: color 0.2s;
+  }
+
+  .lead :global(a:hover) {
+    color: #527fff;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .lead :global(a) {
+      color: #f472b6;
+    }
+
+    .lead :global(a:hover) {
+      color: #93c5fd;
+    }
+  }
+
+  /* Mobile responsiveness */
+  @media (max-width: 640px) {
+    .lead {
+      font-size: 1.25rem;
+      margin: 1.25rem 0 1.75rem;
+    }
+  }
+
+  /* Extra small screens */
+  @media (max-width: 480px) {
+    .lead {
+      font-size: 1.125rem;
+    }
+  }
+</style>

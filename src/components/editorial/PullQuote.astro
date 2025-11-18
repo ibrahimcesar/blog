@@ -1,0 +1,119 @@
+---
+/**
+ * PullQuote Component
+ *
+ * A visually prominent quote pulled from the article text
+ *
+ * @param {string} cite - Optional attribution for the quote
+ * @param {string} align - Optional alignment: "left" | "right" | "center" (default: "center")
+ *
+ * @example
+ * ```astro
+ * <PullQuote cite="Aaron Swartz">
+ *   Information is power. But like all power, there are those who want to keep it for themselves.
+ * </PullQuote>
+ * ```
+ */
+
+const { cite, align = "center" } = Astro.props;
+const alignmentClass = {
+  left: "pull-quote-left",
+  right: "pull-quote-right",
+  center: "pull-quote-center"
+}[align];
+---
+
+<aside class={`pull-quote ${alignmentClass}`} role="complementary">
+  <blockquote>
+    <slot />
+    {cite && <footer>— {cite}</footer>}
+  </blockquote>
+</aside>
+
+<style>
+  .pull-quote {
+    margin: 2.5rem 0;
+    padding: 1.5rem 2rem;
+    position: relative;
+  }
+
+  .pull-quote::before {
+    content: '"';
+    position: absolute;
+    top: -0.25rem;
+    left: 0;
+    font-size: 5rem;
+    font-family: Georgia, serif;
+    color: #c9208a;
+    opacity: 0.3;
+    line-height: 1;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .pull-quote::before {
+      color: #f472b6;
+    }
+  }
+
+  .pull-quote blockquote {
+    margin: 0;
+    padding-left: 3rem;
+    border-left: none;
+    font-size: 1.5rem;
+    line-height: 1.6;
+    font-style: italic;
+    font-weight: 500;
+    color: #1e293b;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .pull-quote blockquote {
+      color: #f1f5f9;
+    }
+  }
+
+  .pull-quote footer {
+    margin-top: 1rem;
+    font-size: 1rem;
+    font-style: normal;
+    color: #64748b;
+    text-align: right;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .pull-quote footer {
+      color: #94a3b8;
+    }
+  }
+
+  .pull-quote-center {
+    text-align: center;
+  }
+
+  .pull-quote-left {
+    float: left;
+    width: 40%;
+    margin-right: 2rem;
+    margin-left: 0;
+  }
+
+  .pull-quote-right {
+    float: right;
+    width: 40%;
+    margin-left: 2rem;
+    margin-right: 0;
+  }
+
+  @media (max-width: 768px) {
+    .pull-quote-left,
+    .pull-quote-right {
+      float: none;
+      width: 100%;
+      margin: 2rem 0;
+    }
+
+    .pull-quote blockquote {
+      font-size: 1.25rem;
+    }
+  }
+</style>

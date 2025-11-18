@@ -1,5 +1,7 @@
 ---
-title: "Do Zero a “Salve Mundo” com AWS CDK"
+title: "Do Zero a "Salve Mundo" com AWS CDK"
+category: AWS
+tags: ["AWS", "CDK", "Tutorial", "TypeScript", "Beginner"]
 description: Da infra ao código, todo em TypeScript!
 featured: true
 pubDate: "2021-08-13T10:50:00.000Z"

@@ -5,6 +5,8 @@ featured: true
 pubDate: "2021-05-28T10:50:00.000Z"
 image: ~/assets/images/multicloud.png
 socialImage: "/features/multicloud-page.png"
+category: "Software Architecture"
+tags: ["Cloud", "Multi-Cloud", "Strategy", "Architecture", "AWS"]
 ---
 
 <p class="lead">Multi-cloud como estratégia é um tópico que vem se tornando cada vez mais comentado. Mas, ao mesmo tempo o termo ganha polissemia,significando coisas diferentes, para pessoas diferentes e para além de qualquer discussão semântica, a definição concreta do termo é o primeiro passo, melhor, ainda que hajam definições concorrentes, que fique bem claro as implicações bem práticas desse tipo de estratégia que altera não somente as decisões de tecnologia, mas impacta a própria cultura dos times e das organizações. </p>

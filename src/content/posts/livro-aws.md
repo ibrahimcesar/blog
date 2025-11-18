@@ -1,5 +1,7 @@
 ---
 title: Estou escrevendo um livro! Sobre AWS!
+category: AWS
+tags: ["AWS", "Books", "Writing", "Announcement"]
 description: Não há data prevista de publicação, me acompanhe para estar entre as primeiras pessoas a saber!
 featured: true
 image: "~/assets/images/2022-aprenda-aws.png"

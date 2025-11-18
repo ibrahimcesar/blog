@@ -5,6 +5,8 @@ featured: true
 image: "~/assets/images/ux.jpg"
 pubDate: "2020-02-15T10:50:00.000Z"
 socialImage: "/features/planning-ux.jpg"
+category: "Technology & Society"
+tags: ["UX", "User Experience", "Design", "Product"]
 ---
 
 <p class="lead">Experiência do usuário é um dos atributos mais importantes para algumas empresas. Podem significar o sucesso e a falha de um projeto. E mesmo assim, parece  que sempre existem tensões a respeito do que ou de quais experiências estamos falando.</p>

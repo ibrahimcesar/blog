@@ -1,0 +1,158 @@
+---
+/**
+ * DiveDeep Component
+ *
+ * An expandable section for detailed technical information or advanced topics
+ *
+ * @param {string} title - Title of the deep dive section
+ * @param {boolean} defaultOpen - Whether the section starts expanded (default: false)
+ *
+ * @example
+ * ```astro
+ * <DiveDeep title="Understanding Lambda Cold Starts">
+ *   Cold starts occur when AWS has to provision a new execution environment...
+ * </DiveDeep>
+ * ```
+ */
+
+const { title, defaultOpen = false } = Astro.props;
+const detailsId = `dive-deep-${Math.random().toString(36).substr(2, 9)}`;
+---
+
+<details class="dive-deep" id={detailsId} open={defaultOpen}>
+  <summary class="dive-deep-summary">
+    <span class="dive-deep-icon">🏊</span>
+    <span class="dive-deep-title">{title}</span>
+    <svg class="dive-deep-chevron" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+      <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+    </svg>
+  </summary>
+  <div class="dive-deep-content">
+    <slot />
+  </div>
+</details>
+
+<style>
+  .dive-deep {
+    margin: 2.5rem 0;
+    border: 2px solid #6366f1;
+    border-radius: 0.75rem;
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0e7ff 100%);
+    overflow: hidden;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .dive-deep {
+      background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+      border-color: #818cf8;
+    }
+  }
+
+  .dive-deep-summary {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1.25rem 1.5rem;
+    cursor: pointer;
+    list-style: none;
+    font-weight: 700;
+    font-size: 1.125rem;
+    color: #1e293b;
+    user-select: none;
+    transition: background 0.2s;
+  }
+
+  .dive-deep-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .dive-deep-summary:hover {
+    background: rgba(255, 255, 255, 0.5);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .dive-deep-summary {
+      color: #f1f5f9;
+    }
+
+    .dive-deep-summary:hover {
+      background: rgba(0, 0, 0, 0.2);
+    }
+  }
+
+  .dive-deep-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+  }
+
+  .dive-deep-title {
+    flex: 1;
+  }
+
+  .dive-deep-chevron {
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+  }
+
+  .dive-deep[open] .dive-deep-chevron {
+    transform: rotate(180deg);
+  }
+
+  .dive-deep-content {
+    padding: 0 1.5rem 1.5rem 1.5rem;
+    color: #334155;
+    line-height: 1.7;
+    animation: slideDown 0.3s ease;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .dive-deep-content {
+      color: #e2e8f0;
+    }
+  }
+
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .dive-deep-content :global(p:first-child) {
+    margin-top: 0;
+  }
+
+  .dive-deep-content :global(p:last-child) {
+    margin-bottom: 0;
+  }
+
+  .dive-deep-content :global(h3),
+  .dive-deep-content :global(h4) {
+    color: #4f46e5;
+    margin-top: 1.5rem;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .dive-deep-content :global(h3),
+    .dive-deep-content :global(h4) {
+      color: #a5b4fc;
+    }
+  }
+
+  .dive-deep-content :global(code) {
+    background: rgba(99, 102, 241, 0.1);
+    padding: 0.2em 0.4em;
+    border-radius: 3px;
+    font-size: 0.9em;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .dive-deep-content :global(code) {
+      background: rgba(129, 140, 248, 0.2);
+    }
+  }
+</style>

@@ -5,6 +5,7 @@ import Tags from "~/components/widgets/Tags.astro";
 import TableOfContents from "~/components/widgets/TableOfContents.astro";
 import SeriesNavigation from "~/components/widgets/SeriesNavigation.astro";
 import RelatedPosts from "~/components/widgets/RelatedPosts.astro";
+import Mermaid from "~/components/core/Mermaid.astro";
 import type { TocHeading } from "~/utils/getTableOfContents";
 import type { Post } from "~/utils/getPostsCollection";
 
@@ -52,4 +53,5 @@ const showRelated = relatedPosts && relatedPosts.length > 0;
        <Discussion post={post} />
     </footer>
   </article>
+  <Mermaid />
 </section>

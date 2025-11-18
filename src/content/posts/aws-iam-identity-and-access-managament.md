@@ -1,5 +1,7 @@
 ---
 title: "AWS Identity and Access Management (IAM)"
+category: AWS
+tags: ["AWS", "IAM", "Security", "Cloud"]
 description:  "O IAM é como a Força na AWS:  Rodeia e permeia tudo em nossos sistemas. E mantêm tudo funcionando em harmonia."
 featured: true
 pubDate: "2023-10-06T10:50:00.000Z"

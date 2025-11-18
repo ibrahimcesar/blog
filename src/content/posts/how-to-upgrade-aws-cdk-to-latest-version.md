@@ -1,5 +1,7 @@
 ---
 title: How to upgrade CDK to latest version under 1 min
+category: AWS
+tags: ["AWS", "CDK", "DevOps", "Tutorial"]
 description: "CDK is updating all the time. Which is great, the tool is expanding, gaining more features. How to upgrade, again?"
 featured: true
 image: ~/assets/images/constructor.jpg

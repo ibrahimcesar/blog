@@ -1,0 +1,77 @@
+---
+// Reading progress bar that shows how far the user has scrolled through the article
+---
+
+<div class="reading-progress-container">
+  <div class="reading-progress-bar" id="reading-progress-bar"></div>
+</div>
+
+<style>
+  .reading-progress-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: rgba(0, 0, 0, 0.05);
+    z-index: 9998;
+    overflow: hidden;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .reading-progress-container {
+      background: rgba(255, 255, 255, 0.05);
+    }
+  }
+
+  .reading-progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #7c3aed 0%, #a855f7 50%, #c084fc 100%);
+    transition: width 0.1s ease-out;
+    box-shadow: 0 0 10px rgba(124, 58, 237, 0.5);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .reading-progress-bar {
+      background: linear-gradient(90deg, #a855f7 0%, #c084fc 50%, #d8b4fe 100%);
+      box-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
+    }
+  }
+</style>
+
+<script>
+  function updateReadingProgress() {
+    const progressBar = document.getElementById('reading-progress-bar');
+    if (!progressBar) return;
+
+    const windowHeight = window.innerHeight;
+    const documentHeight = document.documentElement.scrollHeight;
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+
+    // Calculate the percentage scrolled
+    const scrollableHeight = documentHeight - windowHeight;
+    const percentageScrolled = (scrollTop / scrollableHeight) * 100;
+
+    // Update the progress bar width
+    progressBar.style.width = `${Math.min(percentageScrolled, 100)}%`;
+  }
+
+  // Initialize on load
+  document.addEventListener('DOMContentLoaded', updateReadingProgress);
+
+  // Update on scroll
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      window.requestAnimationFrame(() => {
+        updateReadingProgress();
+        ticking = false;
+      });
+      ticking = true;
+    }
+  });
+
+  // Update on resize
+  window.addEventListener('resize', updateReadingProgress);
+</script>

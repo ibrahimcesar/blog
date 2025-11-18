@@ -5,6 +5,8 @@ featured: true
 image: ~/assets/images/oficina.png
 pubDate: "2020-10-30T10:50:00.000Z"
 socialImage: "/features/nexo-codigo-aberto.png"
+category: "Technology & Society"
+tags: ["Open Source", "Technology", "Workshop", "Software", "Ethics"]
 ---
 <div class='yt-frame'>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/rdpReYuxI5M" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>

@@ -1,6 +1,7 @@
 ---
 title: Certificar ou não? Eis a questão
-tags: writing
+category: AWS
+tags: ["AWS", "Certification", "Learning", "Career"]
 description: "Em agosto me certifiquei como AWS Certified Cloud Practitioner e compartilho aqui minhas impressões e motivações"
 featured: true
 pubDate: "2020-09-06T10:50:00.000Z"

@@ -1,0 +1,57 @@
+version: 2
+
+static:
+  # Base URL for local previews
+  baseUrl: /
+
+  # Snapshot the entire dist directory
+  snapshots:
+    # Snapshot all HTML files
+    - name: Homepage
+      url: /index.html
+      widths:
+        - 375   # Mobile
+        - 768   # Tablet
+        - 1280  # Desktop
+        - 1920  # Wide Desktop
+      minHeight: 1024
+
+    # Blog pages
+    - name: Blog List
+      url: /blog/index.html
+      widths: [375, 768, 1280]
+      minHeight: 1024
+
+    # About pages
+    - name: Who I Am
+      url: /whoiam/index.html
+      widths: [375, 768, 1280]
+      minHeight: 1024
+
+    - name: Talks
+      url: /talks/index.html
+      widths: [375, 768, 1280]
+      minHeight: 1024
+
+    - name: Uses
+      url: /uses/index.html
+      widths: [375, 768, 1280]
+      minHeight: 1024
+
+  # Discovery - automatically find all HTML files
+  discovery:
+    allowed-hostnames:
+      - ibrahimcesar.cloud
+    network-idle-timeout: 750
+
+# Percy configuration
+percy:
+  # Freeze animations and dynamic content
+  discovery:
+    disable-cache: true
+
+  # Ignore regions that change frequently
+  ignore:
+    # Ignore date/time elements
+    - ".date-dynamic"
+    - "[data-percy-ignore]"

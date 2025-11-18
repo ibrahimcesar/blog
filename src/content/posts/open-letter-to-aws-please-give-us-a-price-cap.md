@@ -1,5 +1,7 @@
 ---
 title: "Open letter to AWS: Please, give us a price cap"
+category: AWS
+tags: ["AWS", "Pricing", "Cost Management", "Cloud Economics"]
 description: "We need psychological safety. And financial!"
 featured: true
 image: ~/assets/images/price.png

@@ -1,5 +1,7 @@
 ---
 title: Como eu parei de me preocupar e passei a amar a Nuvem
+category: Cloud
+tags: ["Cloud", "AWS", "Architecture", "Serverless", "Journey"]
 description: Minha jornada pessoal de adoção das nuvens públicas e serviços gerenciados
 featured: true
 image: ~/assets/images/server.png

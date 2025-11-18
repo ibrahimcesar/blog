@@ -2,6 +2,89 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  /* Improved typography and readability */
+  body {
+    font-size: 18px;
+    line-height: 1.75;
+    letter-spacing: -0.011em;
+  }
+
+  /* Better text colors for improved contrast */
+  .text-gray-900 {
+    color: #0f172a !important; /* slate-900 - better contrast */
+  }
+
+  .dark .dark\:text-slate-300 {
+    color: #e2e8f0 !important; /* slate-200 - better contrast in dark mode */
+  }
+
+  /* Improved paragraph spacing */
+  p {
+    margin-bottom: 1.5em;
+  }
+
+  /* Better heading contrast and sizes */
+  h1, h2, h3, h4, h5, h6 {
+    color: #0f172a;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-top: 1.5em;
+    margin-bottom: 0.75em;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    h1, h2, h3, h4, h5, h6 {
+      color: #f8fafc; /* slate-50 - excellent contrast */
+    }
+  }
+
+  /* Typography scale with better readability */
+  h1 {
+    font-size: 2.5rem;
+    line-height: 1.2;
+  }
+
+  h2 {
+    font-size: 2rem;
+    line-height: 1.25;
+  }
+
+  h3 {
+    font-size: 1.75rem;
+    line-height: 1.3;
+  }
+
+  h4 {
+    font-size: 1.5rem;
+    line-height: 1.35;
+  }
+
+  h5 {
+    font-size: 1.25rem;
+    line-height: 1.4;
+  }
+
+  h6 {
+    font-size: 1.125rem;
+    line-height: 1.45;
+  }
+
+  /* Mobile typography adjustments */
+  @media (max-width: 640px) {
+    body {
+      font-size: 17px;
+    }
+
+    h1 { font-size: 2rem; }
+    h2 { font-size: 1.75rem; }
+    h3 { font-size: 1.5rem; }
+    h4 { font-size: 1.25rem; }
+    h5 { font-size: 1.125rem; }
+    h6 { font-size: 1rem; }
+  }
+}
+
 @layer components {
   .btn {
     @apply inline-flex items-center justify-center rounded border border-transparent font-medium text-center text-base leading-snug transition py-3 px-6 shadow-lg ease-in duration-200 focus:ring-blue-500 focus:ring-offset-blue-200 focus:ring-2 focus:ring-offset-2;
@@ -11,7 +94,7 @@
 :root {
   --cloud: #ec7211;
   --cloud-blue: #527fff;
-  --berry-medium: #c9208a;
+  --berry-medium: #7e22ce; /* Purple 700 - excellent contrast and accessibility */
   --green-apple: #18ab4b;
   --plum-medium: #504bab;
 }
@@ -25,6 +108,57 @@ a:hover {
 .post a {
   color: var(--berry-medium);
   text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+/* Better readability for post content */
+.post {
+  font-size: 1.125rem;
+  line-height: 1.8;
+  color: #1e293b; /* slate-800 - excellent contrast */
+}
+
+@media (prefers-color-scheme: dark) {
+  .post {
+    color: #f1f5f9; /* slate-100 - excellent contrast on dark background */
+  }
+}
+
+.post p {
+  margin-bottom: 1.75em;
+}
+
+.post li {
+  margin-bottom: 0.75em;
+  line-height: 1.75;
+}
+
+.post ul,
+.post ol {
+  margin-bottom: 1.75em;
+  padding-left: 1.75em;
+}
+
+.post code {
+  font-size: 0.9em;
+  padding: 0.2em 0.4em;
+  background: #f1f5f9;
+  border-radius: 3px;
+  color: #be185d;
+}
+
+@media (prefers-color-scheme: dark) {
+  .post code {
+    background: #334155;
+    color: #fda4af;
+  }
+}
+
+.post pre code {
+  padding: 0;
+  background: transparent;
+  color: inherit;
 }
 
 .sec-talks h2,
@@ -64,7 +198,9 @@ a[href^="http"] .external::after
 .post a[href^="https://ibrahimcesar.com"]::after,
 .talks a[href^="https://ibrahimcesar.cloud"]::after,
 .talks a[href^="https://ibrahimcesar.com"]::after,
-a.social[href^="https://"]::after
+a.social[href^="https://"]::after,
+.share-button::after,
+.anchor-link::after
 {
   display: none !important;
 }
@@ -172,5 +308,76 @@ figcaption {
 @media (prefers-color-scheme: dark) {
   .img-on-dark {
     background-color: #fff;
+  }
+
+  /* Ensure images in posts have white background in dark mode for transparency issues */
+  .post img {
+    background-color: #fff;
+    padding: 0.5rem;
+    border-radius: 0.375rem;
+  }
+
+  /* Exception for images that should remain transparent (icons, logos, etc) */
+  .post img.no-bg,
+  .avatar img,
+  .icon img {
+    background-color: transparent;
+    padding: 0;
+  }
+
+  /* Better text contrast for prose content in dark mode */
+  .prose {
+    color: #f1f5f9 !important; /* slate-100 - much better contrast */
+  }
+
+  .prose p,
+  .prose li,
+  .prose td,
+  .prose blockquote {
+    color: #f1f5f9 !important; /* slate-100 - excellent readability */
+  }
+}
+
+/* Anchor link styles */
+.anchor-link {
+  opacity: 0;
+  text-decoration: none;
+  margin-left: 0.5rem;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.heading-wrapper:hover .anchor-link,
+.anchor-link:focus {
+  opacity: 1;
+}
+
+.anchor-icon {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  vertical-align: middle;
+}
+
+/* Add scroll margin to headings so they don't get hidden behind fixed header */
+.post h1,
+.post h2,
+.post h3,
+.post h4,
+.post h5,
+.post h6,
+.heading-wrapper {
+  scroll-margin-top: 6rem;
+}
+
+/* Mobile: smaller scroll margin */
+@media (max-width: 768px) {
+  .post h1,
+  .post h2,
+  .post h3,
+  .post h4,
+  .post h5,
+  .post h6,
+  .heading-wrapper {
+    scroll-margin-top: 5rem;
   }
 }

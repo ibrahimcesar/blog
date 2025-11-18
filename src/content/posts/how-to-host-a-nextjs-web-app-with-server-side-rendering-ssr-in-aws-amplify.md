@@ -1,6 +1,8 @@
 ---
 title:
   "How to host a Next.js web app with server-side rendering (SSR) in AWS Amplify"
+category: AWS
+tags: ["AWS", "Amplify", "Next.js", "SSR", "Deployment", "Tutorial"]
 description: "Natively!"
 featured: true
 image: ~/assets/images/amplify.png

@@ -1,5 +1,7 @@
 ---
 title: "📘 #devbooks:  AWS Well-Architected Framework"
+category: AWS
+tags: ["AWS", "Architecture", "Best Practices", "Books"]
 description: The AWS Constitution
 featured: true
 pubDate: "2021-02-25T10:50:00.000Z"

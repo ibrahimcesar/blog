@@ -6,6 +6,8 @@ pubDate: "2021-03-01T10:50:00.000Z"
 image: ~/assets/images/pokeserverless.jpg
 language: "en"
 socialImage: "/features/cdk.png"
+tags: ["AWS", "CDK", "Next.js", "Serverless", "CloudFront", "Lambda"]
+category: "Serverless"
 ---
 
 In a [previous article](https://dev.to/aws-builders/aws-amplify-sam-cdk-what-to-choose-for-your-infrastructure-as-code-on-aws-lh2) I shared my pursuit of my Infrastructure as Code to be as "AWS native" as possible. So **Amplify**, **SAM** and **CDK** are my arms of choice.

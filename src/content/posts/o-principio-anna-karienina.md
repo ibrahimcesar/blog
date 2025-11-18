@@ -5,6 +5,8 @@ featured: true
 pubDate: "2020-09-07T10:50:00.000Z"
 image: ~/assets/images/anna.jpg
 socialImage: "/features/anna-karienina.jpg"
+category: "Leadership & Culture"
+tags: ["Architecture", "Philosophy", "Software Engineering", "Design"]
 ---
 
 <p class="lead">A frase de abertura de "Anna Kariênina" de Tolstói é um dos inícios mais conhecidos da literatura mundial. Além da influência de sua obra se cunhou um princípio com base no mesmo, que acredito pode ser aplicado ao desenvolvimento web e cloud facilmente</p>

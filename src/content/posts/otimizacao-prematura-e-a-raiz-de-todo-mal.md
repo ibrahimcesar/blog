@@ -5,6 +5,8 @@ featured: true
 image: ~/assets/images/root.jpg
 pubDate: "2020-01-27T10:50:00.000Z"
 socialImage: "/features/roots.jpg"
+category: "Software Architecture"
+tags: ["Programming", "Philosophy", "Optimization", "Best Practices", "Computer Science"]
 ---
 
 <p class="lead">Knut é responsável por um dos mais fortes adágios e frases em desenvolvimento. É um credo passado de desenvolvedor a desenvolvedor, de que a otimização prematura é a raíz de todo mal, aqui exploro sua origem e contexto.</p>

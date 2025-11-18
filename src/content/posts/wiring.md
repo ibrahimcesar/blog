@@ -7,6 +7,8 @@ image: ~/assets/images/agile-wall.jpg
 language: en
 socialImage: "/features/devboks-sooner-safer-happier.png"
 draft: true
+category: "Books & Learning"
+tags: ["Books", "Organization", "Management", "Business", "Agile"]
 ---
 
 <p class="lead"></p>

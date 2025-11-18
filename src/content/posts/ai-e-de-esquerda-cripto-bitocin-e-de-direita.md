@@ -5,6 +5,8 @@ featured: true
 pubDate: "2021-07-04T10:50:00.000Z"
 image: "~/assets/images/eggman.png"
 socialImage: "/features/left-right.png"
+category: "Technology & Society"
+tags: ["AI", "Cryptocurrency", "Politics", "Technology", "Philosophy"]
 ---
 
 

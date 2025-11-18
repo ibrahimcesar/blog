@@ -1,5 +1,7 @@
 ---
 title: "Mergulho em AWS Cloud Development Kit (CDK)"
+category: AWS
+tags: ["AWS", "CDK", "Infrastructure as Code", "Community"]
 description: Conheça mais profundamente o AWS CDK
 featured: true
 pubDate: "2021-11-14T10:50:00.000Z"

@@ -1,10 +1,12 @@
 ---
-title: Explorando trade-offs da web3 
-description: Alguns pontos sobre essa nova onda de tecnologias que vejo como decisivos para sua adoção e efeitos na sociedade 
+title: Explorando trade-offs da web3
+description: Alguns pontos sobre essa nova onda de tecnologias que vejo como decisivos para sua adoção e efeitos na sociedade
 featured: true
 pubDate: "2021-12-21T10:50:00.000Z"
 image: ~/assets/images/web3.jpg
 socialImage: "/features/web3.png"
+category: "Technology & Society"
+tags: ["Web3", "Cryptocurrency", "Blockchain", "DAO", "Technology", "Analysis"]
 ---
 
 <p class="lead">Web3, NFTs, criptomoedas, Bitcoin, Ethereum, blockchains, DAOs — ou são uma nova categoria de <em>Vaporware</em> gerando uma nova bolha como a ponto com no início do século ou são a melhor coisa desde o Big Bang, e cada convertido parece ter descoberto a água, ou algo assim. Parece ser um campo de discursos <b>extremamente</b> polarizados. Eu acho esse terreno mais politicamente carregado do que o próprio cenário de dicotomias extremas nas escolhas presidenciais que tivemos no país. Resolvi escrever esta postagem menos como uma defesa de qualquer lado, mas no antigo espírito dos blogs, de coletar e por ordem meus pensamentos.</p>

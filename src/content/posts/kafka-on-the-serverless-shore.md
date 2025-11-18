@@ -4,6 +4,8 @@ description: "As I awake one morning from uneasy dreams, I found myself asking w
 featured: false
 pubDate: "2022-05-25T11:08:00.000Z"
 socialImage: "/features/kafka.png"
+tags: ["Kafka", "Serverless", "Event-Driven", "Upstash", "Databases"]
+category: "Serverless"
 ---
 
 As I awake one morning from uneasy dreams, I found myself asking why I never tried to use Apache Kafka. 

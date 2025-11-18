@@ -1,5 +1,7 @@
 ---
 import type { Post } from "~/utils/getPostsCollection";
+import { Image } from 'astro:assets';
+import { findImage } from "~/utils/findImage";
 
 interface Props {
   posts: Post[];
@@ -14,6 +16,14 @@ if (!posts || posts.length === 0) {
 }
 
 const isEnglish = currentPost.data.language === "en";
+
+// Process images for all related posts
+const postsWithImages = await Promise.all(
+  posts.map(async (post) => ({
+    ...post,
+    processedImage: post.data.image ? await findImage(post.data.image) : null
+  }))
+);
 ---
 
 <aside class="related-posts" aria-label="Related Posts">
@@ -38,7 +48,7 @@ const isEnglish = currentPost.data.language === "en";
 
   <div class="related-grid">
     {
-      posts.map((post) => {
+      postsWithImages.map((post) => {
         // Find shared tags
         const sharedTags = post.data.tags.filter((tag) =>
           currentPost.data.tags.includes(tag)
@@ -52,13 +62,15 @@ const isEnglish = currentPost.data.language === "en";
           <article class="related-card">
             <a href={`/blog/${post.slug}`} class="related-link">
               <div class="related-content">
-                {post.data.image && (
+                {post.processedImage && (
                   <div class="related-image-container">
-                    <img
-                      src={post.data.image}
+                    <Image
+                      src={post.processedImage}
                       alt={post.data.title}
                       class="related-image"
                       loading="lazy"
+                      width={400}
+                      height={225}
                     />
                   </div>
                 )}

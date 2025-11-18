@@ -3,15 +3,30 @@ const {} = Astro.props;
 ---
 
 <script is:inline>
-  if (
-    localStorage.theme === "dark" ||
-    (!("theme" in localStorage) &&
-      window.matchMedia("(prefers-color-scheme: dark)").matches)
-  ) {
-    document.documentElement.classList.add("dark");
-  } else {
-    document.documentElement.classList.remove("dark");
+  // Function to apply dark mode
+  function applyDarkMode() {
+    if (
+      localStorage.theme === "dark" ||
+      (!("theme" in localStorage) &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches)
+    ) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
   }
+
+  // Apply on initial load
+  applyDarkMode();
+
+  // Reapply after View Transitions - multiple event listeners for reliability
+  document.addEventListener('astro:after-swap', () => {
+    applyDarkMode();
+    // Force a repaint to ensure styles apply immediately
+    document.body.offsetHeight;
+  });
+
+  document.addEventListener('astro:page-load', applyDarkMode);
 
   function attachEvent(selector, event, fn) {
     const matches = document.querySelectorAll(selector);

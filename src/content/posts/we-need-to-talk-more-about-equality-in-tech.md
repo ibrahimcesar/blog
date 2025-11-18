@@ -6,6 +6,8 @@ image: ~/assets/images/binary.jpg
 pubDate: "2021-05-23T10:50:00.000Z"
 language: en
 socialImage: "/features/equality.png"
+category: "Leadership & Culture"
+tags: ["Equality", "Diversity", "Tech", "Social Impact", "Inclusion"]
 ---
 
 <p class="lead">This post is an invitation by <a href="https://twitter.com/whitep4nth3r" target="_blank">Salma</a> from <a href="https://unbreak.tech/" target="_blank">Unbreak.tech</a> that aims to be “a platform for MEN to educate other MEN about the need for change and equality in tech”</p>

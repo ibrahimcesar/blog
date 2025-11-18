@@ -5,28 +5,31 @@ import { getFeaturedPosts } from "~/utils/getPostsCollection";
 
 const featured = await getFeaturedPosts();
 
-const { } = Astro.props;
+const {} = Astro.props;
 ---
 
-<section class="px-4 py-16 mx-auto max-w-6xl lg:py-20" aria-label="highlighted posts">
+<section
+  class="px-4 py-16 mx-auto max-w-6xl lg:py-20"
+  aria-label="highlighted posts"
+>
   <div class="flex flex-col mb-6 lg:justify-between lg:flex-row md:mb-8">
     <h2
-      class="max-w-lg mb-2 font-sans text-3xl font-bold tracking-tight sm:text-3xl sm:leading-none lg:mb-5 group"
+      class="max-w-lg mb-2 font-sans text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100 sm:text-3xl sm:leading-none lg:mb-5 group"
     >
       <span class="inline-block mb-1 sm:mb-4"
-        >☁️ Olá! Hello! Hola!<br class="hidden md:block" />Cloud, Code and Everything Else
+        >☁️ Olá! Hello! Hola!<br class="hidden md:block" />Cloud, Code and
+        Everything Else
       </span>
     </h2>
-    <p class="text-gray-700 dark:text-slate-200 lg:text-sm lg:max-w-md">
-      Builder, eventually consistent. General purpous curious. I have A LOT of opinions. But they are all my own, without exceptions. This digital garden is bilingual, with posts in English (en) and Brazilian Portuguese (pt-br).
+    <p class="text-slate-700 dark:text-slate-200 lg:text-sm lg:max-w-md">
+      ☁️ Builder • 🩹 Startup Co-Founder • 🎤 TEDx Speaker • 📖 Science Fiction
+      Author (1 livro, 3 contos) • 🧩 Orgulhosamente Autista<br />
+      Este jardim digital é bilíngue, com posts em Inglês (en) e Português Brasileiro
+      (pt-br). Opiniões são minhas.
     </p>
   </div>
 
   <div class="grid gap-6 row-gap-5 md:grid-cols-2 lg:grid-cols-4 -mb-6">
-    {
-      featured.map((post) => (
-       <HighlightedPost post={post} />
-      ))
-    }
+    {featured.map((post) => <HighlightedPost post={post} />)}
   </div>
 </section>

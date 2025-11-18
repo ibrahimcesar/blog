@@ -5,6 +5,8 @@ featured: true
 image: ~/assets/images/ddd.jpg
 pubDate: "2020-01-23T10:50:00.000Z"
 socialImage: "/features/library.jpg"
+category: "Software Architecture"
+tags: ["Development", "Data-Driven", "Methodology", "Product", "Metrics"]
 ---
 
 <p class="lead">Como uma cultura de desenvolvimento baseada em evidências e métricas centradas no usuário pode ajudar a criar melhores produtos.</p>
