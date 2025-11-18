@@ -133,3 +133,5 @@ dist
 # Percy
 .percy/
 percy-screenshots/
+
+.vscode/branch-timer.json
