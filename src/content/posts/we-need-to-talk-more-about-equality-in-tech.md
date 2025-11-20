@@ -10,15 +10,15 @@ category: "Leadership & Culture"
 tags: ["Equality", "Diversity", "Tech", "Social Impact", "Inclusion"]
 ---
 
-<p class="lead">This post is an invitation by <a href="https://twitter.com/whitep4nth3r" target="_blank">Salma</a> from <a href="https://unbreak.tech/" target="_blank">Unbreak.tech</a> that aims to be “a platform for MEN to educate other MEN about the need for change and equality in tech”</p>
+import YouTube from "~/components/editorial/YouTube.astro";
 
-**Politics** is a taboo word in some tech circles. I’m out of my base here, but in [some camps politics led to a meltdown](https://www.theverge.com/2021/5/3/22418208/basecamp-all-hands-meeting-employee-resignations-buyouts-implosion) after [some gems](https://world.hey.com/jason/changes-at-basecamp-7f32afc5) of privileged men in power. But _we are social animals_. Politics is everywhere because is about everything we do. As simple as a [Wikipedia definition](https://en.wikipedia.org/wiki/Politics) can be, politics “is the set of activities that are associated with deciding in groups, or other forms of power relations between individuals, such as the distribution of resources or status". And I will talk direct with you, my fellow men.
+<p class="lead">This post is an invitation by <a href="https://twitter.com/whitep4nth3r" target="_blank">Salma</a> from <a href="https://unbreak.tech/" target="_blank">Unbreak.tech</a> that aims to be "a platform for MEN to educate other MEN about the need for change and equality in tech"</p>
 
-Even if you cannot see there’s a context, a structural web of power relations codified in the public speech, gender norms, cultural products and in the market itself that are a byproduct of several instances of decision making that made the world what it is. Sexist. Racist. Abusive. And I know, is difficult to see, exactly because of that. It embedded us in it. Because, my friends, this is water.
+**Politics** is a taboo word in some tech circles. I'm out of my base here, but in [some camps politics led to a meltdown](https://www.theverge.com/2021/5/3/22418208/basecamp-all-hands-meeting-employee-resignations-buyouts-implosion) after [some gems](https://world.hey.com/jason/changes-at-basecamp-7f32afc5) of privileged men in power. But _we are social animals_. Politics is everywhere because is about everything we do. As simple as a [Wikipedia definition](https://en.wikipedia.org/wiki/Politics) can be, politics "is the set of activities that are associated with deciding in groups, or other forms of power relations between individuals, such as the distribution of resources or status". And I will talk direct with you, my fellow men.
 
-<div class='yt-frame'>
-<iframe title="YouTube" width="560" height="315" src="https://www.youtube.com/embed/8CrOL-ydFMI" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-</div>
+Even if you cannot see there's a context, a structural web of power relations codified in the public speech, gender norms, cultural products and in the market itself that are a byproduct of several instances of decision making that made the world what it is. Sexist. Racist. Abusive. And I know, is difficult to see, exactly because of that. It embedded us in it. Because, my friends, this is water.
+
+<YouTube videoId="8CrOL-ydFMI" title="This is Water by David Foster Wallace" poster="maxresdefault" />
 
 This video, from the late writer David Foster Wallace, starts with a humorous parable:
 

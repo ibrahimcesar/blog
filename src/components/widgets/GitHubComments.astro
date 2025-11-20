@@ -1,0 +1,157 @@
+---
+/**
+ * GitHub Comments Component
+ *
+ * Uses giscus to provide a comment system powered by GitHub Discussions
+ *
+ * Setup Instructions:
+ * 1. Enable GitHub Discussions on your repository
+ * 2. Install the giscus app: https://github.com/apps/giscus
+ * 3. Visit https://giscus.app to configure and get your settings
+ * 4. Update the data attributes below with your repository info
+ *
+ * @param {boolean} enabled - Whether comments are enabled for this post (default: true)
+ * @param {string} language - Language code (en or pt-BR)
+ */
+
+interface Props {
+  enabled?: boolean;
+  language?: string;
+}
+
+const { enabled = true, language = "en" } = Astro.props;
+
+if (!enabled) {
+  return null;
+}
+
+// Configuration - Update these with your repository details
+const GITHUB_REPO = "ibrahimcesar/blog"; // Change to your repo: username/repo
+const REPO_ID = "YOUR_REPO_ID"; // Get from giscus.app
+const CATEGORY = "Announcements"; // Discussion category name
+const CATEGORY_ID = "YOUR_CATEGORY_ID"; // Get from giscus.app
+
+const giscusLang = language === "en" ? "en" : "pt";
+---
+
+{
+  enabled && (
+    <section class="comments-section max-w-3xl mx-auto my-12">
+      <div class="comments-container">
+        <h2 class="text-2xl font-bold mb-6 text-gray-900 dark:text-gray-100">
+          {language === "en" ? "Comments" : "Comentários"}
+        </h2>
+
+        <div class="giscus-wrapper">
+          <script
+            src="https://giscus.app/client.js"
+            data-repo="ibrahimcesar/blog"
+            data-repo-id="R_kgDOH2plAg"
+            data-category="Blog posts"
+            data-category-id="DIC_kwDOH2plAs4CyArx"
+            data-mapping="og:title"
+            data-strict="1"
+            data-reactions-enabled="1"
+            data-emit-metadata="1"
+            data-input-position="top"
+            data-theme="preferred_color_scheme"
+            data-lang="en"
+            data-loading="lazy"
+            crossorigin="anonymous"
+            async
+          />
+        </div>
+      </div>
+    </section>
+  )
+}
+
+<script>
+  // Handle theme changes dynamically
+  function updateGiscusTheme() {
+    const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const theme = isDark ? "dark" : "light";
+
+    const iframe = document.querySelector<HTMLIFrameElement>(
+      "iframe.giscus-frame",
+    );
+    if (iframe?.contentWindow) {
+      iframe.contentWindow.postMessage(
+        { giscus: { setConfig: { theme } } },
+        "https://giscus.app",
+      );
+    }
+  }
+
+  // Listen for theme changes
+  window
+    .matchMedia("(prefers-color-scheme: dark)")
+    .addEventListener("change", updateGiscusTheme);
+
+  // Handle giscus metadata events (for analytics/tracking)
+  window.addEventListener("message", (event) => {
+    if (event.origin !== "https://giscus.app") return;
+
+    const giscusData = event.data?.giscus;
+    if (!giscusData) return;
+
+    // Log metadata for debugging (remove in production if not needed)
+    if (giscusData.discussion) {
+      console.log("Giscus discussion loaded:", {
+        id: giscusData.discussion.id,
+        url: giscusData.discussion.url,
+        locked: giscusData.discussion.locked,
+        reactionCount: giscusData.discussion.reactionCount,
+      });
+    }
+
+    // You can send this data to your analytics service
+    // Example: gtag('event', 'giscus_loaded', { discussion_id: giscusData.discussion?.id });
+  });
+
+  // Handle view transitions (Astro specific)
+  document.addEventListener("astro:after-swap", () => {
+    // Reload giscus after page transition
+    const script = document.querySelector(
+      'script[src="https://giscus.app/client.js"]',
+    );
+    if (script) {
+      const newScript = script.cloneNode(true) as HTMLScriptElement;
+      script.parentNode?.replaceChild(newScript, script);
+    }
+  });
+</script>
+
+<style>
+  .comments-section {
+    padding: 2rem 1rem;
+  }
+
+  .comments-container {
+    border-top: 2px solid #e5e7eb;
+    padding-top: 2rem;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .comments-container {
+      border-top-color: #374151;
+    }
+  }
+
+  .giscus-wrapper {
+    margin-top: 1rem;
+  }
+
+  /* Ensure giscus iframe is responsive */
+  .giscus-wrapper :global(.giscus-frame) {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  /* Mobile adjustments */
+  @media (max-width: 640px) {
+    .comments-section {
+      padding: 1.5rem 0;
+    }
+  }
+</style>

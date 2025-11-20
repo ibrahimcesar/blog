@@ -10,7 +10,9 @@ tags: ["Redis", "Serverless", "Databases", "Upstash", "Cache", "APIs"]
 category: "Serverless"
 ---
 
-<p class="lead"><b>Redis means fast.</b> This was the  impression I always had. But, at the same time, for me, Redis was “just” (as if this wasn't  enough) a cache store. To my surprise, Redis is much more versatile than this.</p>
+import YouTube from "~/components/editorial/YouTube.astro";
+
+<p class="lead"><b>Redis means fast.</b> This was the  impression I always had. But, at the same time, for me, Redis was "just" (as if this wasn't  enough) a cache store. To my surprise, Redis is much more versatile than this.</p>
 
 This will be the first in a series exploring [The State of Serverless Databases in AWS](/blog/the-state-of-serverless-databases-in-aws/) and for it I picked Redis , you know, just to try something other than the usual suspect (DynamoDB) (and to give  a third-party offering a try). In the following weeks, my plan is to explore some database offerings used along with serverless at AWS and explore their particular tradeoffs.
 
@@ -22,9 +24,7 @@ As [self-defined, Redis is](https://redis.io/):
 
 You can take [a look in several in-depth papers](https://redislabs.com/redis-enterprise/data-structures/) describing each data structure in order to make a better informed decision. Since it's open source we could theoretically implement it in a server but it would be a strange, if not wrong turn, in keeping in the Serverless lane. Here enters [Uptash, a Serverless database](https://upstash.com/) offering for Redis. In [Microblogging with Serverless Redis](https://dev.to/fllstck/microblogging-with-serverless-redis-2nl3) you can take a look how CRUD works and more framework-oriented, you could checkout [Lee Robinson](https://twitter.com/leeerob) has a great video on how to use it with Next.js:
 
-<div class='yt-frame'>
-<iframe title="YouTube" width="560" height="315" src="https://www.youtube.com/embed/FytxaSVQROc" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-</div>
+<YouTube videoId="FytxaSVQROc" title="Using Redis with Next.js by Lee Robinson" poster="maxresdefault" />
 
 As I promised in the opening article, I want to do in-depth explorations. Not just our run-of-the-mill `foo` / `bar` examples (for which the official docs of Upstash is guilty, BTW). For Redis, I almost stuck at the key/value store type, but there are several use cases you can unlock with this solution since it gives you access to a GraphQL API, for which you can have an explorer for you, documented. 
 

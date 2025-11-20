@@ -1,7 +1,7 @@
 ---
 title: "📘 #devbooks: Wiring the Winning Organization"
 description: Liberating Our Collective Greatness through Slowification, Simplification, and Amplification
-featured: true
+featured: false
 pubDate: "2023-11-21T10:50:00.000Z"
 image: ~/assets/images/agile-wall.jpg
 language: en

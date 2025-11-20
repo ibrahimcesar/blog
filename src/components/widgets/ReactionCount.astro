@@ -1,0 +1,179 @@
+---
+/**
+ * Reaction Count Component
+ *
+ * Displays the number of reactions a post has received via GitHub Discussions
+ * Updates dynamically when giscus loads the discussion metadata
+ *
+ * @param {string} language - Language code (en or pt)
+ */
+
+interface Props {
+  language?: string;
+}
+
+const { language = "en" } = Astro.props;
+
+const label = language === "en" ? "reactions" : "reações";
+---
+
+<div
+  id="reaction-count"
+  class="reaction-count-container hidden"
+  aria-live="polite"
+  aria-atomic="true"
+>
+  <span class="reaction-icon" aria-hidden="true">❤️</span>
+  <span class="reaction-text">
+    <strong class="reaction-number">0</strong>
+    <span class="reaction-label">{label}</span>
+  </span>
+</div>
+
+<script>
+  // Listen for giscus metadata to get reaction count
+  function updateReactionCount() {
+    window.addEventListener('message', (event) => {
+      if (event.origin !== 'https://giscus.app') return;
+
+      const giscusData = event.data?.giscus;
+      if (!giscusData?.discussion) return;
+
+      const reactionCount = giscusData.discussion.reactionCount || 0;
+
+      // Only show if there are reactions
+      if (reactionCount > 0) {
+        const container = document.getElementById('reaction-count');
+        const numberElement = container?.querySelector('.reaction-number');
+
+        if (container && numberElement) {
+          numberElement.textContent = reactionCount.toString();
+          container.classList.remove('hidden');
+          container.classList.add('visible');
+
+          // Add animation
+          container.classList.add('fade-in');
+        }
+      }
+    });
+  }
+
+  // Initialize on page load
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', updateReactionCount);
+  } else {
+    updateReactionCount();
+  }
+
+  // Reinitialize after view transitions
+  document.addEventListener('astro:page-load', updateReactionCount);
+</script>
+
+<style>
+  .reaction-count-container {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.375rem 0.75rem;
+    background: #f0f9ff;
+    border: 1px solid #bae6fd;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    color: #0c4a6e;
+    transition: all 0.2s ease;
+  }
+
+  .reaction-count-container.hidden {
+    display: none;
+  }
+
+  .reaction-count-container.visible {
+    display: inline-flex;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .reaction-count-container {
+      background: #0c4a6e;
+      border-color: #075985;
+      color: #bae6fd;
+    }
+  }
+
+  .reaction-icon {
+    font-size: 1rem;
+    line-height: 1;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+  }
+
+  .reaction-text {
+    display: flex;
+    align-items: baseline;
+    gap: 0.25rem;
+    font-family: system-ui, -apple-system, sans-serif;
+  }
+
+  .reaction-number {
+    font-weight: 700;
+    font-size: 1rem;
+  }
+
+  .reaction-label {
+    font-weight: 500;
+    opacity: 0.9;
+  }
+
+  .fade-in {
+    animation: fadeIn 0.3s ease-in;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Hover effect */
+  .reaction-count-container:hover {
+    background: #e0f2fe;
+    border-color: #7dd3fc;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .reaction-count-container:hover {
+      background: #075985;
+      border-color: #0ea5e9;
+    }
+  }
+
+  /* Mobile adjustments */
+  @media (max-width: 640px) {
+    .reaction-count-container {
+      font-size: 0.8125rem;
+      padding: 0.25rem 0.625rem;
+    }
+
+    .reaction-icon {
+      font-size: 0.875rem;
+    }
+
+    .reaction-number {
+      font-size: 0.875rem;
+    }
+  }
+</style>

@@ -232,6 +232,56 @@ import DiveDeep from "~/components/editorial/DiveDeep.astro";
 
 ---
 
+### YouTube
+
+A lightweight, performant YouTube embed using react-lite-youtube-embed. Loads significantly faster than standard YouTube iframes by deferring the player until user interaction.
+
+**Location**: `src/components/editorial/YouTube.astro`
+
+**Props**:
+- `videoId` (string, required) - YouTube video ID
+- `title` (string, optional, recommended) - Video title for accessibility
+- `aspectHeight` (number, optional, default: 9) - Aspect ratio height
+- `poster` (string, optional, default: "hqdefault") - Poster quality: "default" | "hqdefault" | "mqdefault" | "sddefault" | "maxresdefault"
+- `noCookie` (boolean, optional, default: true) - Use youtube-nocookie.com domain
+- `params` (string, optional) - Additional YouTube URL parameters
+- `playlistCoverId` (string, optional) - Cover video ID for playlists
+- `announce` (string, optional, default: "Watch") - Custom screen reader announcement
+
+**Usage**:
+```astro
+---
+import YouTube from "~/components/editorial/YouTube.astro";
+---
+
+<YouTube videoId="dQw4w9WgXcQ" title="Rick Astley - Never Gonna Give You Up" />
+
+<YouTube
+  videoId="6avJHaC3C2U"
+  title="The Art of Code by Dylan Beattie"
+  poster="maxresdefault"
+/>
+```
+
+**Features**:
+- Significantly faster loading than native YouTube embeds
+- Only loads the full player when user clicks to play
+- Uses lightweight thumbnail preview initially
+- Privacy-focused with youtube-nocookie.com by default
+- Fully accessible with proper ARIA labels
+- Responsive design that adapts to container width
+- Dark mode support
+- Reduced data usage for users who don't play the video
+- Better Core Web Vitals scores
+
+**Performance Benefits**:
+- Reduces initial page load by ~500KB per video
+- Improves Largest Contentful Paint (LCP)
+- Improves Total Blocking Time (TBT)
+- Defers non-critical JavaScript until interaction
+
+---
+
 ## Additional Component Suggestions
 
 Here are more component ideas you might want to implement:
@@ -364,6 +414,7 @@ title: "My Amazing Post"
 import PullQuote from "~/components/editorial/PullQuote.astro";
 import Alert from "~/components/editorial/Alert.astro";
 import DiveDeep from "~/components/editorial/DiveDeep.astro";
+import YouTube from "~/components/editorial/YouTube.astro";
 
 ## Introduction
 
@@ -378,6 +429,8 @@ Here's my introduction...
 <PullQuote cite="Someone Important">
   This is a really important quote from the article.
 </PullQuote>
+
+<YouTube videoId="dQw4w9WgXcQ" title="Example Video" />
 
 <DiveDeep title="Advanced Details">
   Here's some advanced information that interested readers can expand...

@@ -9,9 +9,9 @@ category: "Books & Learning"
 tags: ["Software Engineering", "Philosophy", "Technology", "Talks", "Alan Kay"]
 ---
 
-<div class='yt-frame'>
-<iframe title="YouTube" width="560" height="315" src="https://www.youtube.com/embed/D43PlUr1x_E" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-</div>
+import YouTube from "~/components/editorial/YouTube.astro";
+
+<YouTube videoId="D43PlUr1x_E" title="Is Software Engineering Still an Oxymoron? by Alan Kay" poster="maxresdefault" />
 
 Alan Kay dispensa apresentações mas vai uma aqui de qualquer forma: É conhecido por ter sido um dos inventores da linguagem de programação Smalltalk, e um dos pais do conceito de programação orientada a objetos, que lhe valeu o Prêmio Turing em 2003. Concebeu o laptop e a arquitetura das modernas interfaces gráficas dos computadores. Já ouviu? "A melhor maneira de predizer o futuro é inventá-lo." É atribuida a ele, e mesmo OOP sendo ele mais tarde se arrependeu de chamar de "objetos":
 
