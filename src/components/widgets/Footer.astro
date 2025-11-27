@@ -163,6 +163,9 @@ const {} = Astro.props;
         &copy; 2020 — {new Date().getFullYear()} <em>All rights reserved</em>. Made with
       <span role="img" aria-label="puzzle piece">&nbsp;🧩&nbsp;</span>
       in São Paulo, Brazil. Built with 🚀 <a rel="noopener noreferrer" href="https://astro.build" target="_blank" class="underline"><span class="external">Astro v5.15.8</span></a> hosted with <a rel="noopener noreferrer" href="https://aws.amazon.com/amplify/" target="_blank" class="underline"><span class="external">AWS with Amplify</span></a>. This blog represents my own view points and not of my employer, Amazon Web Services (AWS).
+      <span class="block mt-1 font-mono text-xs text-gray-500 dark:text-gray-500">
+        Page loaded in <span id="page-load-time">...</span>
+      </span>
       </div>
       <div class="mt-4 md:mt-0">
         <iframe src="https://github.com/sponsors/ibrahimcesar/button" title="Sponsor ibrahimcesar" height="32" width="114" style="border: 0; border-radius: 6px;"></iframe>
@@ -191,4 +194,32 @@ const {} = Astro.props;
       }
     });
   }
+
+  // Page load time using Performance API
+  function displayLoadTime() {
+    const loadTimeEl = document.getElementById('page-load-time');
+    if (!loadTimeEl) return;
+
+    const perf = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
+    if (perf) {
+      // loadEventEnd - fetchStart gives total page load time
+      const loadTime = perf.loadEventEnd - perf.fetchStart;
+      if (loadTime > 0) {
+        loadTimeEl.textContent = loadTime >= 1000
+          ? `${(loadTime / 1000).toFixed(2)}s`
+          : `${Math.round(loadTime)}ms`;
+      }
+    }
+  }
+
+  // Run after page fully loads
+  if (document.readyState === 'complete') {
+    // Small delay to ensure loadEventEnd is populated
+    setTimeout(displayLoadTime, 0);
+  } else {
+    window.addEventListener('load', () => setTimeout(displayLoadTime, 0));
+  }
+
+  // Re-run on Astro page transitions
+  document.addEventListener('astro:page-load', () => setTimeout(displayLoadTime, 0));
 </script>

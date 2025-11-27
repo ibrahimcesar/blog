@@ -1,0 +1,16 @@
+/* TEAM */
+Author: Ibrahim Cesar
+Site: https://ibrahimcesar.cloud
+GitHub: https://github.com/ibrahimcesar
+Location: Brazil
+
+/* THANKS */
+Template: AstroWind
+Site: https://github.com/onwidget/astrowind
+
+/* SITE */
+Last update: 2025/11/27
+Standards: HTML5, CSS3, JavaScript
+Components: Astro, Tailwind CSS, Pagefind
+Software: VS Code, Claude Code
+Hosting: AWS Amplify

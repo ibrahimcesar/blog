@@ -7,12 +7,77 @@ const {
   image = new URL(defaultImage, Astro.site),
   featureImage,
   canonical,
+  publishDate,
+  modifiedDate,
+  isArticle = false,
 } = Astro.props;
+
+const siteUrl = Astro.site?.toString().replace(/\/$/, '') || 'https://ibrahimcesar.cloud';
+
+// JSON-LD Structured Data
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Ibrahim Cesar",
+  "url": siteUrl,
+  "description": "Personal blog about Cloud, Code and Everything Else",
+  "author": {
+    "@type": "Person",
+    "name": "Ibrahim Cesar",
+    "url": siteUrl,
+    "sameAs": [
+      "https://github.com/ibrahimcesar",
+      "https://twitter.com/ibrahimcesar",
+      "https://linkedin.com/in/ibrahimcesar"
+    ]
+  }
+};
+
+const articleSchema = isArticle ? {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": title,
+  "description": description,
+  "image": featureImage || image,
+  "url": canonical,
+  "datePublished": publishDate,
+  "dateModified": modifiedDate || publishDate,
+  "author": {
+    "@type": "Person",
+    "name": "Ibrahim Cesar",
+    "url": siteUrl
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Ibrahim Cesar",
+    "url": siteUrl
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": canonical
+  }
+} : null;
 ---
 
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+
+<!-- Web App Manifest -->
+<link rel="manifest" href="/manifest.json" />
+<meta name="theme-color" content="#1e293b" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+<!-- RSS Autodiscovery -->
+<link rel="alternate" type="application/rss+xml" title="Ibrahim Cesar's Blog" href={`${siteUrl}/rss.xml`} />
+
+<!-- JSON-LD Structured Data -->
+<script is:inline type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
+{isArticle && articleSchema && (
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
+)}
 
 <title>{title}</title>
 <meta name="description" content={description} />

@@ -49,7 +49,10 @@ const image = await findImage(post.data.image);
     canonical,
     image,
     lang,
-    featureImage
+    featureImage,
+    isArticle: true,
+    publishDate: post.data.pubDate?.toISOString(),
+    modifiedDate: post.data.updatedDate?.toISOString(),
   }}
 >
   <main>
