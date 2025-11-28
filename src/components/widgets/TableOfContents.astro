@@ -14,7 +14,7 @@ if (!headings || headings.length === 0) {
 }
 ---
 
-<nav class="toc" aria-label="Table of Contents">
+<nav class="toc font-sans" aria-label="Table of Contents">
   <button class="toc-toggle" aria-label="Toggle Table of Contents" aria-expanded="false">
     <svg class="toc-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <line x1="8" y1="6" x2="21" y2="6"></line>
@@ -75,15 +75,13 @@ if (!headings || headings.length === 0) {
     transform: translateY(-2px);
   }
 
-  @media (prefers-color-scheme: dark) {
-    .toc-toggle {
-      background: #60a5fa; /* blue-400 */
-      color: #0f172a; /* slate-900 */
-    }
+  :global(.dark) .toc-toggle {
+    background: #60a5fa; /* blue-400 */
+    color: #0f172a; /* slate-900 */
+  }
 
-    .toc-toggle:hover {
-      background: #3b82f6; /* blue-500 */
-    }
+  :global(.dark) .toc-toggle:hover {
+    background: #93c5fd; /* blue-300 */
   }
 
   .toc-icon {
@@ -104,12 +102,10 @@ if (!headings || headings.length === 0) {
     overflow-y: auto;
   }
 
-  @media (prefers-color-scheme: dark) {
-    .toc-content {
-      background: #1e293b; /* slate-800 */
-      border-color: #334155; /* slate-700 */
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-    }
+  :global(.dark) .toc-content {
+    background: #1e293b; /* slate-800 */
+    border-color: #334155; /* slate-700 */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
   }
 
   .toc.expanded .toc-content {
@@ -126,10 +122,8 @@ if (!headings || headings.length === 0) {
     border-bottom: 2px solid #e2e8f0; /* slate-200 */
   }
 
-  @media (prefers-color-scheme: dark) {
-    .toc-header {
-      border-bottom-color: #334155; /* slate-700 */
-    }
+  :global(.dark) .toc-header {
+    border-bottom-color: #334155; /* slate-700 */
   }
 
   .toc-title {
@@ -139,10 +133,8 @@ if (!headings || headings.length === 0) {
     margin: 0;
   }
 
-  @media (prefers-color-scheme: dark) {
-    .toc-title {
-      color: #f1f5f9; /* slate-100 */
-    }
+  :global(.dark) .toc-title {
+    color: #f1f5f9; /* slate-100 */
   }
 
   .toc-list {
@@ -172,16 +164,14 @@ if (!headings || headings.length === 0) {
     background: #f1f5f9; /* slate-100 */
   }
 
-  @media (prefers-color-scheme: dark) {
-    .toc-link {
-      color: #cbd5e1; /* slate-300 */
-    }
+  :global(.dark) .toc-link {
+    color: #e2e8f0; /* slate-200 */
+  }
 
-    .toc-link:hover {
-      color: #60a5fa; /* blue-400 */
-      border-left-color: #60a5fa; /* blue-400 */
-      background: #0f172a; /* slate-900 */
-    }
+  :global(.dark) .toc-link:hover {
+    color: #60a5fa; /* blue-400 */
+    border-left-color: #60a5fa; /* blue-400 */
+    background: #0f172a; /* slate-900 */
   }
 
   /* Indentation for different heading depths */
@@ -217,10 +207,8 @@ if (!headings || headings.length === 0) {
     border-radius: 2px;
   }
 
-  @media (prefers-color-scheme: dark) {
-    .toc-link:focus {
-      outline-color: #60a5fa; /* blue-400 */
-    }
+  :global(.dark) .toc-link:focus {
+    outline-color: #60a5fa; /* blue-400 */
   }
 
   /* Custom scrollbar for ToC */
@@ -268,7 +256,6 @@ if (!headings || headings.length === 0) {
 
 <script is:inline>
   (function() {
-    // Add active state to current section in viewport
     function initTableOfContents() {
       const toc = document.querySelector('.toc');
       const tocToggle = document.querySelector('.toc-toggle');
@@ -276,41 +263,49 @@ if (!headings || headings.length === 0) {
 
       if (!tocLinks.length || !tocToggle || !toc) return;
 
+      // Prevent duplicate listeners by cloning and replacing
+      const newToggle = tocToggle.cloneNode(true);
+      tocToggle.parentNode.replaceChild(newToggle, tocToggle);
+
       // Toggle ToC visibility
-      tocToggle.addEventListener('click', function(e) {
+      newToggle.addEventListener('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
         const isExpanded = toc.classList.toggle('expanded');
-        tocToggle.setAttribute('aria-expanded', isExpanded.toString());
+        newToggle.setAttribute('aria-expanded', isExpanded.toString());
       });
 
       // Close ToC when clicking a link
       tocLinks.forEach(function(link) {
-        link.addEventListener('click', function(e) {
+        const newLink = link.cloneNode(true);
+        link.parentNode.replaceChild(newLink, link);
+
+        newLink.addEventListener('click', function(e) {
           e.preventDefault();
-          const href = link.getAttribute('href');
+          const href = newLink.getAttribute('href');
           if (href && href.startsWith('#')) {
             const target = document.querySelector(href);
             if (target) {
               target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-              // Update URL without triggering navigation
               history.pushState(null, '', href);
-              // Close ToC after clicking a link
               toc.classList.remove('expanded');
-              tocToggle.setAttribute('aria-expanded', 'false');
+              newToggle.setAttribute('aria-expanded', 'false');
             }
           }
         });
       });
 
-      // Close ToC when clicking outside
+      // Close ToC when clicking outside (use capture to ensure we catch it)
       document.addEventListener('click', function(e) {
-        if (!toc.contains(e.target)) {
+        if (toc && !toc.contains(e.target)) {
           toc.classList.remove('expanded');
-          tocToggle.setAttribute('aria-expanded', 'false');
+          const btn = toc.querySelector('.toc-toggle');
+          if (btn) btn.setAttribute('aria-expanded', 'false');
         }
-      });
+      }, { capture: true, once: false });
 
+      // Intersection observer for active link highlighting
+      const freshLinks = document.querySelectorAll('.toc-link');
       const observer = new IntersectionObserver(
         function(entries) {
           entries.forEach(function(entry) {
@@ -318,22 +313,17 @@ if (!headings || headings.length === 0) {
             const tocLink = document.querySelector('.toc-link[href="#' + id + '"]');
 
             if (entry.isIntersecting && tocLink) {
-              // Remove active class from all links
-              tocLinks.forEach(function(link) {
+              freshLinks.forEach(function(link) {
                 link.classList.remove('active');
               });
-              // Add active class to current link
               tocLink.classList.add('active');
             }
           });
         },
-        {
-          rootMargin: '-80px 0px -80% 0px',
-        }
+        { rootMargin: '-80px 0px -80% 0px' }
       );
 
-      // Observe all headings that are in the ToC
-      tocLinks.forEach(function(link) {
+      freshLinks.forEach(function(link) {
         const href = link.getAttribute('href');
         if (href && href.startsWith('#')) {
           const id = href.substring(1);

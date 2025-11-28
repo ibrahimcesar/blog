@@ -1,0 +1,52 @@
+---
+import Tags from "~/components/widgets/Tags.astro";
+import type { Post } from "~/utils/getPostsCollection";
+
+interface Props {
+  post: Post;
+}
+
+const { post } = Astro.props;
+const isEnglish = post.data.language === "en";
+---
+
+<article class="py-4 border-b border-slate-200 dark:border-slate-700 last:border-b-0">
+  <div class="flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-6">
+    <time
+      datetime={post.data.pubDate.toISOString()}
+      class="text-sm font-mono text-slate-500 dark:text-slate-400 shrink-0 tabular-nums"
+    >
+      {post.data.pubDate.toISOString().substring(0, 10)}
+    </time>
+
+    <div class="flex-grow">
+      <h2 class="text-xl font-semibold leading-snug mb-1">
+        <a
+          href={`/blog/${post.slug}`}
+          class="text-slate-900 dark:text-slate-100 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors duration-200"
+        >
+          {post.data.title}
+        </a>
+      </h2>
+
+      {post.data.description && (
+        <p class="text-slate-600 dark:text-slate-400 text-sm mb-2 line-clamp-2">
+          {post.data.description}
+        </p>
+      )}
+
+      <div class="flex flex-wrap gap-2 items-center">
+        <span class={`inline-flex items-center text-xs px-2 py-0.5 rounded-md font-medium ${
+          isEnglish
+            ? 'bg-blue-600 text-white dark:bg-blue-500'
+            : 'bg-green-600 text-yellow-300 dark:bg-green-700 dark:text-yellow-400'
+        }`}>
+          {isEnglish ? "en" : "pt-br"}
+        </span>
+        {post.data.tags && post.data.tags.length > 0 && (
+          <Tags tags={post.data.tags.slice(0, 3)} size="xs" />
+        )}
+      </div>
+    </div>
+  </div>
+</article>

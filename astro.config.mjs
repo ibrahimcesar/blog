@@ -97,7 +97,13 @@ export default defineConfig({
         borderRadius: '0.5rem',
         borderWidth: '1px',
       },
-      useDarkModeMediaQuery: true,
+      themeCssSelector: (theme) => {
+        // Use class-based dark mode instead of media query
+        if (theme.type === 'dark') {
+          return '.dark';
+        }
+        return ':root:not(.dark)';
+      },
     }),
     mdx(),
     react(),

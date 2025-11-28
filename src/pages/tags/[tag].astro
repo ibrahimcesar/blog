@@ -1,6 +1,6 @@
 ---
 import Layout from "~/layouts/PageLayout.astro";
-import BlogListItem from "~/components/widgets/BlogListItem.astro";
+import PostListItem from "~/components/widgets/PostListItem.astro";
 import { SITE } from "~/config.mjs";
 import { getAllTags, getPostsByTag } from "~/utils/getPostsCollection";
 
@@ -57,9 +57,9 @@ const canonical = new URL(`tags/${tag.toLowerCase()}`, Astro.site);
           </p>
         </div>
       ) : (
-        <div class="space-y-12">
+        <div class="divide-y divide-slate-200 dark:divide-slate-700">
           {posts.map((post) => (
-            <BlogListItem post={post} />
+            <PostListItem post={post} />
           ))}
         </div>
       )}

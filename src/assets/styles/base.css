@@ -33,10 +33,8 @@
     margin-bottom: 0.75em;
   }
 
-  @media (prefers-color-scheme: dark) {
-    h1, h2, h3, h4, h5, h6 {
-      color: #f8fafc; /* slate-50 - excellent contrast */
-    }
+  .dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 {
+    color: #f8fafc; /* slate-50 - excellent contrast */
   }
 
   /* Typography scale with better readability */
@@ -119,10 +117,8 @@ a:hover {
   color: #1e293b; /* slate-800 - excellent contrast */
 }
 
-@media (prefers-color-scheme: dark) {
-  .post {
-    color: #f1f5f9; /* slate-100 - excellent contrast on dark background */
-  }
+.dark .post {
+  color: #f1f5f9; /* slate-100 - excellent contrast on dark background */
 }
 
 .post p {
@@ -148,11 +144,9 @@ a:hover {
   color: #be185d;
 }
 
-@media (prefers-color-scheme: dark) {
-  .post code {
-    background: #334155;
-    color: #fda4af;
-  }
+.dark .post code {
+  background: #334155;
+  color: #fda4af;
 }
 
 .post pre code {
@@ -279,6 +273,24 @@ blockquote {
     padding-left: 2.25em;
     border-left: 10px solid var(--plum-medium) !important;
     margin: 1rem 0;
+    quotes: none;
+}
+
+blockquote::before,
+blockquote::after {
+    content: none;
+}
+
+.prose blockquote::before,
+.prose blockquote::after,
+.prose blockquote p::before,
+.prose blockquote p::after,
+.post blockquote::before,
+.post blockquote::after,
+.post blockquote p::before,
+.post blockquote p::after {
+    content: none !important;
+    display: none !important;
 }
 
 blockquote > footer {
@@ -305,37 +317,47 @@ figcaption {
 
 
 
-@media (prefers-color-scheme: dark) {
-  .img-on-dark {
-    background-color: #fff;
-  }
+.dark .img-on-dark {
+  background-color: #fff;
+}
 
-  /* Ensure images in posts have white background in dark mode for transparency issues */
-  .post img {
-    background-color: #fff;
-    padding: 0.5rem;
-    border-radius: 0.375rem;
-  }
+/* Ensure images in posts have white background in dark mode for transparency issues */
+.dark .post img {
+  background-color: #fff;
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+}
 
-  /* Exception for images that should remain transparent (icons, logos, etc) */
-  .post img.no-bg,
-  .avatar img,
-  .icon img {
-    background-color: transparent;
-    padding: 0;
-  }
+/* Exception for images that should remain transparent (icons, logos, etc) */
+.dark .post img.no-bg,
+.dark .avatar img,
+.dark .icon img {
+  background-color: transparent;
+  padding: 0;
+}
 
-  /* Better text contrast for prose content in dark mode */
-  .prose {
-    color: #f1f5f9 !important; /* slate-100 - much better contrast */
-  }
+/* Better text contrast for prose content */
+.prose {
+  color: #1e293b; /* slate-800 - excellent contrast in light mode */
+}
 
-  .prose p,
-  .prose li,
-  .prose td,
-  .prose blockquote {
-    color: #f1f5f9 !important; /* slate-100 - excellent readability */
-  }
+.dark .prose {
+  color: #f1f5f9 !important; /* slate-100 - much better contrast */
+}
+
+.dark .prose p,
+.dark .prose li,
+.dark .prose td,
+.dark .prose blockquote {
+  color: #f1f5f9 !important; /* slate-100 - excellent readability */
+}
+
+.dark .prose strong,
+.dark .prose b,
+.dark .post strong,
+.dark .post b {
+  color: #ffffff !important; /* Pure white for bold text - maximum contrast */
+  font-weight: 700;
 }
 
 /* Anchor link styles */
