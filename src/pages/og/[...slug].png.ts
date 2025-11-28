@@ -1,9 +1,7 @@
 import type { APIRoute, GetStaticPaths } from 'astro';
 import satori from 'satori';
-import sharp from 'sharp';
+import { Resvg } from '@resvg/resvg-js';
 import { getCollection } from 'astro:content';
-import fs from 'node:fs';
-import path from 'node:path';
 
 // Load Inter font from Google Fonts CDN (more reliable)
 async function loadFont(): Promise<ArrayBuffer> {
@@ -220,10 +218,14 @@ export const GET: APIRoute = async ({ props }) => {
     }
   );
 
-  // Convert SVG to PNG using Sharp
-  const png = await sharp(Buffer.from(svg))
-    .png()
-    .toBuffer();
+  // Convert SVG to PNG using Resvg (pure WASM, works everywhere)
+  const resvg = new Resvg(svg, {
+    fitTo: {
+      mode: 'width',
+      value: 1200,
+    },
+  });
+  const png = resvg.render().asPng();
 
   return new Response(png, {
     headers: {
