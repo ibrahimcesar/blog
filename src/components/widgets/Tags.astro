@@ -29,6 +29,11 @@ const colorPalette = [
   { bg: "bg-red-600", hover: "hover:bg-red-700" },
 ];
 
+// Override specific tags with brand colors
+const tagColorOverrides: Record<string, { bg: string; hover: string }> = {
+  "aws": { bg: "bg-orange-500", hover: "hover:bg-orange-600" },
+};
+
 // Generate consistent color index based on tag string
 const getColorIndex = (tag: string) => {
   let hash = 0;
@@ -39,13 +44,21 @@ const getColorIndex = (tag: string) => {
   return Math.abs(hash) % colorPalette.length;
 };
 
+// Get color for a tag (check overrides first, then use hash)
+const getTagColor = (tag: string) => {
+  const lowerTag = tag.toLowerCase();
+  if (tagColorOverrides[lowerTag]) {
+    return tagColorOverrides[lowerTag];
+  }
+  return colorPalette[getColorIndex(tag)];
+};
+
 const sizeClass = sizeClasses[size] || sizeClasses.sm;
 ---
 
 <div class="flex flex-wrap gap-2 items-center">
   {tags.map((tag) => {
-    const colorIdx = getColorIndex(tag);
-    const color = colorPalette[colorIdx];
+    const color = getTagColor(tag);
     return (
       <a
         href={`/tags/${tag.toLowerCase()}`}
