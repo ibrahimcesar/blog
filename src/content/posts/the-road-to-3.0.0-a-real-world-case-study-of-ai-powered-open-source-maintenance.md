@@ -3,9 +3,8 @@ title: "The Road to 3.0.0: A Real-World Case Study of AI-Powered Open Source Mai
 description: "How Claude Code found 21 improvements in react-lite-youtube-embed: critical bugs, performance wins, and SLSA Level 3 security. A real open source case study"
 featured: true
 pubDate: "2025-11-20T10:50:00.000Z"
-image: ~/assets/images/safe.jpg
+image: ~/assets/images/lite.png
 language: en
-socialImage: "/features/considered-harmful.png"
 category: "Technology & Society"
 tags: ["Open Source", "AI", "React", "Maintenance", "Case Study", "Claude"]
 draft: true

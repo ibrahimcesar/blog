@@ -37,7 +37,11 @@ const title = `${post.data.title} — ${SITE.name}`;
 const lang = post.data.language ? "en" : null;
 const description = post.data.description;
 const canonical = new URL(`blog/${post.slug}`, Astro.site);
-const featureImage = post.data.socialImage ? new URL(`${post.data.socialImage}`, Astro.site) : null;
+
+// Use socialImage if provided, otherwise generate OG image
+const featureImage = post.data.socialImage
+  ? new URL(`${post.data.socialImage}`, Astro.site)
+  : new URL(`/og/${post.slug}.png`, Astro.site);
 
 const image = await findImage(post.data.image);
 ---
