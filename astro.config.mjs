@@ -2,7 +2,11 @@ import { defineConfig } from "astro/config";
 
 import tailwind from "@astrojs/tailwind";
 import sitemap from "@astrojs/sitemap";
+import mdx from "@astrojs/mdx";
+import react from "@astrojs/react";
 import expressiveCode from "astro-expressive-code";
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
 
 import { h } from 'hastscript';
 import { toString } from 'hast-util-to-string';
@@ -48,8 +52,10 @@ export default defineConfig({
     },
     remarkPlugins: [
       ['remark-smartypants', { dashes: false }],
+      remarkMath,
     ],
     rehypePlugins: [
+      rehypeKatex,
       'rehype-slug',
       // This adds links to headings
       [
@@ -93,6 +99,8 @@ export default defineConfig({
       },
       useDarkModeMediaQuery: true,
     }),
+    mdx(),
+    react(),
     tailwind({
       config: {
         applyBaseStyles: false,

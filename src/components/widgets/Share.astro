@@ -117,18 +117,26 @@ const shareUrls = {
 </style>
 
 <script>
-  // Copy link functionality
-  document.addEventListener('DOMContentLoaded', () => {
+  // Copy link functionality - runs immediately and on page transitions
+  function initCopyButtons() {
     const copyButtons = document.querySelectorAll('.copy-link');
 
     copyButtons.forEach(button => {
-      button.addEventListener('click', async () => {
-        const url = button.getAttribute('data-url');
-        if (!url) return;
+      // Remove existing listeners to avoid duplicates
+      const newButton = button.cloneNode(true);
+      button.parentNode?.replaceChild(newButton, button);
+
+      newButton.addEventListener('click', async (e) => {
+        e.preventDefault();
+        const url = newButton.getAttribute('data-url');
+        if (!url) {
+          console.error('No URL found on button');
+          return;
+        }
 
         try {
           // Try native Web Share API first on mobile
-          if (navigator.share) {
+          if (navigator.share && /Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
             await navigator.share({
               title: document.title,
               url: url
@@ -137,25 +145,45 @@ const shareUrls = {
           }
 
           // Fallback to clipboard API
-          await navigator.clipboard.writeText(url);
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            await navigator.clipboard.writeText(url);
+          } else {
+            // Fallback for older browsers
+            const textArea = document.createElement('textarea');
+            textArea.value = url;
+            textArea.style.position = 'fixed';
+            textArea.style.left = '-9999px';
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+          }
 
           // Visual feedback
-          const originalSvg = button.innerHTML;
-          button.classList.add('copy-success');
-          button.innerHTML = `
+          const originalSvg = newButton.innerHTML;
+          newButton.classList.add('copy-success');
+          newButton.innerHTML = `
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
             </svg>
           `;
 
           setTimeout(() => {
-            button.classList.remove('copy-success');
-            button.innerHTML = originalSvg;
+            newButton.classList.remove('copy-success');
+            newButton.innerHTML = originalSvg;
           }, 2000);
         } catch (err) {
           console.error('Failed to share/copy:', err);
+          // Show error feedback
+          alert('Could not copy link. Please copy manually: ' + url);
         }
       });
     });
-  });
+  }
+
+  // Run on initial load
+  initCopyButtons();
+
+  // Re-run after Astro page transitions
+  document.addEventListener('astro:page-load', initCopyButtons);
 </script>

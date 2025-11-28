@@ -1,0 +1,38 @@
+---
+import { Image } from 'astro:assets';
+
+interface Props {
+  src: string;
+  alt?: string;
+  title?: string;
+}
+
+const { src, alt = '', title } = Astro.props;
+
+// Dynamic import of talk images from src/assets/talks/
+const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/talks/*');
+
+// Extract filename from src path (e.g., "/talks/image.png" -> "image.png")
+const filename = src.replace('/talks/', '');
+const imagePath = `/src/assets/talks/${filename}`;
+
+const imageModule = images[imagePath];
+const image = imageModule ? (await imageModule()).default : null;
+---
+
+{image ? (
+  <figure class="extend">
+    <Image
+      src={image}
+      alt={alt || title || filename}
+      title={title}
+      loading="lazy"
+      decoding="async"
+      style="width: 100%; height: auto;"
+    />
+  </figure>
+) : (
+  <figure class="extend">
+    <p style="color: red;">Image not found: {src}</p>
+  </figure>
+)}
