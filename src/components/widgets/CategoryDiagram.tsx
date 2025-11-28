@@ -15,14 +15,14 @@ import React from 'react';
  * - "An Introduction to String Diagrams for Computer Scientists" (Cambridge)
  */
 
-// Colors that work on both light and dark backgrounds
+// Colors optimized for white background (used in both light and dark mode)
 const colors = {
-  wire: '#6366f1',       // indigo-500
-  wireSecondary: '#8b5cf6', // violet-500
-  wireTertiary: '#ec4899',  // pink-500
-  node: '#312e81',       // indigo-900
-  nodeFill: '#eef2ff',   // indigo-50
-  text: '#1e1b4b',       // indigo-950
+  wire: '#4f46e5',       // indigo-600 - more contrast
+  wireSecondary: '#7c3aed', // violet-600 - more contrast
+  wireTertiary: '#db2777',  // pink-600 - more contrast
+  node: '#1e1b4b',       // indigo-950
+  nodeFill: '#e0e7ff',   // indigo-100
+  text: '#0f172a',       // slate-900 - maximum contrast
   regionA: '#dbeafe',    // blue-100
   regionB: '#fce7f3',    // pink-100
   regionC: '#d1fae5',    // green-100
@@ -41,29 +41,46 @@ const StringDiagram: React.FC<StringDiagramProps> = ({
   title,
   children,
 }) => {
+  // Add padding to viewBox
+  const padding = 16;
+  const paddedWidth = width + padding * 2;
+  const paddedHeight = height + padding * 2;
+
   return (
     <figure style={{ margin: '2rem 0' }}>
       <svg
-        viewBox={`0 0 ${width} ${height}`}
+        viewBox={`${-padding} ${-padding} ${paddedWidth} ${paddedHeight}`}
         width="100%"
         height="auto"
         style={{
-          maxWidth: `${width}px`,
+          maxWidth: `${paddedWidth}px`,
           margin: '0 auto',
           display: 'block',
-          background: 'transparent'
+          backgroundColor: '#ffffff',
+          borderRadius: '8px',
         }}
       >
+        {/* White background rect to ensure visibility in dark mode */}
+        <rect
+          x={-padding}
+          y={-padding}
+          width={paddedWidth}
+          height={paddedHeight}
+          fill="#ffffff"
+          rx={8}
+        />
         {children}
       </svg>
       {title && (
-        <figcaption style={{
-          textAlign: 'center',
-          fontSize: '0.875rem',
-          color: '#6b7280',
-          marginTop: '0.5rem',
-          fontStyle: 'italic'
-        }}>
+        <figcaption
+          className="text-slate-600 dark:text-slate-400"
+          style={{
+            textAlign: 'center',
+            fontSize: '0.875rem',
+            marginTop: '0.5rem',
+            fontStyle: 'italic'
+          }}
+        >
           {title}
         </figcaption>
       )}
@@ -112,9 +129,10 @@ const Wire: React.FC<{
           x={labelX + 12}
           y={labelY}
           fill={colors.text}
-          fontSize="13"
+          fontSize="14"
           fontFamily="serif"
           fontStyle="italic"
+          fontWeight="500"
         >
           {label}
         </text>
@@ -144,9 +162,10 @@ const Node: React.FC<{
           x={x + size / 2 + 5}
           y={y + 5}
           fill={colors.text}
-          fontSize="14"
+          fontSize="15"
           fontFamily="serif"
           fontStyle="italic"
+          fontWeight="600"
         >
           {label}
         </text>
@@ -169,8 +188,9 @@ const Node: React.FC<{
           x={x}
           y={y + 5}
           fill={colors.text}
-          fontSize="12"
+          fontSize="14"
           fontFamily="serif"
+          fontWeight="600"
           textAnchor="middle"
         >
           {label}
@@ -196,9 +216,9 @@ const Node: React.FC<{
         x={x}
         y={y + 5}
         fill={colors.text}
-        fontSize="14"
+        fontSize="15"
         fontFamily="serif"
-        fontWeight="500"
+        fontWeight="600"
         textAnchor="middle"
       >
         {label}
@@ -230,9 +250,9 @@ const Region: React.FC<{
         x={x + width / 2}
         y={y + 18}
         fill={colors.text}
-        fontSize="12"
+        fontSize="14"
         fontFamily="sans-serif"
-        fontWeight="600"
+        fontWeight="700"
         textAnchor="middle"
       >
         {label}
@@ -318,18 +338,18 @@ export const NaturalTransformationDiagram: React.FC = () => (
 export const MonadDiagram: React.FC = () => (
   <StringDiagram width={320} height={250} title="Monad M: unit η and join μ">
     {/* Left: unit η */}
-    <text x={80} y={25} fill={colors.text} fontSize="12" fontWeight="600" textAnchor="middle">unit (η)</text>
+    <text x={80} y={25} fill={colors.text} fontSize="14" fontWeight="700" textAnchor="middle">unit (η)</text>
     <Wire x1={80} y1={35} x2={80} y2={70} label="A" labelPosition="start" />
     <Node x={80} y={100} label="η" shape="dot" size={30} />
     <Wire x1={80} y1={130} x2={80} y2={220} color={colors.wireSecondary} label="M(A)" labelPosition="end" />
 
     {/* Right: join μ */}
-    <text x={240} y={25} fill={colors.text} fontSize="12" fontWeight="600" textAnchor="middle">join (μ)</text>
+    <text x={240} y={25} fill={colors.text} fontSize="14" fontWeight="700" textAnchor="middle">join (μ)</text>
     {/* Two M wires coming in and merging */}
     <Wire x1={220} y1={35} x2={220} y2={80} color={colors.wireSecondary} />
     <Wire x1={260} y1={35} x2={260} y2={80} color={colors.wireSecondary} />
-    <text x={195} y={55} fill={colors.text} fontSize="11" fontFamily="serif" fontStyle="italic">M</text>
-    <text x={275} y={55} fill={colors.text} fontSize="11" fontFamily="serif" fontStyle="italic">M</text>
+    <text x={195} y={55} fill={colors.text} fontSize="14" fontFamily="serif" fontStyle="italic" fontWeight="500">M</text>
+    <text x={275} y={55} fill={colors.text} fontSize="14" fontFamily="serif" fontStyle="italic" fontWeight="500">M</text>
 
     {/* Merge node */}
     <path
@@ -356,7 +376,7 @@ export const AdjunctionDiagram: React.FC = () => (
     <Region x={180} y={0} width={180} height={240} color={colors.regionB} label="D" />
 
     {/* Left: unit η - creates a cup */}
-    <text x={90} y={50} fill={colors.text} fontSize="11" fontWeight="600" textAnchor="middle">unit η</text>
+    <text x={90} y={50} fill={colors.text} fontSize="14" fontWeight="700" textAnchor="middle">unit η</text>
     <Node x={90} y={80} label="η" shape="dot" size={24} />
     {/* Cup shape */}
     <path
@@ -369,7 +389,7 @@ export const AdjunctionDiagram: React.FC = () => (
     <Wire x1={120} y1={80} x2={120} y2={200} color={colors.wireSecondary} label="F" labelPosition="end" />
 
     {/* Right: counit ε - creates a cap */}
-    <text x={270} y={50} fill={colors.text} fontSize="11" fontWeight="600" textAnchor="middle">counit ε</text>
+    <text x={270} y={50} fill={colors.text} fontSize="14" fontWeight="700" textAnchor="middle">counit ε</text>
     <Wire x1={240} y1={60} x2={240} y2={140} color={colors.wireSecondary} label="F" labelPosition="start" />
     <Wire x1={300} y1={60} x2={300} y2={140} label="G" labelPosition="start" />
     {/* Cap shape */}
@@ -393,7 +413,7 @@ export const AdjunctionDiagram: React.FC = () => (
 export const TriangleIdentityDiagram: React.FC = () => (
   <StringDiagram width={300} height={200} title="Triangle identity: zig-zag = straight line">
     {/* Left: zig-zag that equals identity */}
-    <text x={75} y={25} fill={colors.text} fontSize="11" textAnchor="middle">ε_F ∘ F(η)</text>
+    <text x={75} y={25} fill={colors.text} fontSize="14" fontWeight="600" textAnchor="middle">ε_F ∘ F(η)</text>
     <Wire x1={75} y1={40} x2={75} y2={60} color={colors.wireSecondary} />
     {/* Zig down-right */}
     <path
@@ -416,7 +436,7 @@ export const TriangleIdentityDiagram: React.FC = () => (
     <text x={150} y={110} fill={colors.text} fontSize="20" fontWeight="bold">=</text>
 
     {/* Right: straight identity */}
-    <text x={225} y={25} fill={colors.text} fontSize="11" textAnchor="middle">id_F</text>
+    <text x={225} y={25} fill={colors.text} fontSize="14" fontWeight="600" textAnchor="middle">id_F</text>
     <Wire x1={225} y1={40} x2={225} y2={180} color={colors.wireSecondary} label="F" />
   </StringDiagram>
 );
@@ -428,7 +448,7 @@ export const TriangleIdentityDiagram: React.FC = () => (
 export const YonedaDiagram: React.FC = () => (
   <StringDiagram width={340} height={200} title="Yoneda: ∀B. (A → B) → F(B) ≅ F(A)">
     {/* Left side: the universal property */}
-    <text x={85} y={25} fill={colors.text} fontSize="11" textAnchor="middle">Yoneda</text>
+    <text x={85} y={25} fill={colors.text} fontSize="14" fontWeight="600" textAnchor="middle">Yoneda</text>
     <Wire x1={60} y1={40} x2={60} y2={80} label="A" labelPosition="start" />
     <Wire x1={110} y1={40} x2={110} y2={80} label="(→B)" labelPosition="start" />
 
@@ -446,7 +466,7 @@ export const YonedaDiagram: React.FC = () => (
     <text x={170} y={100} fill={colors.text} fontSize="24" fontWeight="bold">≅</text>
 
     {/* Right side: just F(A) */}
-    <text x={255} y={25} fill={colors.text} fontSize="11" textAnchor="middle">Element</text>
+    <text x={255} y={25} fill={colors.text} fontSize="14" fontWeight="600" textAnchor="middle">Element</text>
     <Wire x1={255} y1={40} x2={255} y2={185} color={colors.wireSecondary} label="F(A)" />
   </StringDiagram>
 );
@@ -458,13 +478,13 @@ export const YonedaDiagram: React.FC = () => (
 export const CoyonedaDiagram: React.FC = () => (
   <StringDiagram width={320} height={200} title="Coyoneda: ∃X. (F(X), X → A) ≅ F(A)">
     {/* Left: Coyoneda structure */}
-    <text x={80} y={25} fill={colors.text} fontSize="11" textAnchor="middle">Coyoneda</text>
+    <text x={80} y={25} fill={colors.text} fontSize="14" fontWeight="600" textAnchor="middle">Coyoneda</text>
     <Wire x1={50} y1={40} x2={50} y2={100} color={colors.wireTertiary} label="F(X)" labelPosition="start" />
     <Wire x1={110} y1={40} x2={110} y2={100} label="X→A" labelPosition="start" />
 
     {/* Lower with fmap */}
     <rect x={30} y={100} width={100} height={30} rx={4} fill={colors.nodeFill} stroke={colors.node} strokeWidth={2} />
-    <text x={80} y={120} fill={colors.text} fontSize="12" fontFamily="serif" textAnchor="middle">fmap f</text>
+    <text x={80} y={120} fill={colors.text} fontSize="14" fontFamily="serif" fontWeight="600" textAnchor="middle">fmap f</text>
 
     <Wire x1={80} y1={130} x2={80} y2={180} color={colors.wireSecondary} label="F(A)" labelPosition="end" />
 
@@ -472,7 +492,7 @@ export const CoyonedaDiagram: React.FC = () => (
     <text x={160} y={100} fill={colors.text} fontSize="24" fontWeight="bold">≅</text>
 
     {/* Right: just F(A) */}
-    <text x={240} y={25} fill={colors.text} fontSize="11" textAnchor="middle">Direct</text>
+    <text x={240} y={25} fill={colors.text} fontSize="14" fontWeight="600" textAnchor="middle">Direct</text>
     <Wire x1={240} y1={40} x2={240} y2={180} color={colors.wireSecondary} label="F(A)" />
   </StringDiagram>
 );
