@@ -1,0 +1,121 @@
+---
+import { getCollection, render } from 'astro:content';
+import Layout from '~/layouts/PageLayout.astro';
+import Tags from '~/components/widgets/Tags.astro';
+
+export async function getStaticPaths() {
+  const reads = await getCollection('reads');
+  return reads.map((item) => ({
+    params: { slug: item.slug },
+    props: { item },
+  }));
+}
+
+const { item } = Astro.props;
+const { title, author, source, sourceUrl, type, pubDate, tags, description, bookCover } = item.data;
+const { Content } = await render(item);
+
+// Format date
+const formattedDate = new Date(pubDate).toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+
+// Type icons and labels
+const typeConfig: Record<string, { icon: string; label: string }> = {
+  article: { icon: '📄', label: 'Article' },
+  paper: { icon: '📑', label: 'Paper' },
+  book: { icon: '📚', label: 'Book' },
+  newsletter: { icon: '📬', label: 'Newsletter' },
+  thread: { icon: '🧵', label: 'Thread' },
+};
+
+const typeInfo = typeConfig[type] || typeConfig.article;
+---
+
+<Layout meta={{ title: `${title} | What I Read`, description: description || title }}>
+  <main>
+    <article class="px-4 sm:px-6 py-8 sm:py-12 mx-auto max-w-4xl">
+      <!-- Header -->
+      <header class="mb-8">
+        <div class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-4">
+          <a href="/reads" class="hover:text-indigo-600 dark:hover:text-indigo-400">
+            ← Back to What I Read
+          </a>
+        </div>
+
+        <div class="flex items-center gap-2 mb-4">
+          <span class="text-sm font-medium px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300">
+            {typeInfo.icon} {typeInfo.label}
+          </span>
+        </div>
+
+        <h1 class="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-4">
+          {title}
+        </h1>
+
+        <div class="flex flex-wrap items-center gap-4 text-sm text-slate-600 dark:text-slate-400">
+          {author && (
+            <span class="flex items-center gap-1">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+              </svg>
+              {author}
+            </span>
+          )}
+          {source && (
+            <span class="flex items-center gap-1">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+              </svg>
+              {source}
+            </span>
+          )}
+          <time datetime={pubDate.toISOString()}>
+            {formattedDate}
+          </time>
+        </div>
+
+        {tags && tags.length > 0 && (
+          <div class="mt-4">
+            <Tags tags={tags} size="sm" />
+          </div>
+        )}
+      </header>
+
+      <!-- Book cover if present -->
+      {bookCover && (
+        <div class="mb-8 flex justify-center">
+          <img
+            src={bookCover}
+            alt={title}
+            class="max-w-xs rounded-lg shadow-lg"
+          />
+        </div>
+      )}
+
+      <!-- Content -->
+      <div class="prose prose-lg dark:prose-invert max-w-none">
+        <Content />
+      </div>
+
+      <!-- Read original link -->
+      {sourceUrl && (
+        <div class="mt-8 pt-6 border-t border-slate-200 dark:border-slate-700">
+          <a
+            href={sourceUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 font-medium"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+            </svg>
+            Read the original
+          </a>
+        </div>
+      )}
+    </article>
+  </main>
+</Layout>

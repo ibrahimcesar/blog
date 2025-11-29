@@ -1,0 +1,81 @@
+---
+import Tags from "~/components/widgets/Tags.astro";
+import { getWatched } from "~/utils/getWatchedCollection";
+
+interface Props {
+  count?: number;
+}
+
+const { count = 3 } = Astro.props;
+const watched = await getWatched();
+const latestWatched = watched.slice(0, count);
+---
+
+{latestWatched.length > 0 && (
+  <section class="px-4 sm:px-6 pt-4 pb-12 mx-auto max-w-4xl overflow-x-hidden" aria-label="latest watched">
+    <h2 class="text-2xl font-bold mb-6 text-slate-900 dark:text-slate-100 border-b border-slate-200 dark:border-slate-700 pb-3 flex items-center gap-2">
+      <span class="text-red-500">▶</span> What I Watched
+    </h2>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {latestWatched.map((item) => {
+        const thumbnailUrl = `https://i.ytimg.com/vi/${item.data.videoId}/hqdefault.jpg`;
+        return (
+          <a href={`/watched/${item.slug}`} class="group block">
+            <article class="h-full">
+              <div class="relative aspect-video rounded-lg overflow-hidden bg-slate-200 dark:bg-slate-700 mb-3">
+                <img
+                  src={thumbnailUrl}
+                  alt={item.data.title}
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  loading="lazy"
+                />
+                <div class="absolute inset-0 flex items-center justify-center">
+                  <div class="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center opacity-90 group-hover:opacity-100 group-hover:scale-110 transition-all">
+                    <svg class="w-4 h-4 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M8 5v14l11-7z"/>
+                    </svg>
+                  </div>
+                </div>
+                {item.data.duration && (
+                  <span class="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-1.5 py-0.5 rounded">
+                    {item.data.duration}
+                  </span>
+                )}
+              </div>
+              <h3 class="font-semibold text-slate-900 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors line-clamp-2 text-sm">
+                {item.data.title}
+              </h3>
+              {item.data.channel && (
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                  {item.data.channel}
+                </p>
+              )}
+            </article>
+          </a>
+        );
+      })}
+    </div>
+
+    <div class="mt-6 text-center">
+      <a
+        href="/watched"
+        class="inline-flex items-center gap-2 text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 font-medium transition-colors text-sm"
+      >
+        View all videos
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+        </svg>
+      </a>
+    </div>
+  </section>
+)}
+
+<style>
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>

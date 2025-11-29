@@ -1,0 +1,36 @@
+---
+import Layout from "~/layouts/PageLayout.astro";
+import ReadListItem from "~/components/widgets/ReadListItem.astro";
+import { getReads } from "~/utils/getReadsCollection";
+
+const items = await getReads();
+---
+
+<Layout meta={{ title: "What I Read", description: "Articles, papers, books, and content I've read with my thoughts and commentary" }}>
+  <main>
+    <section class="px-4 sm:px-6 py-8 sm:py-16 lg:py-20 mx-auto max-w-4xl" aria-label="What I Read">
+      <header class="mb-12">
+        <h1 class="text-center text-4xl md:text-5xl font-bold leading-tighter tracking-tighter mb-4 text-slate-900 dark:text-white">
+          What I Read
+        </h1>
+        <p class="text-center text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+          Articles, papers, books, and content I've read with my thoughts and commentary.
+        </p>
+      </header>
+
+      {items.length === 0 ? (
+        <p class="text-center text-slate-500 dark:text-slate-400">
+          No reads yet. Check back soon!
+        </p>
+      ) : (
+        <ul class="space-y-8">
+          {items.map((item) => (
+            <li class="border-b border-slate-200 dark:border-slate-700 pb-8 last:border-b-0">
+              <ReadListItem item={item} />
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
+  </main>
+</Layout>
