@@ -1,7 +1,29 @@
 ---
 import certifications from "~/data/certifications.json";
+import { getCollection } from 'astro:content';
 
-const {} = Astro.props;
+// Calculate stats across all blog posts at build time
+const posts = await getCollection('posts');
+const allBlogText = posts.map(p => p.body).join(' ');
+const totalWords = allBlogText.split(/\s+/).filter(word => word.length > 0).length;
+const totalPosts = posts.length;
+
+// Calculate Shannon entropy of all blog content
+function calculateEntropy(text: string): number {
+  if (!text || text.length === 0) return 0;
+  const freq: Record<string, number> = {};
+  for (const char of text) {
+    freq[char] = (freq[char] || 0) + 1;
+  }
+  const len = text.length;
+  let entropy = 0;
+  for (const char in freq) {
+    const p = freq[char] / len;
+    entropy -= p * Math.log2(p);
+  }
+  return entropy;
+}
+const blogEntropy = calculateEntropy(allBlogText);
 ---
 
 <footer>
@@ -163,9 +185,24 @@ const {} = Astro.props;
         &copy; 2020 — {new Date().getFullYear()} <em>All rights reserved</em>. Made with
       <span role="img" aria-label="puzzle piece">&nbsp;🧩&nbsp;</span>
       in São Paulo, Brazil. Built with 🚀 <a rel="noopener noreferrer" href="https://astro.build" target="_blank" class="underline"><span class="external">Astro v5.15.8</span></a> hosted with <a rel="noopener noreferrer" href="https://aws.amazon.com/amplify/" target="_blank" class="underline"><span class="external">AWS with Amplify</span></a>. This blog represents my own view points and not of my employer, Amazon Web Services (AWS).
-      <span class="block mt-1 font-mono text-xs text-gray-500 dark:text-gray-500">
-        Page loaded in <span id="page-load-time">...</span>
-      </span>
+      <details class="mt-2 text-xs">
+        <summary class="cursor-pointer font-mono text-gray-500 dark:text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+          Stats for nerds ▾
+        </summary>
+        <div class="mt-2 font-mono text-gray-500 dark:text-gray-500 space-y-0.5 pl-2 border-l-2 border-gray-300 dark:border-gray-600">
+          <div>FCP: <span id="fcp-time">...</span></div>
+          <div>LCP: <span id="lcp-time">...</span></div>
+          <div>TTI: <span id="tti-time">...</span></div>
+          <div>Page load: <span id="page-load-time">...</span></div>
+          <div>Page size: <span id="page-size">...</span></div>
+          <div>DOM nodes: <span id="dom-nodes">...</span></div>
+          <div>Carbon: ~<span id="carbon-estimate">...</span>g CO₂</div>
+          <div>Blog: {totalWords.toLocaleString()} words in {totalPosts} posts</div>
+          <div>Entropy: {blogEntropy.toFixed(3)} bits/char</div>
+          <div>Built: {new Date().toISOString().substring(0, 10)}</div>
+          <div>Unix: <span id="unix-timestamp">...</span></div>
+        </div>
+      </details>
       </div>
       <div class="mt-4 md:mt-0">
         <iframe src="https://github.com/sponsors/ibrahimcesar/button" title="Sponsor ibrahimcesar" height="32" width="114" style="border: 0; border-radius: 6px;"></iframe>
@@ -195,31 +232,110 @@ const {} = Astro.props;
     });
   }
 
-  // Page load time using Performance API
-  function displayLoadTime() {
-    const loadTimeEl = document.getElementById('page-load-time');
-    if (!loadTimeEl) return;
+  // Helper to format time
+  function formatTime(ms: number): string {
+    return ms >= 1000 ? `${(ms / 1000).toFixed(2)}s` : `${Math.round(ms)}ms`;
+  }
 
-    const perf = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
-    if (perf) {
-      // loadEventEnd - fetchStart gives total page load time
-      const loadTime = perf.loadEventEnd - perf.fetchStart;
-      if (loadTime > 0) {
-        loadTimeEl.textContent = loadTime >= 1000
-          ? `${(loadTime / 1000).toFixed(2)}s`
-          : `${Math.round(loadTime)}ms`;
+  // Nerd stats using Performance API
+  function displayNerdStats() {
+    const fcpEl = document.getElementById('fcp-time');
+    const lcpEl = document.getElementById('lcp-time');
+    const ttiEl = document.getElementById('tti-time');
+    const loadTimeEl = document.getElementById('page-load-time');
+    const pageSizeEl = document.getElementById('page-size');
+    const domNodesEl = document.getElementById('dom-nodes');
+    const carbonEl = document.getElementById('carbon-estimate');
+    const unixEl = document.getElementById('unix-timestamp');
+
+    const navEntry = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
+
+    // First Contentful Paint (FCP)
+    if (fcpEl) {
+      const fcpEntry = performance.getEntriesByName('first-contentful-paint')[0];
+      if (fcpEntry) {
+        fcpEl.textContent = formatTime(fcpEntry.startTime);
       }
+    }
+
+    // Largest Contentful Paint (LCP) - uses PerformanceObserver
+    if (lcpEl && 'PerformanceObserver' in window) {
+      try {
+        const lcpEntries = performance.getEntriesByType('largest-contentful-paint');
+        if (lcpEntries.length > 0) {
+          const lastLcp = lcpEntries[lcpEntries.length - 1] as PerformanceEntry;
+          lcpEl.textContent = formatTime(lastLcp.startTime);
+        } else {
+          // Set up observer for LCP
+          new PerformanceObserver((list) => {
+            const entries = list.getEntries();
+            const lastEntry = entries[entries.length - 1];
+            if (lastEntry && lcpEl) {
+              lcpEl.textContent = formatTime(lastEntry.startTime);
+            }
+          }).observe({ type: 'largest-contentful-paint', buffered: true });
+        }
+      } catch (e) {
+        lcpEl.textContent = 'N/A';
+      }
+    }
+
+    // Time to Interactive (TTI) - approximated using domInteractive
+    if (ttiEl && navEntry) {
+      const tti = navEntry.domInteractive - navEntry.fetchStart;
+      if (tti > 0) {
+        ttiEl.textContent = formatTime(tti);
+      }
+    }
+
+    // Page load time
+    if (loadTimeEl && navEntry) {
+      const loadTime = navEntry.loadEventEnd - navEntry.fetchStart;
+      if (loadTime > 0) {
+        loadTimeEl.textContent = formatTime(loadTime);
+      }
+    }
+
+    // Page size (transferred bytes)
+    if (pageSizeEl) {
+      const resources = performance.getEntriesByType('resource') as PerformanceResourceTiming[];
+      let totalBytes = navEntry?.transferSize || 0;
+      resources.forEach(r => { totalBytes += r.transferSize || 0; });
+
+      if (totalBytes > 0) {
+        pageSizeEl.textContent = totalBytes > 1024 * 1024
+          ? `${(totalBytes / (1024 * 1024)).toFixed(2)} MB`
+          : totalBytes > 1024
+            ? `${(totalBytes / 1024).toFixed(1)} KB`
+            : `${totalBytes} B`;
+
+        // Carbon estimate: ~0.2g CO2 per MB (Website Carbon methodology)
+        if (carbonEl) {
+          const mbTransferred = totalBytes / (1024 * 1024);
+          const carbonGrams = (mbTransferred * 0.2).toFixed(3);
+          carbonEl.textContent = carbonGrams;
+        }
+      }
+    }
+
+    // DOM nodes count
+    if (domNodesEl) {
+      domNodesEl.textContent = document.getElementsByTagName('*').length.toLocaleString();
+    }
+
+    // Unix timestamp
+    if (unixEl) {
+      unixEl.textContent = Math.floor(Date.now() / 1000).toString();
     }
   }
 
   // Run after page fully loads
   if (document.readyState === 'complete') {
-    // Small delay to ensure loadEventEnd is populated
-    setTimeout(displayLoadTime, 0);
+    setTimeout(displayNerdStats, 0);
   } else {
-    window.addEventListener('load', () => setTimeout(displayLoadTime, 0));
+    window.addEventListener('load', () => setTimeout(displayNerdStats, 0));
   }
 
   // Re-run on Astro page transitions
-  document.addEventListener('astro:page-load', () => setTimeout(displayLoadTime, 0));
+  document.addEventListener('astro:page-load', () => setTimeout(displayNerdStats, 0));
 </script>

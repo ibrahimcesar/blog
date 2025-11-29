@@ -27,7 +27,7 @@ const showCommentsSection = post.data.showComments !== false; // Default to true
          <span class={`font-mono block text-sm font-semibold uppercase ${classLanguage}`}>📝 {isEnglish ? "en" : "pt-br"}</span>
         <time datetime={post.data.pubDate.toISOString()} class="text-md font-mono">
           {post.data.pubDate.toISOString().substring(0, 10)}
-        </time> ~ {post.readingTime}
+        </time> ~ {post.readingTime} ~ {'☕'.repeat(post.coffeeCups)}
       </p>
       <h1
         class="px-4 sm:px-6 max-w-3xl mx-auto text-center text-5xl md:text-[3.50rem] font-bold leading-tighter tracking-tighter mb-6 md:mb-8 post-title-color"

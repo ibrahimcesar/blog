@@ -4,6 +4,8 @@ import readingTime from 'reading-time';
 
 export interface Post extends CollectionEntry<'posts'> {
   readingTime: string;
+  readingTimeMinutes: number;
+  coffeeCups: number;
 }
 
 /**
@@ -26,10 +28,15 @@ export async function getPosts(): Promise<Post[]> {
     sortedPosts.map(async (post) => {
       const { body } = post;
       const stats = readingTime(body);
+      const minutes = Math.ceil(stats.minutes);
+      // Average coffee drinking time is ~10-15 minutes per cup
+      const coffeeCups = Math.max(1, Math.ceil(minutes / 12));
 
       return {
         ...post,
         readingTime: stats.text,
+        readingTimeMinutes: minutes,
+        coffeeCups,
       };
     })
   );

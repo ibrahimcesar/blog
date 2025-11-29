@@ -2,7 +2,7 @@
   "name": "ibrahimcesar-blog",
   "description": "Ibrahim Cesar's customized blog theme",
   "homepage": "https://ibrahimcesar.cloud",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "private": true,
   "scripts": {
     "dev": "astro dev",
