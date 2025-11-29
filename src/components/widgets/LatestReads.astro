@@ -29,13 +29,25 @@ const typeIcons: Record<string, string> = {
     <ul class="space-y-4">
       {latestReads.map((item) => {
         const typeIcon = typeIcons[item.data.type] || typeIcons.article;
+        const linkUrl = item.data.sourceUrl || `/reads/${item.slug}`;
+        const isExternal = !!item.data.sourceUrl;
         return (
           <li class="group">
-            <a href={`/reads/${item.slug}`} class="flex items-start gap-4 p-4 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+            <a
+              href={linkUrl}
+              target={isExternal ? "_blank" : undefined}
+              rel={isExternal ? "noopener noreferrer" : undefined}
+              class="flex items-start gap-4 p-4 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
+            >
               <span class="text-2xl flex-shrink-0">{typeIcon}</span>
               <div class="flex-grow min-w-0">
-                <h3 class="font-semibold text-slate-900 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                <h3 class="font-semibold text-slate-900 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors inline-flex items-center gap-1">
                   {item.data.title}
+                  {isExternal && (
+                    <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                    </svg>
+                  )}
                 </h3>
                 {(item.data.author || item.data.source) && (
                   <p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5">
