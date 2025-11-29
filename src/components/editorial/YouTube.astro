@@ -82,7 +82,6 @@ if (!videoId) {
 
         // Create the structure
         this.innerHTML = `
-          <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/react-lite-youtube-embed@3.3.1/dist/LiteYouTubeEmbed.css">
           <div class="yt-lite">
             <img
               class="yt-lite-thumbnail"
@@ -121,7 +120,10 @@ if (!videoId) {
 
         const container = this.querySelector('.yt-lite');
         if (container) {
-          container.replaceWith(iframe);
+          // Keep the container but replace its contents with iframe
+          container.innerHTML = '';
+          container.appendChild(iframe);
+          container.classList.add('lyt-activated');
         }
       }
     }
@@ -146,6 +148,7 @@ if (!videoId) {
     background-position: center center;
     background-size: cover;
     cursor: pointer;
+    aspect-ratio: 16 / 9;
   }
 
   .youtube-wrapper :global(.yt-lite::before) {
@@ -163,6 +166,9 @@ if (!videoId) {
   }
 
   .youtube-wrapper :global(.yt-lite-thumbnail) {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;

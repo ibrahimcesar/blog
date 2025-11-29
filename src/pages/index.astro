@@ -5,6 +5,8 @@ import { SITE } from "~/config.mjs";
 
 import HomeHero from "~/components/widgets/HomeHero.astro";
 import LatestPosts from "~/components/widgets/LatestPosts.astro";
+import LatestWatched from "~/components/widgets/LatestWatched.astro";
+import LatestReads from "~/components/widgets/LatestReads.astro";
 
 const title = `${SITE.name} — Solutions Architect`;
 const description =
@@ -15,6 +17,8 @@ const canonical = new URL("", Astro.site);
 <Layout meta={{ title, description, canonical }}>
   <main>
     <HomeHero />
-    <LatestPosts count={10} />
+    <LatestPosts count={3} />
+    <LatestWatched count={3} />
+    <LatestReads count={3} />
   </main>
 </Layout>

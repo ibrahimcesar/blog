@@ -73,7 +73,56 @@ const talksCollection = defineCollection({
   }),
 });
 
+// What I Watched collection schema - YouTube videos with commentary
+const watchedCollection = defineCollection({
+  type: 'content',
+  schema: z.object({
+    // Required fields
+    title: z.string(),
+    pubDate: z.coerce.date(),
+    videoId: z.string(), // YouTube video ID
+
+    // Optional fields
+    description: z.string().optional(),
+    channel: z.string().optional(), // YouTube channel name
+    duration: z.string().optional(), // Video duration (e.g., "1h 23m")
+    language: z.enum(['en', 'pt-br']).default('en'),
+    tags: tagsSchema,
+    featured: z.boolean().default(false),
+  }),
+});
+
+// What I Read collection schema - Articles, papers, books with commentary
+const readsCollection = defineCollection({
+  type: 'content',
+  schema: z.object({
+    // Required fields
+    title: z.string(),
+    pubDate: z.coerce.date(),
+
+    // Source information
+    sourceUrl: z.string().url().optional(), // Link to the article/paper
+    author: z.string().optional(), // Author of the content
+    source: z.string().optional(), // Publication/website name
+
+    // For books
+    bookCover: z.string().optional(), // Cover image URL
+    isbn: z.string().optional(),
+
+    // Type of content
+    type: z.enum(['article', 'paper', 'book', 'newsletter', 'thread']).default('article'),
+
+    // Optional fields
+    description: z.string().optional(),
+    language: z.enum(['en', 'pt-br']).default('en'),
+    tags: tagsSchema,
+    featured: z.boolean().default(false),
+  }),
+});
+
 export const collections = {
   posts: postsCollection,
   talks: talksCollection,
+  watched: watchedCollection,
+  reads: readsCollection,
 };

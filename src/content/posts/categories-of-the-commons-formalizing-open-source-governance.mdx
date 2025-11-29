@@ -1,0 +1,156 @@
+---
+title: "Categories of the Commons: Formalizing Open Source Governance with Mathematics"
+description: "Announcing my MBA thesis research: applying category theory, sheaf cohomology, and cybernetics to understand why some open source projects thrive while others collapse. Can we predict governance crises before they happen?"
+featured: true
+pubDate: "2025-11-28T19:00:00.000Z"
+image: ~/assets/images/categories-commons.png
+language: en
+category: "Research"
+tags: ["Open Source", "Category Theory", "Research", "Governance", "Mathematics", "Cybernetics"]
+---
+
+import Lead from '../../components/editorial/Lead.astro';
+
+<Lead>
+
+Why do some open source projects thrive for decades while others collapse under their own success? Why did Node.js fork into io.js? Why do single-maintainer projects like curl sustain critical infrastructure while well-funded foundations sometimes struggle? I'm announcing **Categories of the Commons**, my MBA thesis research that applies category theory, sheaf cohomology, and cybernetics to formalize open source governance—and potentially predict governance crises before they happen.
+
+</Lead>
+
+## The Problem
+
+Open source software powers everything. Your browser, your phone, the servers behind every website—all built on a foundation of commons-based peer production. Yet we lack formal frameworks for understanding *why* some projects succeed while others fail.
+
+Consider these patterns:
+
+- **curl** has been maintained primarily by Daniel Stenberg for 25+ years, serving as critical infrastructure for millions of systems
+- **core-js** sustains the JavaScript ecosystem while its maintainer struggles financially
+- **Kubernetes** thrives with hundreds of contributors and formal governance
+- **io.js** forked from Node.js due to governance conflicts, then merged back
+
+What makes these outcomes different? Can we formalize the difference?
+
+## The Framework
+
+My research synthesizes four intellectual traditions:
+
+### 1. Stafford Beer's Viable System Model (VSM)
+
+Beer identified five systems necessary for organizational viability. In OSS terms:
+
+| System | Function | OSS Manifestation |
+|--------|----------|-------------------|
+| S1 | Operations | Commits, PRs, releases |
+| S2 | Coordination | CI/CD, review processes, CONTRIBUTING.md |
+| S3 | Control | Metrics, release management |
+| S4 | Intelligence | Roadmaps, ecosystem monitoring |
+| S5 | Policy | Governance docs, mission, identity |
+
+### 2. Elinor Ostrom's Commons Governance
+
+Ostrom won the Nobel Prize for showing that commons can be governed successfully. Her 8 design principles map to OSS—but with a twist: they predict success for **Federations** (Kubernetes, Linux) but fail for **Stadiums** (curl, SQLite).
+
+### 3. Nadia Asparouhova's OSS Taxonomy
+
+From *Working in Public*, four project types based on user growth vs. contributor growth:
+
+```
+                    CONTRIBUTOR GROWTH
+                    Low              High
+                ┌─────────────┬─────────────┐
+           High │   STADIUM   │ FEDERATION  │
+  USER          │  curl, npm  │  Linux, K8s │
+ GROWTH         ├─────────────┼─────────────┤
+           Low  │    TOYS     │    CLUBS    │
+                │  Personal   │  Niche FWs  │
+                └─────────────┴─────────────┘
+```
+
+### 4. Category Theory & Sheaf Cohomology
+
+Here's where it gets interesting. Category theory provides the **compositional semantics**—how governance structures combine and transform. But the real innovation is applying **sheaf theory**:
+
+- Treat OSS projects as **topological spaces**
+- Governance rules become **sheaf sections**
+- The **gluing axiom** captures how local decisions must combine into coherent global policy
+- **Čech cohomology** measures governance coherence
+
+The cohomology groups have concrete interpretations:
+
+| Group | Meaning |
+|-------|---------|
+| H⁰ | Global consensus (universal rules) |
+| H¹ | Governance conflicts (incompatible local policies) |
+| H² | Structural obstructions (deep incompatibilities) |
+
+## The Hypothesis
+
+**Main Conjecture:** Non-trivial H² cohomology classes precede fork events by 6-12 months.
+
+In plain terms: when a project has deep structural governance incompatibilities—situations where three parties A, B, C agree pairwise but can't all agree together—a fork becomes likely.
+
+This is testable. We can reconstruct historical project states for known forks (Node.js/io.js, Bitcoin/Bitcoin Cash, OpenOffice/LibreOffice) and check if H² spiked before the split.
+
+## The Research Design
+
+I'm taking a **Stadium-focused approach**:
+
+- **28-30 Stadium projects** (curl, core-js, axios, etc.) — maximum categorical signal
+- **12-15 Federation projects** (Kubernetes, Rust, Node.js) — baseline
+- **8-10 Club projects** — convergent case
+- **15-20 Control projects** — noise estimation
+
+Why Stadium-heavy? These projects are **terminal objects** in the organizational constraint category. With ≤3 maintainers handling massive usage, they exhibit the clearest governance structure-to-entropy mapping.
+
+## Early Findings
+
+I've collected data on 13 projects so far. Early patterns emerging:
+
+1. **Entropy correlates with governance type** — Stadium projects show distinct entropy profiles
+2. **Dominance ratio > 40%** is a strong Stadium indicator
+3. **Governance files matter** — presence of CONTRIBUTING.md, CODEOWNERS significantly affects cohomology
+
+## What's Next
+
+The research continues through early 2025:
+
+1. **Complete data collection** — 60-75 projects across all categories
+2. **Implement full cohomology calculation** — using GUDHI for proper simplicial homology
+3. **Fork prediction study** — test the H² hypothesis on historical data
+4. **Write the thesis** — formalize the categorical-cybernetic framework
+
+## Open Source, Open Research
+
+The entire project is open source:
+
+**Repository:** [github.com/ibrahimcesar/categories-of-the-commons](https://github.com/ibrahimcesar/categories-of-the-commons)
+
+- Data collection scripts
+- Entropy calculation modules
+- Jupyter notebooks for analysis
+- The complete sheaf-theoretic framework (in `theory/sheaf-cohomology-framework.md`)
+
+## Why This Matters
+
+Beyond academic interest, this research could have practical applications:
+
+1. **Early warning systems** for governance crises
+2. **Diagnostic tools** for foundation-backed projects
+3. **Better understanding** of when to apply Ostrom's principles vs. other approaches
+4. **Mathematical foundation** for studying organizational health
+
+If you maintain an open source project, especially a Stadium-type one, I'd love to include it in the study. If you're interested in category theory applied to real-world systems, the theoretical framework might interest you.
+
+---
+
+*This research is part of my MBA in Strategic Management at University of São Paulo (USP). It builds on my previous work on [category theory for developers](/blog/category-theory-for-javascript-typescript-developers) and my experience maintaining [react-lite-youtube-embed](https://github.com/ibrahimcesar/react-lite-youtube-embed).*
+
+---
+
+## References
+
+- Beer, S. (1972). *Brain of the Firm*
+- Ostrom, E. (1990). *Governing the Commons*
+- Asparouhova, N. (2020). *Working in Public*
+- Mac Lane, S. (1998). *Categories for the Working Mathematician*
+- Hartshorne, R. (1977). *Algebraic Geometry* (for sheaf theory)

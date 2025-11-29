@@ -1,4 +1,4 @@
-.PHONY: help dev build preview clean install new-post pr deploy pretty format lint
+.PHONY: help dev build preview clean install new-post new-video new-read pr deploy pretty format lint
 
 # Default target
 .DEFAULT_GOAL := help
@@ -405,3 +405,251 @@ deploy-check: build ## 🚀 Pre-deployment check (build + verify)
 	@echo "  3. Push: git push origin main"
 	@echo ""
 	@echo "$(BLUE)ℹ️  AWS Amplify will automatically deploy from main branch$(NC)"
+
+new-video: ## 🎬 Quick add a YouTube video to "What I Watched"
+	@echo "$(BLUE)━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━$(NC)"
+	@echo "$(GREEN)  🎬 New Video Wizard$(NC)"
+	@echo "$(BLUE)━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━$(NC)"
+	@echo ""
+	@\
+	printf "\033[0;32m🔗 YouTube URL or Video ID (required):\033[0m "; \
+	read video_input; \
+	if [ -z "$$video_input" ]; then \
+		echo "$(RED)❌ Video URL/ID is required!$(NC)"; \
+		exit 1; \
+	fi; \
+	\
+	videoId=$$(echo "$$video_input" | sed -n 's/.*[?&]v=\([^&]*\).*/\1/p'); \
+	if [ -z "$$videoId" ]; then \
+		videoId=$$(echo "$$video_input" | sed -n 's/.*youtu\.be\/\([^?]*\).*/\1/p'); \
+	fi; \
+	if [ -z "$$videoId" ]; then \
+		videoId="$$video_input"; \
+	fi; \
+	echo "$(BLUE)ℹ️  Video ID: $$videoId$(NC)"; \
+	echo ""; \
+	\
+	printf "\033[0;32m📝 Video title (required):\033[0m "; \
+	read title; \
+	if [ -z "$$title" ]; then \
+		echo "$(RED)❌ Title is required!$(NC)"; \
+		exit 1; \
+	fi; \
+	\
+	slug=$$(echo "$$title" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9]\+/-/g' | sed 's/^-//' | sed 's/-$$//'); \
+	echo "$(BLUE)ℹ️  Generated slug: $$slug$(NC)"; \
+	echo ""; \
+	\
+	printf "\033[0;33m📺 Channel name (optional):\033[0m "; \
+	read channel; \
+	echo ""; \
+	\
+	printf "\033[0;33m⏱️  Duration (optional, e.g., 25m, 1h 30m):\033[0m "; \
+	read duration; \
+	echo ""; \
+	\
+	printf "\033[0;33m📄 Description (optional):\033[0m "; \
+	read description; \
+	echo ""; \
+	\
+	printf "\033[0;33m🏷️  Tags (optional, comma-separated):\033[0m "; \
+	read tags; \
+	echo ""; \
+	\
+	printf "\033[0;33m🌍 Language (optional, en/pt-br, default: en):\033[0m "; \
+	read language; \
+	if [ -z "$$language" ]; then \
+		language="en"; \
+	fi; \
+	echo ""; \
+	\
+	pubDate=$$(date +"%Y-%m-%d"); \
+	filepath="src/content/watched/$$slug.mdx"; \
+	\
+	echo "$(BLUE)━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━$(NC)"; \
+	echo "$(GREEN)📋 Summary:$(NC)"; \
+	echo "$(BLUE)━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━$(NC)"; \
+	echo "  Title:       $$title"; \
+	echo "  Video ID:    $$videoId"; \
+	echo "  Channel:     $$channel"; \
+	echo "  Duration:    $$duration"; \
+	echo "  Tags:        $$tags"; \
+	echo "  File:        $$filepath"; \
+	echo "$(BLUE)━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━$(NC)"; \
+	echo ""; \
+	printf "\033[0;32m✅ Create this video entry? (Y/n):\033[0m "; \
+	read confirm; \
+	if [ "$$confirm" = "n" ] || [ "$$confirm" = "N" ]; then \
+		echo "$(YELLOW)❌ Cancelled.$(NC)"; \
+		exit 0; \
+	fi; \
+	\
+	echo "$(GREEN)📝 Creating file: $$filepath$(NC)"; \
+	\
+	echo "---" > "$$filepath"; \
+	echo "title: \"$$title\"" >> "$$filepath"; \
+	echo "pubDate: $$pubDate" >> "$$filepath"; \
+	echo "videoId: \"$$videoId\"" >> "$$filepath"; \
+	if [ -n "$$channel" ]; then \
+		echo "channel: \"$$channel\"" >> "$$filepath"; \
+	fi; \
+	if [ -n "$$duration" ]; then \
+		echo "duration: \"$$duration\"" >> "$$filepath"; \
+	fi; \
+	if [ -n "$$description" ]; then \
+		echo "description: \"$$description\"" >> "$$filepath"; \
+	fi; \
+	echo "language: $$language" >> "$$filepath"; \
+	if [ -n "$$tags" ]; then \
+		echo "tags: [\"$$(echo $$tags | sed 's/,/", "/g')\"]" >> "$$filepath"; \
+	fi; \
+	echo "featured: false" >> "$$filepath"; \
+	echo "---" >> "$$filepath"; \
+	echo "" >> "$$filepath"; \
+	echo "import YouTube from '../../components/editorial/YouTube.astro';" >> "$$filepath"; \
+	echo "" >> "$$filepath"; \
+	echo "<YouTube videoId={frontmatter.videoId} title={frontmatter.title} />" >> "$$filepath"; \
+	echo "" >> "$$filepath"; \
+	echo "## My thoughts" >> "$$filepath"; \
+	echo "" >> "$$filepath"; \
+	echo "Write your commentary here..." >> "$$filepath"; \
+	echo "" >> "$$filepath"; \
+	\
+	echo ""; \
+	echo "$(GREEN)━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━$(NC)"; \
+	echo "$(GREEN)  ✅ Video entry created successfully!$(NC)"; \
+	echo "$(GREEN)━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━$(NC)"; \
+	echo ""; \
+	echo "$(BLUE)📂 File:$(NC) $$filepath"; \
+	echo "$(BLUE)🔗 URL:$(NC)  /watched/$$slug"; \
+	echo ""; \
+	code "$$filepath" 2>/dev/null || echo "$(BLUE)ℹ️  Run 'code $$filepath' to open in VS Code$(NC)"
+
+new-read: ## 📖 Quick add an article/book to "What I Read"
+	@echo "$(BLUE)━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━$(NC)"
+	@echo "$(GREEN)  📖 New Read Wizard$(NC)"
+	@echo "$(BLUE)━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━$(NC)"
+	@echo ""
+	@\
+	printf "\033[0;32m📝 Title (required):\033[0m "; \
+	read title; \
+	if [ -z "$$title" ]; then \
+		echo "$(RED)❌ Title is required!$(NC)"; \
+		exit 1; \
+	fi; \
+	\
+	slug=$$(echo "$$title" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9]\+/-/g' | sed 's/^-//' | sed 's/-$$//'); \
+	echo "$(BLUE)ℹ️  Generated slug: $$slug$(NC)"; \
+	echo ""; \
+	\
+	echo "$(YELLOW)📚 Select type:$(NC)"; \
+	echo "  $(GREEN)1)$(NC) 📄 article"; \
+	echo "  $(GREEN)2)$(NC) 📑 paper"; \
+	echo "  $(GREEN)3)$(NC) 📚 book"; \
+	echo "  $(GREEN)4)$(NC) 📬 newsletter"; \
+	echo "  $(GREEN)5)$(NC) 🧵 thread"; \
+	echo ""; \
+	printf "\033[0;32mChoose type (1-5, default: 1):\033[0m "; \
+	read type_choice; \
+	case $$type_choice in \
+		2) content_type="paper";; \
+		3) content_type="book";; \
+		4) content_type="newsletter";; \
+		5) content_type="thread";; \
+		*) content_type="article";; \
+	esac; \
+	echo "$(BLUE)ℹ️  Type: $$content_type$(NC)"; \
+	echo ""; \
+	\
+	printf "\033[0;33m🔗 Source URL (optional):\033[0m "; \
+	read sourceUrl; \
+	echo ""; \
+	\
+	printf "\033[0;33m✍️  Author (optional):\033[0m "; \
+	read author; \
+	echo ""; \
+	\
+	printf "\033[0;33m📰 Source/Publication (optional):\033[0m "; \
+	read source; \
+	echo ""; \
+	\
+	printf "\033[0;33m📄 Description (optional):\033[0m "; \
+	read description; \
+	echo ""; \
+	\
+	printf "\033[0;33m🏷️  Tags (optional, comma-separated):\033[0m "; \
+	read tags; \
+	echo ""; \
+	\
+	printf "\033[0;33m🌍 Language (optional, en/pt-br, default: en):\033[0m "; \
+	read language; \
+	if [ -z "$$language" ]; then \
+		language="en"; \
+	fi; \
+	echo ""; \
+	\
+	pubDate=$$(date +"%Y-%m-%d"); \
+	filepath="src/content/reads/$$slug.mdx"; \
+	\
+	echo "$(BLUE)━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━$(NC)"; \
+	echo "$(GREEN)📋 Summary:$(NC)"; \
+	echo "$(BLUE)━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━$(NC)"; \
+	echo "  Title:       $$title"; \
+	echo "  Type:        $$content_type"; \
+	echo "  Author:      $$author"; \
+	echo "  Source:      $$source"; \
+	echo "  URL:         $$sourceUrl"; \
+	echo "  Tags:        $$tags"; \
+	echo "  File:        $$filepath"; \
+	echo "$(BLUE)━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━$(NC)"; \
+	echo ""; \
+	printf "\033[0;32m✅ Create this read entry? (Y/n):\033[0m "; \
+	read confirm; \
+	if [ "$$confirm" = "n" ] || [ "$$confirm" = "N" ]; then \
+		echo "$(YELLOW)❌ Cancelled.$(NC)"; \
+		exit 0; \
+	fi; \
+	\
+	echo "$(GREEN)📝 Creating file: $$filepath$(NC)"; \
+	\
+	echo "---" > "$$filepath"; \
+	echo "title: \"$$title\"" >> "$$filepath"; \
+	echo "pubDate: $$pubDate" >> "$$filepath"; \
+	echo "type: $$content_type" >> "$$filepath"; \
+	if [ -n "$$sourceUrl" ]; then \
+		echo "sourceUrl: \"$$sourceUrl\"" >> "$$filepath"; \
+	fi; \
+	if [ -n "$$author" ]; then \
+		echo "author: \"$$author\"" >> "$$filepath"; \
+	fi; \
+	if [ -n "$$source" ]; then \
+		echo "source: \"$$source\"" >> "$$filepath"; \
+	fi; \
+	if [ -n "$$description" ]; then \
+		echo "description: \"$$description\"" >> "$$filepath"; \
+	fi; \
+	echo "language: $$language" >> "$$filepath"; \
+	if [ -n "$$tags" ]; then \
+		echo "tags: [\"$$(echo $$tags | sed 's/,/", "/g')\"]" >> "$$filepath"; \
+	fi; \
+	echo "featured: false" >> "$$filepath"; \
+	echo "---" >> "$$filepath"; \
+	echo "" >> "$$filepath"; \
+	echo "## Summary" >> "$$filepath"; \
+	echo "" >> "$$filepath"; \
+	echo "Brief summary of what this covers..." >> "$$filepath"; \
+	echo "" >> "$$filepath"; \
+	echo "## My thoughts" >> "$$filepath"; \
+	echo "" >> "$$filepath"; \
+	echo "Write your commentary here..." >> "$$filepath"; \
+	echo "" >> "$$filepath"; \
+	\
+	echo ""; \
+	echo "$(GREEN)━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━$(NC)"; \
+	echo "$(GREEN)  ✅ Read entry created successfully!$(NC)"; \
+	echo "$(GREEN)━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━$(NC)"; \
+	echo ""; \
+	echo "$(BLUE)📂 File:$(NC) $$filepath"; \
+	echo "$(BLUE)🔗 URL:$(NC)  /reads/$$slug"; \
+	echo ""; \
+	code "$$filepath" 2>/dev/null || echo "$(BLUE)ℹ️  Run 'code $$filepath' to open in VS Code$(NC)"
