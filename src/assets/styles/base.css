@@ -360,6 +360,57 @@ figcaption {
   font-weight: 700;
 }
 
+/* Table styles for talks and content */
+.talk-content table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 1.5rem 0;
+  font-size: 0.875rem;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+}
+
+.dark .talk-content table {
+  border-color: #334155;
+}
+
+.talk-content th,
+.talk-content td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.dark .talk-content th,
+.dark .talk-content td {
+  border-bottom-color: #334155;
+}
+
+.talk-content th {
+  background-color: #f8fafc;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.dark .talk-content th {
+  background-color: #1e293b;
+  color: #f1f5f9;
+}
+
+.talk-content tr:last-child td {
+  border-bottom: none;
+}
+
+.talk-content tr:hover td {
+  background-color: #f1f5f9;
+}
+
+.dark .talk-content tr:hover td {
+  background-color: #1e293b;
+}
+
 /* Anchor link styles */
 .anchor-link {
   opacity: 0;
