@@ -38,7 +38,7 @@ const showCommentsSection = post.data.showComments !== false; // Default to true
 
       {post.data.tags && post.data.tags.length > 0 && (
         <div class="max-w-3xl mx-auto flex flex-col items-center gap-3 mb-6 not-prose">
-          <Tags tags={post.data.tags} size="sm" />
+          <Tags tags={post.data.tags} size="sm" centered={true} />
           {showCommentsSection && <ReactionCount language={isEnglish ? "en" : "pt"} />}
         </div>
       )}

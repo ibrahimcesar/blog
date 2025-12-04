@@ -1,5 +1,11 @@
 ---
-const { tags = [], size = "sm" } = Astro.props;
+interface Props {
+  tags?: string[];
+  size?: "xs" | "sm" | "md";
+  centered?: boolean;
+}
+
+const { tags = [], size = "sm", centered = false } = Astro.props;
 
 if (!tags || tags.length === 0) return null;
 
@@ -56,7 +62,7 @@ const getTagColor = (tag: string) => {
 const sizeClass = sizeClasses[size] || sizeClasses.sm;
 ---
 
-<div class="flex flex-wrap gap-2 items-center">
+<div class={`flex flex-wrap gap-2 items-center ${centered ? "justify-center px-4 sm:px-0" : ""}`}>
   {tags.map((tag) => {
     const color = getTagColor(tag);
     return (
