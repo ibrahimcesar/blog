@@ -1,0 +1,131 @@
+---
+import type { Post } from "~/utils/getPostsCollection";
+
+interface Props {
+  currentPost: Post;
+  seriesPosts: Post[];
+  seriesName: string;
+}
+
+const { currentPost, seriesPosts, seriesName } = Astro.props;
+
+// Find current post index
+const currentIndex = seriesPosts.findIndex((p) => p.slug === currentPost.slug);
+const totalPosts = seriesPosts.length;
+
+// Don't render if this is the only post in the series
+if (totalPosts <= 1) {
+  return null;
+}
+
+const isEnglish = currentPost.data.language === "en";
+---
+
+<div class="series-info">
+  <div class="series-info-icon">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+      <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+    </svg>
+  </div>
+  <div class="series-info-content">
+    <p class="series-info-text">
+      {isEnglish ? (
+        <>This article is <strong>part {currentIndex + 1}</strong> of a <strong>{totalPosts}-part series</strong>: <em>{seriesName}</em></>
+      ) : (
+        <>Este artigo é a <strong>parte {currentIndex + 1}</strong> de uma <strong>série de {totalPosts} partes</strong>: <em>{seriesName}</em></>
+      )}
+    </p>
+    <p class="series-info-hint">
+      {isEnglish ? "See the full series navigation at the end of this article." : "Veja a navegação completa da série no final deste artigo."}
+    </p>
+  </div>
+</div>
+
+<style>
+  .series-info {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+    background: #f0f4ff;
+    border-left: 4px solid #4338ca;
+    border-radius: 0 8px 8px 0;
+    font-family: "IBM Plex Sans", system-ui, sans-serif !important;
+  }
+
+  .series-info * {
+    font-family: inherit !important;
+  }
+
+  :global(.dark) .series-info {
+    background: #1e1b4b;
+    border-left-color: #818cf8;
+  }
+
+  .series-info-icon {
+    flex-shrink: 0;
+    width: 1.5rem;
+    height: 1.5rem;
+    color: #4338ca;
+    margin-top: 0.125rem;
+  }
+
+  :global(.dark) .series-info-icon {
+    color: #818cf8;
+  }
+
+  .series-info-icon svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .series-info-content {
+    flex: 1;
+  }
+
+  .series-info-text {
+    margin: 0 0 0.25rem 0;
+    font-size: 0.9375rem;
+    color: #1e1b4b;
+    line-height: 1.5;
+  }
+
+  :global(.dark) .series-info-text {
+    color: #e0e7ff;
+  }
+
+  .series-info-text strong {
+    color: #4338ca;
+    font-weight: 600;
+  }
+
+  :global(.dark) .series-info-text strong {
+    color: #a5b4fc;
+  }
+
+  .series-info-text em {
+    font-style: italic;
+  }
+
+  .series-info-hint {
+    margin: 0;
+    font-size: 0.8125rem;
+    color: #4338ca;
+    font-style: italic;
+    opacity: 0.8;
+  }
+
+  :global(.dark) .series-info-hint {
+    color: #c7d2fe;
+  }
+</style>
