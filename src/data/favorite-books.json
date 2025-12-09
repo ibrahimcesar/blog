@@ -1,0 +1,34 @@
+{
+  "books": [
+    {
+      "title": "Designing Data-Intensive Applications",
+      "author": "Martin Kleppmann",
+      "image": "https://m.media-amazon.com/images/I/91YfNb49PLL._SY522_.jpg",
+      "affiliateUrl": "https://amzn.to/44eUVLe"
+    },
+    {
+      "title": "Anna Kariênina",
+      "author": "Liev Tolstói",
+      "image": "https://m.media-amazon.com/images/I/61pTISHTptL._SY522_.jpg",
+      "affiliateUrl": "https://amzn.to/3KzmYhS"
+    },
+    {
+      "title": "Structure and Interpretation of Computer Programs",
+      "author": "Harold Abelson, Gerald Jay Sussman and, Julie Sussman",
+      "image": "https://m.media-amazon.com/images/I/71BBXQnykuL._AC_UL640_FMwebp_QL65_.jpg",
+      "affiliateUrl": "https://amzn.to/3MiaFai"
+    },
+    {
+      "title": "Fundamentals of Software Architecture",
+      "author": "Mark Richards and Neal Ford",
+      "image": "https://m.media-amazon.com/images/I/81duqPx-r9L._SY522_.jpg",
+      "affiliateUrl": "https://amzn.to/4iK1MlP"
+    },
+    {
+      "title": "Conceptual Mathematics: A First Introduction to Categories",
+      "author": "F. W. Lawvere and Stephen H. Schanuel",
+      "image": "https://m.media-amazon.com/images/I/51b3voe8OdL._SY522_.jpg",
+      "affiliateUrl": "https://amzn.to/3KPIrTI"
+    }
+  ]
+}

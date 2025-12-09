@@ -5,8 +5,12 @@ import SkipNav from "~/components/core/SkipNav.astro";
 import ReadingProgress from "~/components/core/ReadingProgress.astro";
 import Header from "~/components/widgets/Header.astro";
 import Footer from "~/components/widgets/Footer.astro";
+import FavoriteBooks from "~/components/widgets/FavoriteBooks.astro";
 
-const { meta } = Astro.props;
+const { meta, hideBooks = false } = Astro.props;
+
+// Check if we're on the homepage to avoid duplicate books section
+const isHomepage = Astro.url.pathname === "/" || Astro.url.pathname === "";
 ---
 
 <Layout meta={meta}>
@@ -16,5 +20,10 @@ const { meta } = Astro.props;
   <main id="main-content">
     <slot />
   </main>
+  {!isHomepage && !hideBooks && (
+    <section class="px-4 sm:px-6 py-12 mx-auto max-w-4xl">
+      <FavoriteBooks />
+    </section>
+  )}
   <Footer />
 </Layout>

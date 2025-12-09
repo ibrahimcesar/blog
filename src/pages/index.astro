@@ -7,6 +7,7 @@ import HomeHero from "~/components/widgets/HomeHero.astro";
 import LatestPosts from "~/components/widgets/LatestPosts.astro";
 import LatestWatched from "~/components/widgets/LatestWatched.astro";
 import LatestReads from "~/components/widgets/LatestReads.astro";
+import FavoriteBooks from "~/components/widgets/FavoriteBooks.astro";
 
 const title = `${SITE.name} — Solutions Architect`;
 const description =
@@ -18,6 +19,7 @@ const canonical = new URL("", Astro.site);
   <main>
     <HomeHero />
     <LatestPosts count={3} />
+    <FavoriteBooks />
     <LatestWatched count={3} />
     <LatestReads count={3} />
   </main>
