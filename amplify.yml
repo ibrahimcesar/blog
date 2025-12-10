@@ -4,6 +4,7 @@ frontend:
     preBuild:
       commands:
         - npm ci
+        - npx playwright install chromium --with-deps
     build:
       commands:
         - npm run build
