@@ -456,11 +456,90 @@ figcaption {
 }
 
 /* Mermaid diagram styles */
+.mermaid-wrapper {
+  position: relative;
+  margin: 2rem 0;
+}
+
+.mermaid-expand-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: rgba(124, 58, 237, 0.9);
+  color: white;
+  border: none;
+  border-radius: 0.375rem;
+  padding: 0.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.mermaid-expand-btn:hover {
+  background: rgba(124, 58, 237, 1);
+  transform: scale(1.05);
+}
+
+.mermaid-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 1rem;
+}
+
+.mermaid-modal {
+  position: relative;
+  background: #1e293b;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  max-width: 95vw;
+  max-height: 95vh;
+  overflow: auto;
+}
+
+.mermaid-modal-close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.75rem;
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  font-size: 2rem;
+  cursor: pointer;
+  line-height: 1;
+  z-index: 10;
+}
+
+.mermaid-modal-close:hover {
+  color: white;
+}
+
+.mermaid-modal-content {
+  padding-top: 2rem;
+}
+
+.mermaid-modal-content svg {
+  max-width: none;
+  width: auto;
+  height: auto;
+  min-width: 800px;
+}
+
 pre.mermaid {
   background: transparent !important;
   border: none !important;
   padding: 0 !important;
-  margin: 2rem 0;
+  margin: 0;
   overflow-x: auto;
 }
 

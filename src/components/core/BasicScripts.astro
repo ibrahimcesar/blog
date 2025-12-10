@@ -11,7 +11,52 @@ const {} = Astro.props;
       startOnLoad: false,
       theme: isDark ? 'dark' : 'default'
     });
-    mermaid.run({ querySelector: 'pre.mermaid' });
+    mermaid.run({ querySelector: 'pre.mermaid' }).then(() => {
+      addExpandButtons();
+    });
+  }
+
+  function addExpandButtons() {
+    document.querySelectorAll('pre.mermaid').forEach((pre) => {
+      // Skip if already has expand button
+      if (pre.parentElement?.classList.contains('mermaid-wrapper')) return;
+
+      // Wrap the pre element
+      const wrapper = document.createElement('div');
+      wrapper.className = 'mermaid-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      wrapper.appendChild(pre);
+
+      // Add expand button
+      const btn = document.createElement('button');
+      btn.className = 'mermaid-expand-btn';
+      btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>`;
+      btn.title = 'Expand diagram';
+      btn.onclick = () => openModal(pre);
+      wrapper.appendChild(btn);
+    });
+  }
+
+  function openModal(pre) {
+    const svg = pre.querySelector('svg');
+    if (!svg) return;
+
+    const overlay = document.createElement('div');
+    overlay.className = 'mermaid-modal-overlay';
+    overlay.innerHTML = `
+      <div class="mermaid-modal">
+        <button class="mermaid-modal-close" title="Close">&times;</button>
+        <div class="mermaid-modal-content">${svg.outerHTML}</div>
+      </div>
+    `;
+
+    overlay.querySelector('.mermaid-modal-close').onclick = () => overlay.remove();
+    overlay.onclick = (e) => { if (e.target === overlay) overlay.remove(); };
+    document.addEventListener('keydown', function escClose(e) {
+      if (e.key === 'Escape') { overlay.remove(); document.removeEventListener('keydown', escClose); }
+    });
+
+    document.body.appendChild(overlay);
   }
 
   // Run on initial load
