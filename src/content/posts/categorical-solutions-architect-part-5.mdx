@@ -1,0 +1,518 @@
+---
+title: "Functors: The Mathematics of Migration"
+description: "Every migration is a functor—a structure-preserving transformation between systems. Part 5 of applying category theory to Solutions Architecture, where we learn when migrations succeed and why they fail."
+featured: false
+pubDate: "2025-12-07T12:00:00.000Z"
+language: en
+category: "Architecture"
+series: "Categorical Solutions Architecture"
+seriesOrder: 5
+tags: ["Category Theory", "Solutions Architecture", "Migration", "Software Architecture", "AWS"]
+draft: true
+---
+
+import Lead from '../../components/editorial/Lead.astro';
+import InfoBox from '../../components/editorial/InfoBox.astro';
+import { FunctorDiagram } from '../../components/widgets/CategoryDiagram';
+
+> *"A functor is a morphism of categories—it maps objects to objects and morphisms to morphisms, preserving composition and identity."*
+>
+> — Standard definition
+
+<Lead>
+
+When you migrate from one database to another, refactor a monolith to microservices, or upgrade from one API version to another, you're applying a functor. A functor is a structure-preserving map between categories. Understanding functors tells you exactly what "structure-preserving" means—and what happens when preservation fails.
+
+</Lead>
+
+## What Is a Functor?
+
+A **functor** $F: \mathcal{C} \to \mathcal{D}$ between categories $\mathcal{C}$ and $\mathcal{D}$ consists of:
+
+1. **Object mapping**: For every object $A$ in $\mathcal{C}$, an object $F(A)$ in $\mathcal{D}$
+2. **Morphism mapping**: For every morphism $f: A \to B$ in $\mathcal{C}$, a morphism $F(f): F(A) \to F(B)$ in $\mathcal{D}$
+
+Such that:
+
+$$
+F(g \circ f) = F(g) \circ F(f) \quad \text{(preserves composition)}
+$$
+
+$$
+F(\text{id}_A) = \text{id}_{F(A)} \quad \text{(preserves identity)}
+$$
+
+<FunctorDiagram client:load />
+
+---
+
+## Migrations Are Functors
+
+Consider migrating from PostgreSQL to DynamoDB:
+
+### The Source Category (PostgreSQL)
+
+**Objects**: Tables, views, types
+**Morphisms**: Queries, joins, transactions
+
+```sql
+-- Object: users table
+CREATE TABLE users (id SERIAL PRIMARY KEY, name VARCHAR, email VARCHAR);
+
+-- Object: orders table
+CREATE TABLE orders (id SERIAL PRIMARY KEY, user_id INT REFERENCES users(id));
+
+-- Morphism: join query
+SELECT * FROM orders o JOIN users u ON o.user_id = u.id;
+```
+
+### The Target Category (DynamoDB)
+
+**Objects**: Tables, GSIs
+**Morphisms**: GetItem, Query, Scan, Transactions
+
+### The Functor (Migration)
+
+```
+F(users table) = Users table (PK: id)
+F(orders table) = Orders table (PK: id, GSI on user_id)
+F(join query) = ???
+```
+
+Here's where migrations fail: **DynamoDB doesn't have joins**. The morphism $f: \text{Orders} \times \text{Users} \to \text{JoinResult}$ has no image under $F$.
+
+<InfoBox title="Functor Failure" type="warning">
+
+If $F(f)$ doesn't exist for some morphism $f$, then $F$ isn't a functor. Your migration doesn't preserve structure—some operations will break.
+
+</InfoBox>
+
+### Solutions
+
+**Option 1**: Denormalize (change source structure)
+
+```
+F(denormalized_orders table) = Orders table with embedded user data
+```
+
+Now there's no join morphism to preserve.
+
+**Option 2**: Application-level joins (different target category)
+
+```
+F(join query) = Lambda function that queries both tables and merges
+```
+
+You're changing the target category to include these new morphisms.
+
+**Option 3**: Accept the loss (partial functor)
+
+Document which operations won't work and handle them as errors.
+
+---
+
+## Covariant and Contravariant Functors
+
+Functors come in two flavors:
+
+### Covariant Functor
+
+Morphisms map in the same direction:
+
+$$
+f: A \to B \quad \Rightarrow \quad F(f): F(A) \to F(B)
+$$
+
+**Example**: Database migration
+
+```
+PostgreSQL users → DynamoDB Users
+PostgreSQL query → DynamoDB Query
+Direction preserved
+```
+
+### Contravariant Functor
+
+Morphisms map in the opposite direction:
+
+$$
+f: A \to B \quad \Rightarrow \quad F(f): F(B) \to F(A)
+$$
+
+**Example**: API consumer perspective
+
+```
+Service provides: getUser(id) → User
+Consumer needs:   User → void (callback/handler)
+
+// The consumer functor reverses arrows
+F(getUser) = userHandler: User → void
+```
+
+This explains why producer changes propagate "backwards" to consumers.
+
+---
+
+## The Functor Laws in Practice
+
+### Law 1: Preserve Composition
+
+$$
+F(g \circ f) = F(g) \circ F(f)
+$$
+
+**Violation example**: Inconsistent data migration
+
+```typescript
+// Source: two-step process
+const createUser = (data: UserInput): User => { /* ... */ };
+const assignRole = (user: User, role: Role): User => { /* ... */ };
+const setupNewUser = (data: UserInput, role: Role): User =>
+  assignRole(createUser(data), role);  // g ∘ f
+
+// Target: migration breaks composition
+const migratedCreateUser = (data: UserInput): MigratedUser => {
+  /* ... creates in new system */
+};
+const migratedAssignRole = (user: MigratedUser, role: Role): MigratedUser => {
+  /* ... but assumes old format! */
+};
+
+// F(g ∘ f) ≠ F(g) ∘ F(f) — composition broken
+```
+
+**Fix**: Ensure each step produces inputs compatible with the next.
+
+### Law 2: Preserve Identity
+
+$$
+F(\text{id}_A) = \text{id}_{F(A)}
+$$
+
+**Violation example**: Health checks fail after migration
+
+```typescript
+// Source: identity works
+GET /users/123 → User(123)  // Returns same user
+
+// Target: migration adds transformation
+GET /users/123 → User(123) + { migrated: true, legacyId: 'old-123' }
+
+// F(id) ≠ id — "do nothing" now does something
+```
+
+**Fix**: Ensure read-then-write cycles are stable.
+
+---
+
+## Functors Between Architectural Domains
+
+### Monolith → Microservices
+
+The decomposition is a functor:
+
+```
+Source Category: Monolith
+  Objects: Modules, Classes, Functions
+  Morphisms: Method calls, imports
+
+Target Category: Microservices
+  Objects: Services, APIs, Queues
+  Morphisms: HTTP calls, events, messages
+
+Functor F: Decomposition
+  F(UserModule) = UserService
+  F(OrderModule) = OrderService
+  F(userModule.getUser()) = GET /users/{id}
+  F(orderModule.createOrder()) = POST /orders
+```
+
+### Composition Preservation
+
+In the monolith:
+```typescript
+const process = (data: Input): Output =>
+  orderModule.createOrder(userModule.getUser(data.userId), data.items);
+// Single transaction, synchronous composition
+```
+
+The functor must map this to microservices:
+```typescript
+const process = async (data: Input): Promise<Output> => {
+  const user = await fetch('/users/' + data.userId);
+  const order = await fetch('/orders', { body: { user, items: data.items } });
+  return order;
+};
+// Distributed, async, no transaction guarantees by default
+```
+
+<InfoBox title="The Distributed Transaction Problem" type="warning">
+
+If $F$ doesn't preserve transactional composition, you need sagas, eventual consistency, or to redesign the boundaries.
+
+</InfoBox>
+
+---
+
+## Endofunctors: Self-Transformations
+
+An **endofunctor** is a functor from a category to itself: $F: \mathcal{C} \to \mathcal{C}$
+
+These are incredibly common in programming and architecture.
+
+### Option/Maybe as Endofunctor
+
+```typescript
+// F: Type → Type
+type Option<A> = Some<A> | None;
+
+// F: (A → B) → (Option<A> → Option<B>)
+const map = <A, B>(f: (a: A) => B) => (opt: Option<A>): Option<B> =>
+  opt.tag === 'Some' ? Some(f(opt.value)) : None;
+```
+
+This is an endofunctor on the category of TypeScript types.
+
+### Retry as Endofunctor
+
+```typescript
+// F: ServiceCall → ServiceCall (with retry logic)
+const withRetry = <A, B>(
+  call: (a: A) => Promise<B>,
+  maxRetries: number
+): (a: A) => Promise<B> =>
+  async (a: A) => {
+    for (let i = 0; i <= maxRetries; i++) {
+      try {
+        return await call(a);
+      } catch (e) {
+        if (i === maxRetries) throw e;
+        await delay(exponentialBackoff(i));
+      }
+    }
+    throw new Error('Unreachable');
+  };
+```
+
+### Circuit Breaker as Endofunctor
+
+```typescript
+// F: ServiceCall → ServiceCall (with circuit breaker)
+const withCircuitBreaker = <A, B>(
+  call: (a: A) => Promise<B>,
+  config: CircuitBreakerConfig
+): (a: A) => Promise<B> => {
+  const breaker = new CircuitBreaker(config);
+  return (a: A) => breaker.execute(() => call(a));
+};
+```
+
+These endofunctors *compose*:
+
+```typescript
+const resilientCall = pipe(
+  originalCall,
+  withRetry(3),
+  withCircuitBreaker({ threshold: 5, timeout: 30000 }),
+  withTimeout(5000),
+  withLogging('service-x')
+);
+```
+
+Each layer is an endofunctor. The composition is still a functor.
+
+---
+
+## Faithful and Full Functors
+
+Not all functors preserve structure equally:
+
+### Faithful Functor
+
+Injective on morphisms: if $F(f) = F(g)$, then $f = g$.
+
+**Meaning**: No information loss in morphisms.
+
+**Example**: Lossless API versioning
+
+```typescript
+// v1 and v2 endpoints map to different implementations
+// No two source morphisms collapse to the same target
+```
+
+### Full Functor
+
+Surjective on morphisms: every morphism in the target comes from the source.
+
+**Meaning**: All target operations exist in source.
+
+**Example**: Wrapper that exposes everything
+
+```typescript
+// The adapter exposes ALL underlying capabilities
+// Nothing is hidden
+```
+
+### Fully Faithful Functor
+
+Both full and faithful: morphisms correspond bijectively.
+
+**Meaning**: The functor is an embedding—source structure is perfectly preserved.
+
+**Example**: Perfect migration
+
+```typescript
+// Every PostgreSQL operation has exactly one DynamoDB equivalent
+// Every DynamoDB operation came from exactly one PostgreSQL operation
+// (Rare in practice!)
+```
+
+---
+
+## AWS Service Migrations as Functors
+
+### EC2 → Lambda
+
+```
+Objects:
+  F(EC2 Instance) = Lambda Function
+  F(Instance State) = Function Configuration
+
+Morphisms:
+  F(HTTP request → response) = HTTP event → response
+  F(Background job) = CloudWatch event → execution
+
+Lost morphisms:
+  - Long-running processes (15 min limit)
+  - Local state persistence
+  - Full OS access
+```
+
+This functor is **neither full nor faithful**—it's a significant structural change.
+
+### RDS → Aurora Serverless
+
+```
+Objects:
+  F(RDS Instance) = Aurora Cluster
+  F(Tables) = Tables (identical)
+
+Morphisms:
+  F(SQL query) = SQL query (identical)
+  F(Stored procedures) = Stored procedures (identical)
+
+This is nearly fully faithful—minimal structural change.
+```
+
+### ECS → EKS
+
+```
+Objects:
+  F(ECS Cluster) = EKS Cluster
+  F(Task Definition) = Pod Spec
+  F(Service) = Deployment + Service
+
+Morphisms:
+  F(Task execution) = Pod execution
+  F(Service discovery) = Kubernetes Service
+
+Added morphisms in target:
+  - Native Kubernetes operators
+  - Helm charts
+  - Kubernetes-native tooling
+```
+
+This functor is **faithful but not full**—EKS has more morphisms.
+
+---
+
+## Designing Migrations as Functors
+
+### Step 1: Map Objects
+
+List all objects in source, define their targets:
+
+```markdown
+| Source Object | Target Object | Notes |
+|---------------|---------------|-------|
+| users table | Users table | PK changes |
+| orders table | Orders table | Denormalized |
+| sessions table | ElastiCache | Move to cache |
+```
+
+### Step 2: Map Morphisms
+
+For each operation, define the target operation:
+
+```markdown
+| Source Morphism | Target Morphism | Preserved? |
+|-----------------|-----------------|------------|
+| SELECT * JOIN | Multiple queries + merge | Modified |
+| INSERT with FK | Put + separate Put | Different |
+| Transaction | ??? | Lost! |
+```
+
+### Step 3: Verify Laws
+
+**Composition**: Does sequential operation order still work?
+
+```typescript
+// Source: guaranteed order
+insert(order) → insert(items) → commit
+
+// Target: eventual consistency?
+put(order) → put(items) → ???
+```
+
+**Identity**: Do read-then-write cycles stabilize?
+
+```typescript
+// Source: read-modify-write
+const user = select(id);
+const updated = { ...user };  // No changes
+update(id, updated);
+// Result: identical user
+
+// Target: does this still hold?
+```
+
+### Step 4: Document Losses
+
+Be explicit about what's lost:
+
+```markdown
+## Migration Limitations
+
+### Lost Morphisms
+- Transactional writes across tables
+- Complex JOINs with more than 2 tables
+- Full-text search (moving to OpenSearch)
+
+### Modified Morphisms
+- Batch inserts: now use BatchWriteItem (25 item limit)
+- Updates: must include full item, not partial
+
+### New Morphisms
+- Point-in-time recovery
+- Global tables for multi-region
+```
+
+---
+
+## The Takeaway
+
+A migration is a functor. To succeed:
+
+1. **Map objects completely**: every source object needs a target
+2. **Map morphisms completely**: every operation needs a translation
+3. **Verify composition**: sequential operations must still work in sequence
+4. **Verify identity**: do-nothing operations must still do nothing
+5. **Document losses**: be explicit about what isn't preserved
+
+When a migration "fails," it's usually because the functor laws were violated—composition broke, identity mutated, or morphisms had no mapping.
+
+Design migrations as functors, and you'll know exactly what works and what doesn't.
+
+---
+
+*Next in the series: **Natural Transformations: Coherent Change Across Systems** — Where we learn how to transform one functor into another while maintaining consistency everywhere.*

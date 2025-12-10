@@ -38,7 +38,6 @@
     "hast": "^1.0.0",
     "hast-util-to-string": "^3.0.1",
     "hastscript": "^9.0.1",
-    "playwright": "^1.57.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-lite-youtube-embed": "3.3.3",

@@ -1,0 +1,387 @@
+---
+title: "Why Rust Won't Let You Copy That: Affine Types Through a Categorical Lens"
+description: "What JavaScript hides, Rust reveals — and category theory explains why. Exploring Rust's ownership system as mathematical structure, not arbitrary restrictions."
+featured: false
+pubDate: "2025-12-03T10:00:00.000Z"
+language: en
+category: "Functional Programming"
+series: "Category Theory for JS/TS Developers"
+tags: ["Category Theory", "Rust", "TypeScript", "Linear Logic", "Type Systems", "Functional Programming"]
+draft: true
+---
+
+import Lead from '../../components/editorial/Lead.astro';
+import InfoBox from '../../components/editorial/InfoBox.astro';
+import {
+  DiagonalDiagram,
+  NoDiagonalDiagram,
+  MoveDiagram,
+  CloneCopyDiagram,
+  BorrowDiagram,
+  StructuralRulesComparison,
+  ResourceFlowDiagram,
+} from '../../components/widgets/LinearTypesDiagram';
+
+> *"Linear logic is a resource-conscious logic."*
+>
+> — **Jean-Yves Girard**, creator of linear logic (1987)
+
+<Lead>
+
+Every JavaScript developer has written this bug. Every Rust beginner has hit this wall. These aren't arbitrary language quirks—they're two different answers to the same categorical question: *does your category have diagonals?* This post connects Rust's ownership model to the mathematical foundations that explain why it works.
+
+</Lead>
+
+## The Bug Everyone Has Written
+
+```javascript
+// The bug everyone has written
+const config = { timeout: 5000 };
+const copy = config;
+copy.timeout = 10000;
+// Oops, config.timeout is also 10000
+```
+
+JavaScript lets you reference the same object multiple times without thinking about it. This is convenient—until it isn't.
+
+```rust
+// The wall every Rust beginner hits
+let s = String::from("hello");
+let t = s;
+println!("{}", s); // ERROR: value borrowed after move
+```
+
+Rust refuses to compile this. The compiler says `s` was "moved" and can't be used anymore. Why?
+
+The answer isn't "Rust is strict" or "Rust is low-level." The answer is mathematical: **these languages live in different categories**.
+
+---
+
+## The Category You Already Know
+
+If you've worked through [Category Theory for JavaScript/TypeScript Developers](/blog/category-theory-for-javascript-typescript-developers), you already think categorically. Let's make this explicit:
+
+| Concept | JS/TS Reality | Categorical Name |
+|---------|---------------|------------------|
+| Types | `string`, `number`, `User` | Objects |
+| Functions | `(x: A) => B` | Morphisms |
+| Composition | `f(g(x))` | ∘ |
+| Identity | `x => x` | id |
+| Tuples/Objects | `[A, B]`, `{a: A, b: B}` | Products |
+| Union types | `A \| B` | Coproducts |
+
+The crucial operation that JavaScript gives you for free is the **diagonal morphism**:
+
+$$
+\Delta: A \to A \times A
+$$
+$$
+\Delta(x) = (x, x)
+$$
+
+In JavaScript, this is implicit and always available:
+
+```javascript
+const x = obj;
+const y = obj;  // Δ in action — free copying
+useX(x);
+useY(y);
+// Both work! obj was implicitly duplicated
+```
+
+This is a **cartesian category**. The diagonal exists for every object, automatically. You can always copy.
+
+<DiagonalDiagram client:load />
+
+But what happens when we try this in Rust?
+
+<NoDiagonalDiagram client:load />
+
+---
+
+## What If Copying Cost Something?
+
+Physical resources can't be copied:
+- **Money**: spending $10 means you don't have it anymore
+- **Energy**: conservation laws prevent duplication
+- **File handles**: opening a file twice isn't the same as copying
+- **Mutex locks**: the whole point is exclusive access
+- **Database connections**: each one has real cost
+
+In 1987, Jean-Yves Girard introduced **linear logic**—a logic where propositions represent *resources*, not just truth values. "A implies B" becomes "consuming A produces B."
+
+The key distinction is between two kinds of products:
+
+| Category Type | Diagonal? | Product | Meaning |
+|---------------|-----------|---------|---------|
+| Cartesian | Δ: A → A × A exists for all A | × | Free copying |
+| Monoidal | No general diagonal | ⊗ | Copying requires explicit structure |
+
+### Structural Rules
+
+Classical logic has three structural rules:
+
+```
+Weakening:    Γ, A ⊢ B  →  Γ ⊢ B      (can ignore resources)
+Contraction:  Γ, A, A ⊢ B  →  Γ, A ⊢ B  (can copy resources)
+Exchange:     Γ, A, B ⊢ C  →  Γ, B, A ⊢ C  (order doesn't matter)
+```
+
+Different logics drop different rules:
+
+- **Classical/Intuitionistic logic**: all three rules ✓
+- **Linear logic**: drops weakening AND contraction (use exactly once)
+- **Affine logic**: drops only contraction (use at most once) — **this is Rust**
+
+<InfoBox title="JavaScript vs Rust" type="tip">
+
+**JavaScript**: Weakening ✓, Contraction ✓, Exchange ✓ — full cartesian structure
+
+**Rust**: Weakening ✓, Exchange ✓, Contraction ✗ — affine structure
+
+</InfoBox>
+
+<StructuralRulesComparison client:load />
+
+---
+
+## Rust Lives in the Monoidal World
+
+Let's map Rust concepts directly to categorical structure.
+
+### Move Semantics as Resource Consumption
+
+```rust
+fn consume(s: String) -> usize {
+    s.len()
+}  // s is consumed — the morphism "uses up" its domain
+
+let greeting = String::from("hello");
+let length = consume(greeting);
+// greeting is gone — not in scope, not usable
+```
+
+The function `consume` is a morphism that *consumes* its input. There's no way to use `greeting` after the call because the resource was transferred.
+
+<MoveDiagram client:load />
+
+<ResourceFlowDiagram client:load />
+
+### The Copy Trait as Comonoid Structure
+
+A **comonoid** in a monoidal category has:
+- **Comultiplication**: δ: A → A ⊗ A (copying)
+- **Counit**: ε: A → I (discarding)
+
+In Rust, types that implement `Copy` have this structure:
+
+```rust
+// Types that implement Copy have comonoid structure
+let x: i32 = 42;
+let y = x;  // δ in action
+let z = x;  // can use x again — diagonal exists for i32
+```
+
+Integers, booleans, and other small stack-allocated types implement `Copy`. The compiler automatically inserts the diagonal morphism.
+
+### Clone as Explicit Copying
+
+For types without `Copy`, you must explicitly request duplication:
+
+```rust
+let s = String::from("hello");
+let t = s.clone();  // Explicit δ — you're asking for the copy
+let u = s;          // s is still valid after clone
+```
+
+`.clone()` is the explicit invocation of comultiplication. It has a cost—memory allocation, time—and Rust makes you acknowledge it.
+
+<CloneCopyDiagram client:load />
+
+### The Complete Mapping
+
+| Rust Concept | Categorical Structure | Intuition |
+|--------------|----------------------|-----------|
+| Move | Morphism consuming domain | Resource transfer |
+| `Copy` trait | Comonoid (δ exists) | Free copying |
+| `Clone` trait | Explicit δ morphism | Copying has cost |
+| `Drop` | Terminal morphism A → () | Resource cleanup |
+| Ownership | Linear/affine resource | Exactly one owner |
+
+---
+
+## Borrowing as Controlled Observation
+
+Here's a problem: what if you want to *look* at a value without consuming it?
+
+```rust
+fn calculate_length(s: String) -> usize {
+    s.len()
+}  // Oops, we consumed the string just to look at it
+
+fn calculate_length(s: &String) -> usize {
+    s.len()
+}  // Better — we just borrowed it
+```
+
+A borrow `&T` gives you access to `T` without using it up. This resembles **comonadic structure**:
+
+```
+extract: W A → A        (you can observe the value)
+duplicate: W A → W (W A) (you can create more observations)
+```
+
+For `&T`:
+- You can read the value (extract)
+- You can create sub-borrows with narrower lifetimes (duplicate-ish)
+
+### Shared vs. Exclusive Borrows
+
+| Borrow Type | Linear Logic | Meaning |
+|-------------|--------------|---------|
+| `&T` | Exponential !A | Freely copyable, many readers |
+| `&mut T` | Linear A | Exactly one, exclusive access |
+
+```rust
+let s = String::from("hello");
+
+// Multiple shared borrows — !A can be copied
+let r1 = &s;
+let r2 = &s;
+println!("{} {}", r1, r2);  // Fine
+
+// Exclusive borrow — linear, no sharing
+let mut s = String::from("hello");
+let m = &mut s;
+// let m2 = &mut s;  // ERROR: cannot borrow as mutable twice
+```
+
+The `!` (bang) from linear logic is called the **exponential**. It turns a linear resource into an unlimited one. Shared borrows `&T` give you this unlimited reading capability.
+
+<BorrowDiagram client:load />
+
+### Lifetimes as Indexing
+
+The lifetime `'a` in `&'a T` is an *index*—it tracks how long the observation is valid:
+
+```rust
+fn longest<'a>(x: &'a str, y: &'a str) -> &'a str {
+    if x.len() > y.len() { x } else { y }
+}
+// The output lifetime is bounded by both input lifetimes
+```
+
+This is an **indexed comonad**. The index (lifetime) ensures that observations don't outlive their sources.
+
+---
+
+## Functors, But Make It Explicit
+
+`Option` is a functor—you already know this from JavaScript's `Array.map()` and `Promise.then()`:
+
+```rust
+let x: Option<i32> = Some(5);
+let y: Option<i32> = x.map(|n| n + 1);  // Some(6)
+```
+
+But Rust forces you to choose:
+
+```rust
+let opt = Some(String::from("hello"));
+
+// Option 1: .map() takes ownership of inner value
+let len = opt.map(|s| s.len());
+// opt is now consumed!
+
+// Option 2: .as_ref().map() borrows inner value
+let opt = Some(String::from("hello"));
+let len = opt.as_ref().map(|s| s.len());
+// opt is still valid
+```
+
+What's happening categorically:
+
+- `.map(f)` applies f in the "consuming" (affine) category
+- `.as_ref().map(f)` lifts to the exponential (!A) first, then maps
+
+```
+map:        F(A) → F(B)           given A → B
+as_ref+map: F(A) → F(&A) → F(B)   given &A → B
+```
+
+You see this pattern everywhere in Rust:
+
+```rust
+// Vec
+vec.iter().map(...)      // borrows elements
+vec.into_iter().map(...) // consumes elements
+
+// Result
+result.as_ref().map(...)  // borrow Ok value
+result.map(...)           // consume Ok value
+```
+
+JavaScript hides this choice by making everything implicitly shared. Rust makes you choose, and the choice has semantic meaning.
+
+---
+
+## The Payoff
+
+### Rust's Restrictions Are Mathematical Coherence
+
+The category doesn't have morphisms that would let you:
+- Use a value after moving it (no general diagonal)
+- Have two mutable references (linear resources are exclusive)
+- Return a reference to a local value (lifetimes must be valid)
+
+These aren't arbitrary rules enforced by a strict compiler. They're the absence of impossible operations in this mathematical structure.
+
+### Bugs Become Type Errors
+
+```rust
+// Data race: two threads mutating same data
+// In JS: runtime bug, sometimes
+// In Rust: won't compile — can't send &mut T to two threads
+
+// Use-after-free: accessing freed memory
+// In JS: not possible (GC), but similar issues with stale references
+// In Rust: won't compile — lifetime prevents it
+```
+
+### Concurrency for Free
+
+`Send` and `Sync` are categorical properties:
+- `Send`: can transfer ownership across thread boundary
+- `Sync`: can share references across thread boundary
+
+The borrow checker ensures these properties are preserved through composition. If you build your types from `Send + Sync` components using safe operations, your type is automatically thread-safe.
+
+---
+
+## Philosophical Close
+
+JavaScript gives you a cartesian closed category and hopes you don't break the implicit invariants. Rust gives you a symmetric monoidal closed category where the invariants *are* the structure.
+
+The "restrictions" aren't restrictions—they're the shape of a safer universe.
+
+---
+
+## Further Reading
+
+- Girard, J.-Y. (1987). *Linear Logic* — the original paper that started it all
+- Wadler, P. (1990). *Linear types can change the world!* — accessible introduction
+- Baez, J. & Stay, M. (2011). *Physics, Topology, Logic and Computation: A Rosetta Stone* — category theory across domains
+- The Rust Book, Chapter 4 — official ownership explanation
+- Bernardy, J.-P. et al. (2018). *Linear Haskell* — another language's approach to linearity
+
+---
+
+## What's Next?
+
+This post sets up concepts for future explorations:
+
+1. **Monads in Rust**: `Result` and `Option` as monads, the `?` operator as bind
+2. **Session Types**: linear types for protocols
+3. **Concurrency as Structure**: `Send`/`Sync` as functorial properties
+
+The category-theoretic perspective reveals that Rust isn't just "a systems language with a strict compiler"—it's a language built on rigorous mathematical foundations that happen to prevent entire classes of bugs.

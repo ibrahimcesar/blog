@@ -1,0 +1,510 @@
+---
+title: "Composition as Architectural Law: Diagnosing Integration Failures"
+description: "When services don't compose, it's not a bug—it's a mathematical impossibility. Part 4 of applying category theory to Solutions Architecture, where we develop a diagnostic framework for integration failures."
+featured: false
+pubDate: "2025-12-06T12:00:00.000Z"
+language: en
+category: "Architecture"
+series: "Categorical Solutions Architecture"
+seriesOrder: 4
+tags: ["Category Theory", "Solutions Architecture", "Integration", "Software Architecture", "AWS"]
+draft: true
+---
+
+import Lead from '../../components/editorial/Lead.astro';
+import InfoBox from '../../components/editorial/InfoBox.astro';
+
+> *"The purpose of abstraction is not to be vague, but to create a new semantic level in which one can be absolutely precise."*
+>
+> — **Edsger W. Dijkstra**
+
+<Lead>
+
+Category theory's composition axiom seems trivially obvious: if you can go from A to B, and B to C, you can go from A to C. But in distributed systems, composition fails constantly—and these failures have categorical explanations. Understanding *why* composition fails gives us a systematic approach to designing systems that actually work together.
+
+</Lead>
+
+## The Composition Axiom
+
+In any category, composition is guaranteed:
+
+$$
+\text{Given } f: A \to B \text{ and } g: B \to C, \text{ there exists } g \circ f: A \to C
+$$
+
+Moreover, composition is **associative**:
+
+$$
+(h \circ g) \circ f = h \circ (g \circ f)
+$$
+
+And **identity** morphisms are neutral:
+
+$$
+f \circ \text{id}_A = f = \text{id}_B \circ f
+$$
+
+These aren't arbitrary rules. They're the minimal requirements for things to *fit together coherently*.
+
+---
+
+## When Composition Fails
+
+Real systems fail to compose in predictable ways. Each failure mode corresponds to a violation of categorical structure.
+
+### Failure Mode 1: Type Mismatch
+
+The most basic failure: the codomain of $f$ doesn't match the domain of $g$.
+
+```typescript
+// Service A returns:
+interface OrderResponse {
+  orderId: string;
+  items: Array<{ productId: string; quantity: number }>;
+  total: number;
+}
+
+// Service B expects:
+interface FulfillmentRequest {
+  order_id: string;  // Different naming convention
+  line_items: Array<{ sku: string; qty: number }>;  // Different structure
+  amount: Money;  // Different type for money
+}
+
+// f: Request → OrderResponse
+// g: FulfillmentRequest → Shipment
+// g ∘ f doesn't exist! Types don't match.
+```
+
+**Diagnosis**: You're trying to compose morphisms in different categories. You need a **functor** (transformation) between them.
+
+**Fix**: Explicit translation layer
+
+```typescript
+const translate = (order: OrderResponse): FulfillmentRequest => ({
+  order_id: order.orderId,
+  line_items: order.items.map(i => ({ sku: i.productId, qty: i.quantity })),
+  amount: { value: order.total, currency: 'USD' }
+});
+
+// Now composition works: g ∘ translate ∘ f
+```
+
+### Failure Mode 2: Hidden State
+
+```typescript
+// Looks composable
+const getUser = (id: string): Promise<User> => fetchFromCache(id);
+const updatePreferences = (user: User, prefs: Prefs): Promise<User> =>
+  saveToDatabase({ ...user, preferences: prefs });
+
+// But composition fails unpredictably
+const updateUserPrefs = async (id: string, prefs: Prefs) => {
+  const user = await getUser(id);  // Gets cached version
+  return updatePreferences(user, prefs);  // Updates stale data
+};
+```
+
+**Diagnosis**: `getUser` isn't a pure morphism—it depends on hidden state (cache). The "type" of User is actually `User × CacheState`, but this isn't reflected in the signature.
+
+**Categorical interpretation**: You're in a **Kleisli category** for some state monad, but pretending you're not.
+
+**Fix**: Make state explicit
+
+```typescript
+const getUser = (id: string): Promise<{ user: User; version: number }> =>
+  fetchWithVersion(id);
+
+const updatePreferences = (
+  user: User,
+  version: number,
+  prefs: Prefs
+): Promise<{ user: User; version: number }> =>
+  saveWithOptimisticLocking(user, version, prefs);
+```
+
+### Failure Mode 3: Non-Idempotent Operations
+
+```typescript
+const createOrder = (items: Item[]): Promise<Order> => { /* creates in DB */ };
+const processPayment = (order: Order): Promise<Payment> => { /* charges card */ };
+
+// First composition
+const result1 = await processPayment(await createOrder(items));
+
+// Retry after timeout - same composition
+const result2 = await processPayment(await createOrder(items));
+// Oops: two orders, two charges!
+```
+
+**Diagnosis**: These aren't really morphisms—they're *effects*. The "same" input produces different outputs on different invocations.
+
+**Categorical interpretation**: True morphisms are deterministic. Side effects mean you're in a different category (e.g., Kleisli category for IO).
+
+**Fix**: Make operations idempotent with idempotency keys
+
+```typescript
+const createOrder = (
+  items: Item[],
+  idempotencyKey: string
+): Promise<Order> =>
+  upsertOrder(idempotencyKey, items);
+
+const processPayment = (
+  order: Order,
+  idempotencyKey: string
+): Promise<Payment> =>
+  chargeOnce(idempotencyKey, order);
+```
+
+### Failure Mode 4: Order Dependencies
+
+```typescript
+// Both update the same resource
+const updateInventory = (orderId: string) => decrementStock(orderId);
+const updateShipping = (orderId: string) => scheduleShipment(orderId);
+
+// These don't commute
+await updateInventory(orderId);
+await updateShipping(orderId);
+// vs
+await updateShipping(orderId);
+await updateInventory(orderId);
+// Different results if shipping checks inventory!
+```
+
+**Diagnosis**: Morphisms don't commute—order matters. You have a **non-commutative** structure.
+
+**Categorical interpretation**: In most categories, $g \circ f \neq f \circ g$ in general. But if your architecture *requires* a specific order, that's extra structure you need to enforce.
+
+**Fix**: Make ordering explicit with sequence or saga
+
+```typescript
+// Step Functions / Saga pattern
+const fulfillmentWorkflow = sequence([
+  step('reserve-inventory', reserveInventory),
+  step('process-payment', processPayment),
+  step('schedule-shipping', scheduleShipment),
+  step('confirm-order', confirmOrder)
+]);
+```
+
+---
+
+## The Composition Diagnostic Framework
+
+When integration fails, ask these questions:
+
+### 1. Do the types match?
+
+```
+f: A → B
+g: B' → C
+Is B = B'?
+```
+
+If not, you need a translation. This might be:
+- Explicit adapter function
+- API Gateway transformation
+- Schema evolution handling
+
+### 2. Is state hidden?
+
+```
+Does f depend on anything not in A?
+Does g depend on anything not in B?
+```
+
+Hidden dependencies break composition. Solutions:
+- Make state explicit in types
+- Use versioning / ETags
+- Introduce state monad
+
+### 3. Are operations repeatable?
+
+```
+f(x) = f(x)?  (Always?)
+g(y) = g(y)?  (Always?)
+```
+
+Non-repeatable operations aren't true morphisms. Solutions:
+- Idempotency keys
+- At-most-once / at-least-once semantics
+- Outbox pattern
+
+### 4. Does order matter?
+
+```
+g ∘ f = f ∘ g?  (Does it need to?)
+```
+
+If order matters, encode it explicitly:
+- Workflow orchestration
+- Saga pattern
+- FIFO queues
+
+<InfoBox title="The Diagnostic Checklist" type="tip">
+
+**Type mismatch?** → Add translation layer
+**Hidden state?** → Make state explicit
+**Non-idempotent?** → Add idempotency keys
+**Order-dependent?** → Add orchestration
+
+</InfoBox>
+
+---
+
+## Associativity: Why It Matters
+
+Composition must be associative: $(h \circ g) \circ f = h \circ (g \circ f)$
+
+This seems obvious, but it fails in subtle ways:
+
+### Timeout Cascades
+
+```typescript
+// Each service has 30s timeout
+const a = () => callServiceA(); // up to 30s
+const b = () => callServiceB(); // up to 30s
+const c = () => callServiceC(); // up to 30s
+
+// Composition 1: (c ∘ b) ∘ a
+// Total possible time: 90s, but your gateway times out at 60s
+
+// Composition 2: c ∘ (b ∘ a)
+// Same problem from a different angle
+```
+
+The timeouts don't compose associatively. You need:
+- Per-stage timeout budgets
+- Total timeout that accounts for all stages
+- Circuit breakers
+
+### Error Accumulation
+
+```typescript
+// Each can fail independently
+const parse = (raw: string): Result<Data, ParseError>;
+const validate = (data: Data): Result<Data, ValidationError>;
+const transform = (data: Data): Result<Output, TransformError>;
+
+// Do errors compose?
+// (transform ∘ validate) ∘ parse
+// transform ∘ (validate ∘ parse)
+
+// Need consistent error handling strategy
+```
+
+For associativity, use consistent error types:
+
+```typescript
+type PipelineError = ParseError | ValidationError | TransformError;
+type Pipeline<T> = Result<T, PipelineError>;
+```
+
+---
+
+## Identity: The Do-Nothing Test
+
+Every object needs an identity morphism: $\text{id}_A: A \to A$ such that $f \circ \text{id} = f = \text{id} \circ f$
+
+### The Health Check as Identity
+
+```typescript
+// The simplest morphism: do nothing, return success
+app.get('/health', (req, res) => res.status(200).send('OK'));
+```
+
+If your health check passes but composition fails, the problem is in the composition, not the service.
+
+### The Passthrough Test
+
+For any service, ask: "Can I send a request that returns unchanged?"
+
+```typescript
+// Good: supports identity
+PATCH /users/123
+Body: {}
+→ Returns: User (unchanged)
+
+// Bad: no identity possible
+PATCH /users/123
+Body: {}
+→ Error: "At least one field required"
+```
+
+Services that don't support identity-like operations are harder to compose and test.
+
+---
+
+## Designing for Composition
+
+### Principle 1: Types as Contracts
+
+Make the types explicit and stable:
+
+```typescript
+// Version your contracts
+interface OrderV1 {
+  version: '1';
+  orderId: string;
+  items: ItemV1[];
+}
+
+interface OrderV2 {
+  version: '2';
+  orderId: string;
+  lineItems: LineItemV2[];  // Renamed, restructured
+  metadata: Metadata;       // Added
+}
+
+// Explicit translation between versions
+const v1ToV2 = (order: OrderV1): OrderV2 => { /* ... */ };
+```
+
+### Principle 2: Explicit Failure Modes
+
+Don't hide failures in the happy path:
+
+```typescript
+// Bad: failure hidden
+const getUser = (id: string): Promise<User | null>;
+
+// Better: failure explicit
+const getUser = (id: string): Promise<Result<User, NotFound | Timeout>>;
+
+// Best: categorical
+type UserF<T> = Kleisli<Result<T, UserError>>;
+const getUser: UserF<UserId, User> = (id) => /* ... */;
+```
+
+### Principle 3: Idempotency by Default
+
+Design all write operations to be safely repeatable:
+
+```typescript
+// Include idempotency in the interface
+interface OrderService {
+  // Idempotency key is part of the contract
+  createOrder(
+    request: CreateOrderRequest,
+    idempotencyKey: string
+  ): Promise<Order>;
+
+  // Updates are naturally idempotent (overwrite semantics)
+  updateOrder(
+    orderId: string,
+    request: UpdateOrderRequest
+  ): Promise<Order>;
+}
+```
+
+### Principle 4: Composition-Friendly Error Handling
+
+Errors should compose as cleanly as successes:
+
+```typescript
+// Railway-oriented programming
+const pipeline = pipe(
+  parseOrder,      // Result<Order, ParseError>
+  validateOrder,   // Result<Order, ValidationError>
+  processPayment,  // Result<Order, PaymentError>
+  scheduleShipment // Result<Shipment, ShippingError>
+);
+
+// All errors are handled uniformly
+// Composition works regardless of which stage fails
+```
+
+---
+
+## AWS Patterns for Composition
+
+### API Gateway: Composition Frontend
+
+API Gateway enables composition at the edge:
+
+```yaml
+# Transform between external and internal types
+x-amazon-apigateway-request-validators:
+  all:
+    validateRequestBody: true
+    validateRequestParameters: true
+
+# Handle type translation
+x-amazon-apigateway-integration:
+  requestTemplates:
+    application/json: |
+      {
+        "internal_order_id": "$input.json('$.orderId')",
+        "line_items": $input.json('$.items')
+      }
+```
+
+### Step Functions: Explicit Composition
+
+Step Functions make composition explicit and visual:
+
+```json
+{
+  "StartAt": "ValidateOrder",
+  "States": {
+    "ValidateOrder": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:...:validate",
+      "Next": "ProcessPayment"
+    },
+    "ProcessPayment": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:...:payment",
+      "Next": "FulfillOrder",
+      "Retry": [{ "ErrorEquals": ["PaymentRetryable"], "MaxAttempts": 3 }]
+    },
+    "FulfillOrder": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:...:fulfill",
+      "End": true
+    }
+  }
+}
+```
+
+Composition, retries, and error handling are all explicit.
+
+### EventBridge: Decoupled Composition
+
+Events decouple composition in time:
+
+```typescript
+// Producer doesn't know about consumers
+await eventBridge.putEvents({
+  Entries: [{
+    Source: 'orders',
+    DetailType: 'OrderCreated',
+    Detail: JSON.stringify(order)
+  }]
+});
+
+// Consumers compose independently
+// Rule 1: OrderCreated → Inventory
+// Rule 2: OrderCreated → Notifications
+// Rule 3: OrderCreated → Analytics
+
+// Composition happens through the event bus
+```
+
+---
+
+## The Takeaway
+
+Composition is not just convenient—it's the foundation of system integration. When composition fails:
+
+1. **Identify the failure mode** (type, state, idempotency, order)
+2. **Apply the categorical fix** (translation, explicit state, keys, orchestration)
+3. **Design for composition** from the start
+
+Systems that compose well aren't accidents. They're designed with categorical discipline.
+
+---
+
+*Next in the series: **Functors: The Mathematics of Migration** — Where we learn how to move entire systems between categories while preserving their structure.*

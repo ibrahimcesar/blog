@@ -1,0 +1,574 @@
+---
+title: "Comonads: Streaming, Context, and Event-Driven Architecture"
+description: "If monads produce values with context, comonads consume values in context. Part 13 of applying category theory to Solutions Architecture—the dual perspective on effects."
+featured: false
+pubDate: "2025-12-15T12:00:00.000Z"
+language: en
+category: "Architecture"
+series: "Categorical Solutions Architecture"
+seriesOrder: 13
+tags: ["Category Theory", "Solutions Architecture", "Event-Driven", "Streaming", "AWS"]
+draft: true
+---
+
+import Lead from '../../components/editorial/Lead.astro';
+import InfoBox from '../../components/editorial/InfoBox.astro';
+
+> *"A comonad is a monad turned inside out—instead of adding context to production, it requires context for consumption."*
+
+<Lead>
+
+Monads handle effects in production: wrapping values with error states, async behavior, or logs. But what about consumption? How do you model a stream processor that needs surrounding context? How do you represent an event handler that sees the whole history? Comonads answer this—they're the categorical structure for contextual observation.
+
+</Lead>
+
+## The Dual of a Monad
+
+A **comonad** on a category $\mathcal{C}$ consists of:
+
+1. An endofunctor $W: \mathcal{C} \to \mathcal{C}$
+2. A natural transformation $\epsilon: W \Rightarrow \text{Id}$ (counit/extract)
+3. A natural transformation $\delta: W \Rightarrow W \circ W$ (comultiplication/duplicate)
+
+Satisfying the comonad laws (dual to monad laws):
+
+$$
+\epsilon \circ \delta = \text{id}_W = W\epsilon \circ \delta
+$$
+$$
+\delta \circ \delta = W\delta \circ \delta
+$$
+
+### In TypeScript
+
+```typescript
+interface Comonad<W> {
+  // Functor part
+  map: <A, B>(wa: W<A>, f: (a: A) => B) => W<B>;
+
+  // Extract (counit) - get the focused value
+  extract: <A>(wa: W<A>) => A;
+
+  // Duplicate - create nested context
+  duplicate: <A>(wa: W<A>) => W<W<A>>;
+
+  // Or equivalently, extend (coflatMap)
+  extend: <A, B>(wa: W<A>, f: (wa: W<A>) => B) => W<B>;
+}
+```
+
+### Monad vs Comonad
+
+| Monad | Comonad |
+|-------|---------|
+| `unit: A → M<A>` | `extract: W<A> → A` |
+| `join: M<M<A>> → M<A>` | `duplicate: W<A> → W<W<A>>` |
+| `bind: M<A> → (A → M<B>) → M<B>` | `extend: W<A> → (W<A> → B) → W<B>` |
+| Produces in context | Consumes in context |
+| Wraps values | Unwraps values |
+| "How to add effects" | "How to use context" |
+
+---
+
+## The Key Insight: Context for Consumption
+
+Monads answer: "Given a pure value, how do I add effects?"
+
+Comonads answer: "Given a value in context, how do I extract meaning?"
+
+```typescript
+// Monad: I have a value, I want to add error handling
+const monadicPure = (x: number): Result<Error, number> =>
+  { tag: 'Ok', value: x };
+
+// Comonad: I have a stream with focus, I want to extract the current value
+const comonadicExtract = (stream: Stream<number>): number =>
+  stream.current;
+```
+
+---
+
+## The Canonical Comonads
+
+### The Stream/Zipper Comonad
+
+A zipper focuses on one element while maintaining context:
+
+```typescript
+// A stream with focus (infinite in both directions conceptually)
+interface Stream<A> {
+  left: A[];     // Elements before focus (reversed)
+  focus: A;      // Current element
+  right: A[];    // Elements after focus
+}
+
+const streamComonad: Comonad<Stream> = {
+  // Map over the stream
+  map: <A, B>(s: Stream<A>, f: (a: A) => B): Stream<B> => ({
+    left: s.left.map(f),
+    focus: f(s.focus),
+    right: s.right.map(f),
+  }),
+
+  // Extract: get the focused element
+  extract: <A>(s: Stream<A>): A => s.focus,
+
+  // Duplicate: create stream of streams, each focused at different position
+  duplicate: <A>(s: Stream<A>): Stream<Stream<A>> => ({
+    left: generateLeftShifts(s),
+    focus: s,
+    right: generateRightShifts(s),
+  }),
+
+  // Extend: apply function at each position
+  extend: <A, B>(s: Stream<A>, f: (s: Stream<A>) => B): Stream<B> => ({
+    left: generateLeftShifts(s).map(f),
+    focus: f(s),
+    right: generateRightShifts(s).map(f),
+  }),
+};
+```
+
+**Use case**: Sliding window computations
+
+```typescript
+// Moving average using comonad
+const movingAverage = (windowSize: number) =>
+  (stream: Stream<number>): number => {
+    const window = [
+      ...stream.left.slice(0, windowSize / 2),
+      stream.focus,
+      ...stream.right.slice(0, windowSize / 2)
+    ];
+    return window.reduce((a, b) => a + b, 0) / window.length;
+  };
+
+// Apply to entire stream
+const smoothed = streamComonad.extend(dataStream, movingAverage(5));
+```
+
+### The Env/Reader Comonad
+
+The dual of the Reader monad:
+
+```typescript
+// Value paired with environment
+interface Env<E, A> {
+  env: E;
+  value: A;
+}
+
+const envComonad = <E>(): Comonad<Env<E, *>> => ({
+  map: <A, B>(ea: Env<E, A>, f: (a: A) => B): Env<E, B> => ({
+    env: ea.env,
+    value: f(ea.value),
+  }),
+
+  extract: <A>(ea: Env<E, A>): A => ea.value,
+
+  duplicate: <A>(ea: Env<E, A>): Env<E, Env<E, A>> => ({
+    env: ea.env,
+    value: ea,
+  }),
+
+  extend: <A, B>(ea: Env<E, A>, f: (ea: Env<E, A>) => B): Env<E, B> => ({
+    env: ea.env,
+    value: f(ea),
+  }),
+});
+```
+
+**Use case**: Computations that need configuration
+
+```typescript
+// Function that needs config context
+const formatOutput = (env: Env<Config, Data>): string => {
+  const { locale, dateFormat } = env.env;
+  return format(env.value, { locale, dateFormat });
+};
+
+// Apply to data with config
+const formatted = envComonad<Config>().extend(
+  { env: config, value: data },
+  formatOutput
+);
+```
+
+### The Store Comonad
+
+Position + lookup function:
+
+```typescript
+interface Store<S, A> {
+  pos: S;
+  peek: (s: S) => A;
+}
+
+const storeComonad = <S>(): Comonad<Store<S, *>> => ({
+  map: <A, B>(sa: Store<S, A>, f: (a: A) => B): Store<S, B> => ({
+    pos: sa.pos,
+    peek: (s: S) => f(sa.peek(s)),
+  }),
+
+  extract: <A>(sa: Store<S, A>): A => sa.peek(sa.pos),
+
+  duplicate: <A>(sa: Store<S, A>): Store<S, Store<S, A>> => ({
+    pos: sa.pos,
+    peek: (s: S) => ({ pos: s, peek: sa.peek }),
+  }),
+
+  extend: <A, B>(sa: Store<S, A>, f: (sa: Store<S, A>) => B): Store<S, B> => ({
+    pos: sa.pos,
+    peek: (s: S) => f({ pos: s, peek: sa.peek }),
+  }),
+});
+```
+
+**Use case**: Cellular automata, image processing, spatial computations
+
+```typescript
+// Conway's Game of Life
+const gameOfLifeRule = (grid: Store<[number, number], boolean>): boolean => {
+  const neighbors = [
+    [-1, -1], [-1, 0], [-1, 1],
+    [0, -1],           [0, 1],
+    [1, -1], [1, 0], [1, 1]
+  ];
+
+  const [x, y] = grid.pos;
+  const liveNeighbors = neighbors.filter(([dx, dy]) =>
+    grid.peek([x + dx, y + dy])
+  ).length;
+
+  const alive = grid.peek(grid.pos);
+  return alive
+    ? liveNeighbors === 2 || liveNeighbors === 3
+    : liveNeighbors === 3;
+};
+
+// One step of evolution
+const step = (grid: Store<Pos, boolean>): Store<Pos, boolean> =>
+  storeComonad<Pos>().extend(grid, gameOfLifeRule);
+```
+
+---
+
+## Comonads in Architecture
+
+### Event Stream Processing
+
+Event streams with context are comonadic:
+
+```typescript
+interface EventStream<E> {
+  past: E[];        // Historical events
+  current: E;       // Current event
+  metadata: StreamMetadata;
+}
+
+const eventStreamComonad: Comonad<EventStream> = {
+  extract: <E>(s: EventStream<E>): E => s.current,
+
+  duplicate: <E>(s: EventStream<E>): EventStream<EventStream<E>> => ({
+    past: generatePastViews(s),
+    current: s,
+    metadata: s.metadata,
+  }),
+
+  extend: <E, R>(s: EventStream<E>, f: (s: EventStream<E>) => R): EventStream<R> => ({
+    past: generatePastViews(s).map(f),
+    current: f(s),
+    metadata: s.metadata,
+  }),
+};
+
+// Event handler that needs context
+const detectAnomaly = (stream: EventStream<Metric>): AnomalyResult => {
+  const recentAvg = average(stream.past.slice(-10).map(e => e.value));
+  const deviation = Math.abs(stream.current.value - recentAvg);
+  return deviation > threshold ? { anomaly: true, deviation } : { anomaly: false };
+};
+
+// Apply to stream
+const anomalies = eventStreamComonad.extend(metricStream, detectAnomaly);
+```
+
+### Request Context
+
+HTTP requests with context:
+
+```typescript
+interface RequestContext<A> {
+  request: HttpRequest;
+  auth: AuthInfo;
+  trace: TraceContext;
+  payload: A;
+}
+
+const requestComonad: Comonad<RequestContext> = {
+  extract: <A>(ctx: RequestContext<A>): A => ctx.payload,
+
+  duplicate: <A>(ctx: RequestContext<A>): RequestContext<RequestContext<A>> => ({
+    ...ctx,
+    payload: ctx,
+  }),
+
+  extend: <A, B>(ctx: RequestContext<A>, f: (ctx: RequestContext<A>) => B): RequestContext<B> => ({
+    ...ctx,
+    payload: f(ctx),
+  }),
+};
+
+// Handler that needs full context
+const auditedHandler = (ctx: RequestContext<Order>): AuditedResponse => {
+  logAudit(ctx.auth.userId, ctx.trace.traceId, 'order_created');
+  return processOrder(ctx.payload);
+};
+
+// Apply to request
+const response = requestComonad.extend(requestCtx, auditedHandler);
+```
+
+### Cellular/Grid Computations
+
+Any computation where each cell needs its neighbors:
+
+```typescript
+interface Grid<A> {
+  cells: Map<[number, number], A>;
+  focus: [number, number];
+}
+
+const gridComonad: Comonad<Grid> = {
+  extract: <A>(g: Grid<A>): A => g.cells.get(g.focus)!,
+
+  duplicate: <A>(g: Grid<A>): Grid<Grid<A>> => ({
+    cells: new Map(
+      Array.from(g.cells.keys()).map(pos => [
+        pos,
+        { ...g, focus: pos }
+      ])
+    ),
+    focus: g.focus,
+  }),
+
+  extend: <A, B>(g: Grid<A>, f: (g: Grid<A>) => B): Grid<B> => ({
+    cells: new Map(
+      Array.from(g.cells.keys()).map(pos => [
+        pos,
+        f({ ...g, focus: pos })
+      ])
+    ),
+    focus: g.focus,
+  }),
+};
+
+// Image processing: blur at each pixel
+const blur = (image: Grid<Pixel>): Pixel => {
+  const neighbors = getNeighbors(image.focus);
+  const pixels = neighbors.map(pos => image.cells.get(pos) || black);
+  return averagePixels(pixels);
+};
+
+const blurred = gridComonad.extend(image, blur);
+```
+
+---
+
+## AWS Comonads
+
+### Kinesis Shard Iterator as Comonad
+
+```typescript
+interface KinesisPosition<A> {
+  shardIterator: string;
+  records: A[];
+  currentRecord: A;
+  sequenceNumber: string;
+}
+
+// Extract: get current record
+const extract = <A>(pos: KinesisPosition<A>): A => pos.currentRecord;
+
+// Extend: apply function at each position in shard
+const extend = <A, B>(
+  pos: KinesisPosition<A>,
+  f: (pos: KinesisPosition<A>) => B
+): KinesisPosition<B> => {
+  // Apply f at each record position
+  const results = pos.records.map((record, i) =>
+    f({ ...pos, currentRecord: record, records: pos.records.slice(i) })
+  );
+  return {
+    ...pos,
+    records: results,
+    currentRecord: f(pos),
+  };
+};
+```
+
+### CloudWatch with Historical Context
+
+```typescript
+interface MetricTimeSeries {
+  datapoints: Datapoint[];
+  current: Datapoint;
+  metric: MetricIdentifier;
+}
+
+// Handler that needs history
+const detectTrend = (series: MetricTimeSeries): TrendResult => {
+  const recent = series.datapoints.slice(-10);
+  const slope = calculateSlope(recent);
+  return { trend: slope > 0 ? 'increasing' : 'decreasing', slope };
+};
+
+// Sliding window analysis
+const trends = metricComonad.extend(timeSeries, detectTrend);
+```
+
+### Step Functions Execution History
+
+```typescript
+interface ExecutionContext<A> {
+  history: StateExecution[];
+  current: StateExecution;
+  input: A;
+}
+
+// Handler that needs execution history
+const handleWithRetryLogic = (ctx: ExecutionContext<Input>): Decision => {
+  const previousAttempts = ctx.history.filter(
+    h => h.stateName === ctx.current.stateName
+  );
+  if (previousAttempts.length >= 3) {
+    return { action: 'fail', reason: 'max_retries_exceeded' };
+  }
+  return { action: 'retry', delay: exponentialBackoff(previousAttempts.length) };
+};
+```
+
+---
+
+## Comonad Laws in Practice
+
+### Law 1: Left Identity
+
+$\epsilon \circ \delta = \text{id}$
+
+```typescript
+// Extract after duplicate gives back the original
+extract(duplicate(wa)) === wa
+```
+
+**Meaning**: Duplicating and then extracting is a no-op.
+
+### Law 2: Right Identity
+
+$W\epsilon \circ \delta = \text{id}$
+
+```typescript
+// Extracting inside duplicated structure gives back original
+map(duplicate(wa), extract) === wa
+```
+
+**Meaning**: Duplicating and extracting at each position reconstructs the original.
+
+### Law 3: Associativity
+
+$\delta \circ \delta = W\delta \circ \delta$
+
+**Meaning**: Nested duplication is associative.
+
+---
+
+## Monad-Comonad Duality
+
+Every adjunction $F \dashv G$ gives:
+- A monad $G \circ F$
+- A comonad $F \circ G$
+
+<InfoBox title="The Duality" type="tip">
+
+| Monad | Comonad |
+|-------|---------|
+| Produces effects | Consumes context |
+| Adds structure | Requires structure |
+| `return` puts value in | `extract` takes value out |
+| `join` flattens | `duplicate` nests |
+| Sequential computation | Contextual observation |
+
+</InfoBox>
+
+---
+
+## Design Patterns with Comonads
+
+### Pattern 1: Contextual Transformation
+
+When every element needs access to its surroundings:
+
+```typescript
+// Apply transformation that needs context
+const contextualTransform = <W, A, B>(
+  comonad: Comonad<W>,
+  data: W<A>,
+  transform: (wa: W<A>) => B
+): W<B> => comonad.extend(data, transform);
+```
+
+### Pattern 2: Focus + Context
+
+When you have a focused element with surrounding context:
+
+```typescript
+interface Focused<A> {
+  before: A[];
+  focus: A;
+  after: A[];
+}
+
+// Natural operations
+const moveLeft = <A>(f: Focused<A>): Focused<A> | null =>
+  f.before.length === 0 ? null : {
+    before: f.before.slice(0, -1),
+    focus: f.before[f.before.length - 1],
+    after: [f.focus, ...f.after],
+  };
+```
+
+### Pattern 3: Cached Computations
+
+Store comonad for memoized access:
+
+```typescript
+const cachedComputation = <K, V>(
+  compute: (k: K) => V,
+  initialKey: K
+): Store<K, V> => ({
+  pos: initialKey,
+  peek: memoize(compute),  // Cached lookup
+});
+```
+
+---
+
+## The Takeaway
+
+Comonads are for consuming values in context:
+
+1. **Extract**: Get the focused/current value
+2. **Duplicate**: Create nested context (views of views)
+3. **Extend**: Apply contextual function everywhere
+
+In architecture:
+- Stream processing → Stream comonad
+- Request handling with context → Env comonad
+- Spatial/grid computations → Store comonad
+- Event sourcing with history → Event stream comonad
+
+When your computation needs surrounding context (neighbors, history, configuration), you need a comonad.
+
+---
+
+*Next in the series: **2-Categories: When Your Transformations Have Transformations** — Where we add another dimension to categorical thinking.*

@@ -1,0 +1,466 @@
+---
+title: "Products and Coproducts: The Algebra of Service Composition"
+description: "API Gateways are products. Event routers are coproducts. Part 8 of applying category theory to Solutions Architecture—the universal patterns for combining and decomposing services."
+featured: false
+pubDate: "2025-12-10T12:00:00.000Z"
+language: en
+category: "Architecture"
+series: "Categorical Solutions Architecture"
+seriesOrder: 8
+tags: ["Category Theory", "Solutions Architecture", "API Gateway", "Software Architecture", "AWS"]
+draft: true
+---
+
+import Lead from '../../components/editorial/Lead.astro';
+import InfoBox from '../../components/editorial/InfoBox.astro';
+
+> *"The product is the canonical way to combine two things. The coproduct is the canonical way to offer a choice between two things."*
+
+<Lead>
+
+Every time you design an API gateway that routes to multiple backends, you're building a product. Every time you create an event router that accepts from multiple sources, you're building a coproduct. These aren't just patterns—they're universal constructions with precise mathematical properties. Understanding them tells you exactly what your architecture must satisfy.
+
+</Lead>
+
+## The Product: Canonical Combination
+
+A **product** of objects $A$ and $B$ is an object $A \times B$ together with projection morphisms:
+
+$$
+\pi_1: A \times B \to A \quad \text{and} \quad \pi_2: A \times B \to B
+$$
+
+With the **universal property**: for any object $C$ with morphisms $f: C \to A$ and $g: C \to B$, there exists a *unique* morphism $\langle f, g \rangle: C \to A \times B$ such that:
+
+$$
+\pi_1 \circ \langle f, g \rangle = f \quad \text{and} \quad \pi_2 \circ \langle f, g \rangle = g
+$$
+
+```
+        f
+    C -----> A
+    |        ^
+    | <f,g>  | π₁
+    v        |
+  A × B -----+
+    |
+    | π₂
+    v
+    B <----- C
+        g
+```
+
+---
+
+## Products in Architecture
+
+### The API Gateway Pattern
+
+An API Gateway is a product construction:
+
+```
+Client -----> Gateway -----> Service A
+                |
+                +---------> Service B
+                |
+                +---------> Service C
+```
+
+The gateway ($A \times B \times C$) has projections (routes) to each backend. Any client request factors uniquely through the gateway.
+
+```typescript
+// The projections
+const routeToServiceA = (req: GatewayRequest): ServiceARequest => {
+  return { endpoint: '/service-a' + req.path, ...transform(req) };
+};
+
+const routeToServiceB = (req: GatewayRequest): ServiceBRequest => {
+  return { endpoint: '/service-b' + req.path, ...transform(req) };
+};
+
+// The universal property: any client factors through gateway
+const clientRequest = async (target: 'A' | 'B', data: any) => {
+  // Unique factorization through gateway
+  const gatewayReq = buildGatewayRequest(target, data);
+  return await gateway.handle(gatewayReq);
+};
+```
+
+### Universal Property in Action
+
+The universal property says: **there's exactly one way to route**.
+
+```typescript
+// Given: client wants to call Service A and Service B
+// Universal property guarantees: unique gateway request exists
+
+interface Gateway {
+  // The product object
+  handle(req: GatewayRequest): Promise<GatewayResponse>;
+}
+
+// Projections
+const toServiceA: (req: GatewayRequest) => ServiceARequest;
+const toServiceB: (req: GatewayRequest) => ServiceBRequest;
+
+// Universal property: for any client with specific service needs,
+// there's exactly ONE way to express this through the gateway
+const uniqueFactorization = <T>(
+  needsA: (t: T) => ServiceARequest,
+  needsB: (t: T) => ServiceBRequest
+): ((t: T) => GatewayRequest) => {
+  return (t: T) => combineRequests(needsA(t), needsB(t));
+};
+```
+
+<InfoBox title="What Universal Means" type="tip">
+
+"Universal" means: any other solution factors through this one. The product is the *best* way to combine—all other combinations are special cases of it.
+
+</InfoBox>
+
+---
+
+## The Coproduct: Canonical Choice
+
+The **coproduct** (or sum) is the dual of the product. For objects $A$ and $B$, the coproduct $A + B$ has injection morphisms:
+
+$$
+\iota_1: A \to A + B \quad \text{and} \quad \iota_2: B \to A + B
+$$
+
+With the **universal property**: for any object $C$ with morphisms $f: A \to C$ and $g: B \to C$, there exists a *unique* morphism $[f, g]: A + B \to C$ such that:
+
+$$
+[f, g] \circ \iota_1 = f \quad \text{and} \quad [f, g] \circ \iota_2 = g
+$$
+
+```
+    A -----> A + B <----- B
+    |          |          |
+    f        [f,g]        g
+    |          |          |
+    v          v          v
+    C <--------+--------> C
+```
+
+---
+
+## Coproducts in Architecture
+
+### The Event Router Pattern
+
+An event router is a coproduct construction:
+
+```
+Service A ----->
+                 Event Router -----> Consumer
+Service B ----->      |
+                      |
+Service C ----->      +------------> Analytics
+```
+
+Multiple sources inject events into a common bus, which then distributes to consumers.
+
+```typescript
+// The injections
+const fromServiceA = (event: ServiceAEvent): RouterEvent => ({
+  source: 'service-a',
+  type: event.type,
+  payload: event.data
+});
+
+const fromServiceB = (event: ServiceBEvent): RouterEvent => ({
+  source: 'service-b',
+  type: event.type,
+  payload: event.data
+});
+
+// The universal property: any consumer factors through router
+const handleEvent = (
+  handleA: (e: ServiceAEvent) => void,
+  handleB: (e: ServiceBEvent) => void
+): ((e: RouterEvent) => void) => {
+  return (event: RouterEvent) => {
+    switch (event.source) {
+      case 'service-a': return handleA(extractA(event));
+      case 'service-b': return handleB(extractB(event));
+    }
+  };
+};
+```
+
+### Union Types Are Coproducts
+
+TypeScript union types are coproducts:
+
+```typescript
+// Coproduct type
+type OrderEvent =
+  | { type: 'created'; order: Order }
+  | { type: 'updated'; orderId: string; changes: Partial<Order> }
+  | { type: 'cancelled'; orderId: string; reason: string };
+
+// Injections
+const created = (order: Order): OrderEvent =>
+  ({ type: 'created', order });
+
+const updated = (orderId: string, changes: Partial<Order>): OrderEvent =>
+  ({ type: 'updated', orderId, changes });
+
+// Universal property: pattern matching
+const handleOrderEvent = (event: OrderEvent): void => {
+  switch (event.type) {
+    case 'created': handleCreated(event.order); break;
+    case 'updated': handleUpdated(event.orderId, event.changes); break;
+    case 'cancelled': handleCancelled(event.orderId, event.reason); break;
+  }
+};
+```
+
+---
+
+## Products and Coproducts Together
+
+Real architectures use both:
+
+### Request-Response (Product-like)
+
+```
+Client Request → Gateway (Product)
+                    ↓
+              [Service A, Service B, Service C]
+                    ↓
+             Aggregated Response
+```
+
+### Event-Driven (Coproduct-like)
+
+```
+[Service A, Service B, Service C]
+                    ↓
+            Event Bus (Coproduct)
+                    ↓
+              Consumer
+```
+
+### The Full Pattern
+
+```
+             Products (combine)
+                   ↓
+Producers → Event Bus (Coproduct) → Gateway (Product) → Consumers
+                                           ↓
+                                    [Service A, B, C]
+```
+
+---
+
+## AWS Products and Coproducts
+
+### API Gateway as Product
+
+```yaml
+# API Gateway defines projections to multiple backends
+paths:
+  /users/{id}:
+    get:
+      x-amazon-apigateway-integration:
+        uri: arn:aws:lambda:...:user-service  # π₁
+  /orders/{id}:
+    get:
+      x-amazon-apigateway-integration:
+        uri: arn:aws:lambda:...:order-service  # π₂
+  /payments/{id}:
+    get:
+      x-amazon-apigateway-integration:
+        uri: arn:aws:lambda:...:payment-service  # π₃
+```
+
+The gateway is the product; each route is a projection.
+
+### EventBridge as Coproduct
+
+```typescript
+// Multiple sources inject into EventBridge
+await eventBridge.putEvents({
+  Entries: [
+    { Source: 'orders', DetailType: 'OrderCreated', Detail: '...' },  // ι₁
+  ]
+});
+
+await eventBridge.putEvents({
+  Entries: [
+    { Source: 'payments', DetailType: 'PaymentReceived', Detail: '...' },  // ι₂
+  ]
+});
+
+// Rules define the copairing [f, g]
+// Rule 1: orders.* → ProcessingLambda
+// Rule 2: payments.* → AnalyticsLambda
+```
+
+### Step Functions: Both
+
+Step Functions combine products and coproducts:
+
+```json
+{
+  "StartAt": "Parallel",
+  "States": {
+    "Parallel": {
+      "Type": "Parallel",  // Product: run all branches
+      "Branches": [
+        { "StartAt": "BranchA", "States": {...} },
+        { "StartAt": "BranchB", "States": {...} }
+      ],
+      "Next": "Choice"
+    },
+    "Choice": {
+      "Type": "Choice",  // Coproduct: choose one path
+      "Choices": [
+        { "Variable": "$.type", "StringEquals": "A", "Next": "HandleA" },
+        { "Variable": "$.type", "StringEquals": "B", "Next": "HandleB" }
+      ]
+    }
+  }
+}
+```
+
+---
+
+## Universal Properties as Design Principles
+
+### The Product Principle
+
+> **Any way to access multiple services should factor through a single gateway.**
+
+Violations:
+- Clients directly calling multiple backends
+- Multiple gateways with overlapping responsibilities
+- Inconsistent authentication across services
+
+### The Coproduct Principle
+
+> **Any way to produce events should inject through a single bus.**
+
+Violations:
+- Services publishing to multiple different buses
+- Point-to-point event connections
+- Inconsistent event schemas across sources
+
+---
+
+## Designing with Universal Properties
+
+### Step 1: Identify What You're Combining
+
+**Products** when you need:
+- All of multiple things together
+- Aggregation of data from multiple sources
+- Single entry point to multiple backends
+
+**Coproducts** when you need:
+- Choice between alternatives
+- Multiple sources feeding one destination
+- Tagged unions of different event types
+
+### Step 2: Define the Projections/Injections
+
+```typescript
+// Product: define how to extract each component
+interface OrderGateway {
+  getUserData(req: GatewayRequest): UserRequest;      // π₁
+  getOrderData(req: GatewayRequest): OrderRequest;    // π₂
+  getPaymentData(req: GatewayRequest): PaymentRequest; // π₃
+}
+
+// Coproduct: define how to inject each variant
+interface EventBus {
+  fromOrderService(event: OrderEvent): BusEvent;    // ι₁
+  fromUserService(event: UserEvent): BusEvent;      // ι₂
+  fromPaymentService(event: PaymentEvent): BusEvent; // ι₃
+}
+```
+
+### Step 3: Verify the Universal Property
+
+```typescript
+// Product: any combination factors uniquely
+const anyClientRequest = (
+  needsUser: ClientNeedsUser,
+  needsOrder: ClientNeedsOrder
+): GatewayRequest => {
+  // This factorization must be UNIQUE
+  return combineIntoGatewayRequest(needsUser, needsOrder);
+};
+
+// Coproduct: any handler factors uniquely
+const anyEventHandler = (
+  handleOrder: (e: OrderEvent) => void,
+  handleUser: (e: UserEvent) => void
+): ((e: BusEvent) => void) => {
+  // This copairing must be UNIQUE
+  return (event) => {
+    if (isOrderEvent(event)) handleOrder(event);
+    else if (isUserEvent(event)) handleUser(event);
+  };
+};
+```
+
+---
+
+## When Products and Coproducts Don't Exist
+
+Not every category has all products and coproducts.
+
+### Missing Products
+
+If your architecture can't aggregate, products don't exist:
+
+```typescript
+// Can't create product: no way to combine results
+const serviceA = async (): Promise<DataA> => { /* ... */ };
+const serviceB = async (): Promise<DataB> => { /* ... */ };
+
+// If services can't be called together (mutual exclusion, rate limits),
+// the product doesn't exist
+```
+
+### Missing Coproducts
+
+If your architecture can't choose, coproducts don't exist:
+
+```typescript
+// Can't create coproduct: no unified event type
+interface OrderEvent { orderId: string; /* order fields */ }
+interface UserEvent { userId: string; /* user fields */ }
+
+// If there's no common event bus that can carry both,
+// the coproduct doesn't exist
+```
+
+### Architectural Implications
+
+- **Missing product**: Can't build aggregation gateway → need to change service contracts
+- **Missing coproduct**: Can't build event bus → need unified event schema
+
+---
+
+## The Takeaway
+
+Products and coproducts are the fundamental building blocks:
+
+1. **Product = Combination**: Gateway pattern, aggregation, "give me all of these"
+2. **Coproduct = Choice**: Event router, unions, "give me one of these"
+3. **Universal property = Best solution**: All other approaches factor through these
+4. **Design check**: Can you factor through your gateway/router uniquely?
+
+When designing aggregation → think products.
+When designing routing → think coproducts.
+
+The universal properties tell you exactly what your design must satisfy.
+
+---
+
+*Next in the series: **Pullbacks and Pushouts: Integration Points That Don't Lie** — Where we learn how to construct integration points that preserve consistency.*

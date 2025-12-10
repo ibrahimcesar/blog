@@ -1,10 +1,12 @@
 ---
-title: "Building async-inspect: My Journey Learning Async Rust"
-pubDate: "2025-01-23T10:00:00.000Z"
+title: "Building async-inspect: The Technical Journey"
+pubDate: "2025-01-26T10:00:00.000Z"
 tags: ["rust", "async", "learning", "open-source"]
-description: "How I built a comprehensive async debugging tool while learning Rust's async ecosystem from the ground up"
+description: "A deep dive into how I built async-inspect: the architecture, the challenges, and what I learned about async Rust along the way."
 language: en
 draft: true
+series: "async-inspect"
+seriesOrder: 2
 ---
 
 import Lead from "~/components/editorial/Lead.astro";
@@ -14,10 +16,14 @@ import Alert from "~/components/editorial/Alert.astro";
 import DiveDeep from "~/components/editorial/DiveDeep.astro";
 import StyledList from "~/components/editorial/StyledList.astro";
 
-# Building async-inspect: My Journey Learning Async Rust
+# Building async-inspect: The Technical Journey
+
+<InfoBox type="note" title="Series: async-inspect">
+This is **Part 2** of a series about async-inspect. If you haven't read it yet, check out <a href="/posts/async-inspect-call-for-collaboration">Part 1: Introduction and Call for Collaboration</a> first.
+</InfoBox>
 
 <Lead>
-I built <a href="https://github.com/ibrahimcesar/async-inspect">async-inspect</a>, a production-ready debugging tool for async Rust, as a learning project. It grew from a simple task tracker to a complete ecosystem with IDE plugins, LSP support, and real-time dashboards. Here's what I learned along the way—and how you can apply these lessons to your own async Rust journey.
+In the <a href="/posts/async-inspect-call-for-collaboration">previous post</a>, I introduced async-inspect and asked for your help. Now let's dive into the technical details: how it works, the architecture decisions I made, and what I learned about async Rust along the way.
 </Lead>
 
 ## The Beginning: Why I Built This
@@ -228,9 +234,9 @@ When this task blocks, async-inspect tells you:
 
 ```mermaid
 flowchart LR
-    A[Your Code] --> B[#[trace] macro]
+    A[Your Code] --> B["#[trace] macro"]
     B --> C[AST Parser]
-    C --> D[Find .await points]
+    C --> D["Find .await points"]
     D --> E[Inject tracking code]
     E --> F[Generated Code]
 
@@ -591,4 +597,8 @@ Happy async debugging!
 
 ---
 
-*If you found this helpful, consider starring the [repo](https://github.com/ibrahimcesar/async-inspect) or [sponsoring the project](https://github.com/sponsors/ibrahimcesar). Questions? Find me on [Twitter/X](https://twitter.com/ibrahimcesar) or [GitHub](https://github.com/ibrahimcesar).*
+*If you found this helpful, consider starring the [repo](https://github.com/ibrahimcesar/async-inspect) or [sponsoring the project](https://github.com/sponsors/ibrahimcesar). Questions? Find me on [Bluesky](https://bsky.app/profile/ibrahimcesar.cloud) or [GitHub](https://github.com/ibrahimcesar).*
+
+---
+
+**Previous in this series:** [Part 1: Introduction and Call for Collaboration](/posts/async-inspect-call-for-collaboration) — Why I built async-inspect and how you can help shape its future.

@@ -1,0 +1,534 @@
+---
+title: "Pullbacks and Pushouts: Integration Points That Don't Lie"
+description: "When two services need to agree on something, you need a pullback. When two sources need to merge, you need a pushout. Part 9 of applying category theory to Solutions Architecture."
+featured: false
+pubDate: "2025-12-11T12:00:00.000Z"
+language: en
+category: "Architecture"
+series: "Categorical Solutions Architecture"
+seriesOrder: 9
+tags: ["Category Theory", "Solutions Architecture", "Integration", "Software Architecture", "AWS"]
+draft: true
+---
+
+import Lead from '../../components/editorial/Lead.astro';
+import InfoBox from '../../components/editorial/InfoBox.astro';
+
+> *"A pullback is a product that respects constraints. A pushout is a coproduct that identifies commonalities."*
+
+<Lead>
+
+Products combine everything; coproducts offer choices. But what if you need to combine things *subject to constraints*? What if your sources *share* something that must be identified? Pullbacks and pushouts handle these cases—they're the universal constructions for constrained integration.
+
+</Lead>
+
+## The Pullback: Constrained Combination
+
+A **pullback** of morphisms $f: A \to C$ and $g: B \to C$ is an object $P$ with morphisms $p_1: P \to A$ and $p_2: P \to B$ such that:
+
+$$
+f \circ p_1 = g \circ p_2
+$$
+
+With the universal property: for any object $Q$ with morphisms $q_1: Q \to A$ and $q_2: Q \to B$ satisfying $f \circ q_1 = g \circ q_2$, there exists a unique morphism $u: Q \to P$.
+
+```
+        q₁
+    Q -------> A
+    |    u     |
+    | ↘    p₁  | f
+    |   P ---->|
+    |   |      |
+    |   | p₂   v
+    |   v      C
+    +-> B ---->
+        q₂    g
+```
+
+The pullback is "the most general object that projects to both A and B *consistently with respect to C*."
+
+---
+
+## Pullbacks in Architecture
+
+### The Consistent Read Pattern
+
+You have two services that both reference the same data:
+
+```typescript
+// Order Service
+interface Order {
+  orderId: string;
+  userId: string;  // References User
+  items: Item[];
+}
+
+// Shipment Service
+interface Shipment {
+  shipmentId: string;
+  userId: string;  // Also references User
+  address: Address;
+}
+
+// User Service (the common reference)
+interface User {
+  userId: string;
+  name: string;
+  address: Address;
+}
+```
+
+A pullback ensures consistency:
+
+```typescript
+// Pullback: Orders and Shipments that agree on the User
+interface ConsistentOrderShipment {
+  order: Order;
+  shipment: Shipment;
+  // Constraint: order.userId === shipment.userId
+  // AND both reference the SAME user state
+}
+
+const getConsistentView = async (
+  orderId: string,
+  shipmentId: string
+): Promise<ConsistentOrderShipment | null> => {
+  const order = await orderService.get(orderId);
+  const shipment = await shipmentService.get(shipmentId);
+
+  // The pullback condition
+  if (order.userId !== shipment.userId) {
+    return null;  // Doesn't satisfy constraint
+  }
+
+  // Verify both see the same user
+  const userFromOrder = await userService.get(order.userId);
+  const userFromShipment = await userService.get(shipment.userId);
+
+  if (!deepEqual(userFromOrder, userFromShipment)) {
+    return null;  // Inconsistent!
+  }
+
+  return { order, shipment };
+};
+```
+
+<InfoBox title="Pullback = Consistent Join" type="tip">
+
+A pullback is like a database JOIN, but with a guarantee: the joined data is consistent. Both sides agree on the shared reference.
+
+</InfoBox>
+
+### The API Versioning Pullback
+
+Two API versions must be compatible:
+
+```typescript
+// V1 and V2 both map to internal representation
+interface InternalOrder { /* canonical form */ }
+
+interface V1Order {
+  order_id: string;
+  line_items: V1Item[];
+}
+
+interface V2Order {
+  orderId: string;
+  items: V2Item[];
+  metadata: Metadata;
+}
+
+// Pullback: V1 and V2 orders that represent the same internal order
+type CompatibleVersions = {
+  v1: V1Order;
+  v2: V2Order;
+  // Constraint: toInternal(v1) === toInternal(v2)
+};
+
+const isCompatible = (v1: V1Order, v2: V2Order): boolean => {
+  return deepEqual(toInternal(v1), toInternal(v2));
+};
+```
+
+---
+
+## The Pushout: Merging with Identification
+
+A **pushout** is dual to a pullback. For morphisms $f: C \to A$ and $g: C \to B$, the pushout $P$ satisfies:
+
+$$
+i_1 \circ f = i_2 \circ g
+$$
+
+With the universal property: for any object $Q$ with morphisms to it from A and B that agree on C, there's a unique morphism from P to Q.
+
+```
+    C ----f----> A
+    |            |
+    g           i₁
+    |            |
+    v            v
+    B ---i₂---> P ----u----> Q
+```
+
+The pushout is "A and B glued together along their common part C."
+
+---
+
+## Pushouts in Architecture
+
+### Event Aggregation
+
+Two services produce events with a common structure:
+
+```typescript
+// Common event structure
+interface BaseEvent {
+  eventId: string;
+  timestamp: Date;
+  correlationId: string;
+}
+
+// Order events extend base
+interface OrderEvent extends BaseEvent {
+  type: 'order.created' | 'order.updated';
+  orderId: string;
+  data: OrderData;
+}
+
+// Payment events extend base
+interface PaymentEvent extends BaseEvent {
+  type: 'payment.received' | 'payment.failed';
+  paymentId: string;
+  data: PaymentData;
+}
+
+// Pushout: unified event stream that identifies common structure
+type UnifiedEvent = OrderEvent | PaymentEvent;
+
+// The pushout property: events with same correlationId are related
+const correlate = (events: UnifiedEvent[]): CorrelatedEventGroup[] => {
+  const groups = new Map<string, UnifiedEvent[]>();
+  for (const event of events) {
+    const key = event.correlationId;  // The shared "C"
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key)!.push(event);
+  }
+  return Array.from(groups.values());
+};
+```
+
+### Schema Merge
+
+Merging two schemas that share common fields:
+
+```typescript
+// Shared fields
+interface CommonFields {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Schema A
+interface SchemaA extends CommonFields {
+  name: string;
+  category: string;
+}
+
+// Schema B
+interface SchemaB extends CommonFields {
+  title: string;
+  tags: string[];
+}
+
+// Pushout: merged schema identifying common fields
+interface MergedSchema {
+  // Common fields (identified)
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+
+  // From A
+  name?: string;
+  category?: string;
+
+  // From B
+  title?: string;
+  tags?: string[];
+}
+```
+
+---
+
+## Fiber Products and Sums
+
+### Fiber Product (Pullback) in Databases
+
+The fiber product over a common key is a pullback:
+
+```sql
+-- Orders and Shipments, fibered over userId
+SELECT o.*, s.*
+FROM orders o
+JOIN shipments s ON o.user_id = s.user_id
+-- This IS a pullback: pairs that agree on user_id
+```
+
+### Fiber Sum (Pushout) in Event Sourcing
+
+Events from multiple sources, identified by correlation:
+
+```typescript
+// Multiple sources produce events with correlationId
+const orderEvents: Stream<OrderEvent>;
+const paymentEvents: Stream<PaymentEvent>;
+
+// Pushout: merge identifying by correlationId
+const mergedStream = merge(orderEvents, paymentEvents)
+  .groupBy(e => e.correlationId);  // Identification
+```
+
+---
+
+## AWS Pullbacks and Pushouts
+
+### S3 + DynamoDB Consistency (Pullback)
+
+When S3 object and DynamoDB record must agree:
+
+```typescript
+// S3 has object metadata
+interface S3Object {
+  key: string;
+  etag: string;
+  lastModified: Date;
+}
+
+// DynamoDB has record
+interface DDBRecord {
+  pk: string;  // Same as S3 key
+  status: string;
+  metadata: object;
+}
+
+// Pullback: S3 and DynamoDB views that agree
+const getConsistentState = async (key: string): Promise<ConsistentState | null> => {
+  const [s3Obj, ddbRecord] = await Promise.all([
+    s3.headObject({ Bucket: bucket, Key: key }),
+    ddb.get({ TableName: table, Key: { pk: key } })
+  ]);
+
+  // Verify consistency
+  if (s3Obj.ETag !== ddbRecord.Item?.etag) {
+    return null;  // Inconsistent!
+  }
+
+  return { s3: s3Obj, ddb: ddbRecord.Item };
+};
+```
+
+### EventBridge Rule Composition (Pushout)
+
+Multiple rules that share event patterns:
+
+```typescript
+// Base pattern (common structure C)
+const basePattern = {
+  source: ['my-app'],
+  'detail-type': ['order.*']
+};
+
+// Rule A pattern
+const ruleAPattern = {
+  ...basePattern,
+  detail: { status: ['created'] }
+};
+
+// Rule B pattern
+const ruleBPattern = {
+  ...basePattern,
+  detail: { priority: ['high'] }
+};
+
+// Pushout: combined routing that identifies common pattern
+// Events matching both patterns are routed to both targets
+// but only processed once at the source identification level
+```
+
+### Step Functions Parallel + Join (Pullback)
+
+```json
+{
+  "Parallel": {
+    "Type": "Parallel",
+    "Branches": [
+      { "StartAt": "FetchUser", "States": { /* ... */ } },
+      { "StartAt": "FetchOrders", "States": { /* ... */ } }
+    ],
+    "Next": "JoinResults"
+  },
+  "JoinResults": {
+    "Type": "Task",
+    "Resource": "arn:aws:lambda:...:join",
+    "Comment": "Pullback: combine results that agree on userId"
+  }
+}
+```
+
+---
+
+## The Universal Property in Practice
+
+### Pullback: "Best Consistent Combination"
+
+```typescript
+// For any Q that consistently maps to A and B via C,
+// there's a unique way to factor through the pullback P
+
+interface Pullback<A, B, C> {
+  p: { a: A; b: B };  // The pullback object
+  verifyConsistency: (a: A, b: B) => boolean;
+
+  // Universal property
+  factor: <Q>(
+    qa: (q: Q) => A,
+    qb: (q: Q) => B,
+    consistent: (q: Q) => boolean  // qa(q) and qb(q) agree on C
+  ) => (q: Q) => { a: A; b: B };
+}
+```
+
+### Pushout: "Best Unified Merge"
+
+```typescript
+// For any Q that accepts both A and B and identifies along C,
+// there's a unique way to factor through the pushout P
+
+interface Pushout<A, B, C> {
+  p: A | B;  // The pushout object (roughly)
+  inject: {
+    fromA: (a: A) => P;
+    fromB: (b: B) => P;
+  };
+
+  // Universal property
+  factor: <Q>(
+    qa: (a: A) => Q,
+    qb: (b: B) => Q,
+    agreesOnC: (c: C) => qa(f(c)) === qb(g(c))
+  ) => (p: P) => Q;
+}
+```
+
+---
+
+## Designing Integration Points
+
+### When to Use Pullbacks
+
+Use pullbacks when:
+- Two data sources must agree on a shared reference
+- You need to join with consistency guarantees
+- Constraints must be verified at integration time
+
+```typescript
+// Pattern: consistent read across services
+const pullbackPattern = async <A, B, C>(
+  getA: () => Promise<A>,
+  getB: () => Promise<B>,
+  toC: { fromA: (a: A) => C; fromB: (b: B) => C }
+): Promise<{ a: A; b: B } | 'inconsistent'> => {
+  const [a, b] = await Promise.all([getA(), getB()]);
+
+  if (!deepEqual(toC.fromA(a), toC.fromB(b))) {
+    return 'inconsistent';
+  }
+
+  return { a, b };
+};
+```
+
+### When to Use Pushouts
+
+Use pushouts when:
+- Multiple sources feed into a unified view
+- Common structures should be identified
+- You're merging schemas or events
+
+```typescript
+// Pattern: unified event stream
+const pushoutPattern = <A extends Base, B extends Base, Base>(
+  streamA: AsyncIterable<A>,
+  streamB: AsyncIterable<B>,
+  identify: (base: Base) => string
+): AsyncIterable<A | B> {
+  // Merge streams, identifying by common key
+  return merge(streamA, streamB);
+  // Downstream can group by identify(event)
+};
+```
+
+---
+
+## Consistency vs. Availability
+
+Pullbacks make explicit the consistency requirements:
+
+```typescript
+// Strict pullback: both must be consistent NOW
+const strictPullback = async () => {
+  const a = await getA();
+  const b = await getB();
+  if (!consistent(a, b)) throw new Error('Inconsistent');
+  return { a, b };
+};
+
+// Eventual pullback: retry until consistent
+const eventualPullback = async () => {
+  while (true) {
+    const a = await getA();
+    const b = await getB();
+    if (consistent(a, b)) return { a, b };
+    await delay(100);  // Wait for consistency
+  }
+};
+
+// Optimistic pullback: return best effort
+const optimisticPullback = async () => {
+  const a = await getA();
+  const b = await getB();
+  return {
+    a,
+    b,
+    consistent: consistent(a, b),
+    timestamp: Date.now()
+  };
+};
+```
+
+<InfoBox title="CAP Through Pullbacks" type="note">
+
+The CAP theorem manifests in pullbacks: you can have strong consistency (strict pullback) or availability (optimistic pullback), but not both under partition.
+
+</InfoBox>
+
+---
+
+## The Takeaway
+
+Pullbacks and pushouts handle constrained integration:
+
+1. **Pullback = Consistent Join**: Combine where sources agree
+2. **Pushout = Identified Merge**: Merge where sources share structure
+3. **Universal property**: The best (most general) solution
+4. **Consistency trade-offs**: Pullbacks make CAP visible
+
+When integrating services that share references → use pullback thinking.
+When merging sources with common structure → use pushout thinking.
+
+The universal property tells you: your integration is correct if everything factors through it.
+
+---
+
+*Next in the series: **Limits and Colimits: The General Theory of "Best Fit"** — Where we generalize products, coproducts, pullbacks, and pushouts into a unified framework.*
