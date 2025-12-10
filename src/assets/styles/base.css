@@ -454,3 +454,55 @@ figcaption {
     scroll-margin-top: 5rem;
   }
 }
+
+/* Mermaid diagram styles */
+pre.mermaid {
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: 2rem 0;
+  overflow-x: auto;
+}
+
+pre.mermaid svg {
+  font-size: 18px !important;
+  max-width: 100%;
+  height: auto;
+}
+
+pre.mermaid svg text {
+  font-size: 16px !important;
+}
+
+pre.mermaid svg .nodeLabel,
+pre.mermaid svg .edgeLabel,
+pre.mermaid svg .label {
+  font-size: 16px !important;
+}
+
+pre.mermaid svg .timeline-title {
+  font-size: 20px !important;
+  font-weight: bold;
+}
+
+/* Larger text on desktop */
+@media (min-width: 768px) {
+  pre.mermaid svg {
+    font-size: 20px !important;
+  }
+
+  pre.mermaid svg text {
+    font-size: 18px !important;
+  }
+
+  pre.mermaid svg .nodeLabel,
+  pre.mermaid svg .edgeLabel,
+  pre.mermaid svg .label {
+    font-size: 18px !important;
+  }
+
+  pre.mermaid svg .timeline-title {
+    font-size: 24px !important;
+    font-weight: bold;
+  }
+}
