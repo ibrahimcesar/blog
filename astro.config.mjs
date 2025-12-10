@@ -7,6 +7,7 @@ import react from "@astrojs/react";
 import expressiveCode from "astro-expressive-code";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
+import rehypeMermaid from "rehype-mermaid";
 
 import { h } from 'hastscript';
 import { toString } from 'hast-util-to-string';
@@ -56,6 +57,7 @@ export default defineConfig({
     ],
     rehypePlugins: [
       rehypeKatex,
+      [rehypeMermaid, { strategy: 'img-svg', dark: true }],
       'rehype-slug',
       // This adds links to headings
       [
