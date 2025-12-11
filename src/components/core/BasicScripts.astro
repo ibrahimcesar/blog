@@ -11,9 +11,20 @@ const {} = Astro.props;
       startOnLoad: false,
       theme: isDark ? 'dark' : 'default'
     });
-    mermaid.run({ querySelector: 'pre.mermaid' }).then(() => {
+
+    // Only render elements that haven't been rendered yet (no SVG inside)
+    const unrenderedDiagrams = Array.from(document.querySelectorAll('pre.mermaid')).filter(
+      el => !el.querySelector('svg')
+    );
+
+    if (unrenderedDiagrams.length > 0) {
+      mermaid.run({ nodes: unrenderedDiagrams }).then(() => {
+        addExpandButtons();
+      });
+    } else {
+      // Still add expand buttons for already-rendered diagrams
       addExpandButtons();
-    });
+    }
   }
 
   function addExpandButtons() {
