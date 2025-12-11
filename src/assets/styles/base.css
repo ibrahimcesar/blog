@@ -501,9 +501,9 @@ figcaption {
   position: relative;
   background: #1e293b;
   border-radius: 0.75rem;
-  padding: 1rem;
-  max-width: 95vw;
-  max-height: 95vh;
+  padding: 2rem;
+  width: 95vw;
+  height: 95vh;
   overflow: auto;
 }
 
@@ -526,13 +526,18 @@ figcaption {
 
 .mermaid-modal-content {
   padding-top: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .mermaid-modal-content svg {
   max-width: none;
   width: auto;
   height: auto;
-  min-width: 800px;
+  transform: scale(2);
+  transform-origin: center center;
+  margin: 25%;
 }
 
 pre.mermaid {
