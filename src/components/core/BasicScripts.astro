@@ -12,13 +12,24 @@ const {} = Astro.props;
       theme: isDark ? 'dark' : 'default'
     });
 
-    // Only render elements that haven't been rendered yet (no SVG inside)
-    const unrenderedDiagrams = Array.from(document.querySelectorAll('pre.mermaid')).filter(
-      el => !el.querySelector('svg')
-    );
+    // Only render elements that haven't been rendered yet
+    // Check for: no SVG inside, and text content starts with a valid mermaid keyword
+    const validDiagramTypes = ['flowchart', 'graph', 'sequenceDiagram', 'classDiagram', 'stateDiagram', 'erDiagram', 'gantt', 'pie', 'journey', 'gitGraph', 'timeline', 'mindmap', 'quadrantChart', 'xychart', 'sankey', 'block', '%%'];
+
+    const unrenderedDiagrams = Array.from(document.querySelectorAll('pre.mermaid')).filter(el => {
+      // Skip if already has SVG
+      if (el.querySelector('svg')) return false;
+
+      // Check if text content looks like a mermaid diagram
+      const text = el.textContent?.trim() || '';
+      return validDiagramTypes.some(type => text.startsWith(type) || text.toLowerCase().startsWith(type.toLowerCase()));
+    });
 
     if (unrenderedDiagrams.length > 0) {
       mermaid.run({ nodes: unrenderedDiagrams }).then(() => {
+        addExpandButtons();
+      }).catch(err => {
+        console.warn('Mermaid rendering error:', err);
         addExpandButtons();
       });
     } else {
