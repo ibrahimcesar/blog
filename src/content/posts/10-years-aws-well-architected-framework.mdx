@@ -1,0 +1,126 @@
+---
+title: "10 Years of AWS Well-Architected Framework: A Personal Reflection on a Living Technical Object"
+description: "A personal celebration of a decade with the AWS Well-Architected Framework—from reader to contributor—and a philosophical exploration of why it matters as a sociotechnical artifact."
+featured: true
+pubDate: "2025-12-16T12:00:00.000Z"
+image: ~/assets/images/coolgirl-reading.png
+language: en
+category: "AWS"
+tags: ["AWS", "Well-Architected", "Architecture", "Philosophy of Technology", "Simondon"]
+---
+
+import Lead from '../../components/editorial/Lead.astro';
+import InfoBox from '../../components/editorial/InfoBox.astro';
+
+<InfoBox title="Disclaimer" type="warning">
+
+**This post reflects my personal views and experiences only.** The opinions, interpretations, and philosophical frameworks expressed here are entirely my own and do not represent the views, policies, or official positions of Amazon Web Services (AWS) or Amazon. This is a personal celebration and reflection, not an official statement.
+
+</InfoBox>
+
+<Lead>
+
+Ten years ago, AWS released the first version of the [AWS Well-Architected Framework](https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html). For at least eight of those years, I've been [a reader](https://ibrahimcesar.cloud/blog/aws-well-architected-framework), a student, and an advocate of this text. Today, in what still feels surreal, I work on the Cloud Optimization team at AWS—the team that owns the Well-Architected Framework. This is my personal celebration of a document that shaped how I think about systems, and a philosophical argument for why it matters beyond its technical content.
+
+</Lead>
+
+## Learning Through Reading: Dead Trees and Heavy Books
+
+I learned to code by reading. Not by watching videos. Not through bootcamps. Through books — physical books with hundreds of pages, weighing kilos, printed on dead trees.
+
+I learned Java from a massive tome that could double as a doorstop. I learned jQuery the same way, back when that was what you did to make the web interactive. There's something about the physicality of a book, the weight of it in your hands, the commitment it represents. You don't casually flip through 800 pages. You sit with it. You wrestle with it.
+
+This is how I approach learning: through sustained, structured reading. It's slow. It's deliberate. And it works — at least for me.
+
+The AWS Well-Architected Framework became one of those foundational texts for me. Not a physical book (though you can print it, heck, I printed), but a document with the same weight of ideas. When I first encountered it around 2016-2017, I was the Technology Director at Nexo Jornal, one of Brazil's most respected digital journalism outlets.
+
+[Nexo](https://nexojornal.com.br), by the way, is also [celebrating 10 years in 2025](https://www.nexojornal.com.br/especial/2025/11/23/aniversario-dez-anos-de-nexo). Two parallel decades.
+
+## Unknown Unknowns and the Structure of Learning
+
+What the Well-Architected Framework gave me wasn't just knowledge. It gave me *structure*.
+
+When you're running technology for any organization, you face problems you don't know you have. You don't know what you don't know. The technical term is "unknown unknowns" — the gaps in your understanding that you can't even perceive because you lack the context to frame them as questions.
+
+The Framework gave me that context. Each pillar — Operational Excellence, Security, Reliability, Performance Efficiency, Cost Optimization, and later Sustainability — offered a lens. "Am I thinking about this?" it asked. "Have I considered that?"
+
+It wasn't prescriptive in the sense of telling me exactly what to do. It was interrogative. It asked the right questions. And the right questions, it turns out, are more valuable than the right answers.
+
+At Nexo, we were running on AWS, handling traffic spikes from breaking news, managing costs as a startup, trying to be secure without a dedicated security team. The Well-Architected reviews — even informal ones I did myself using the Framework as a guide — revealed gaps I couldn't have named before.
+
+## The Framework as a Sociotechnical Object
+
+Here's where I want to make a philosophical argument that matters to me deeply.
+
+Gilbert Simondon, in *Du mode d'existence des objets techniques* (On the Mode of Existence of Technical Objects), developed a philosophy of technical artifacts. He talks about technical objects evolving from abstract to concrete, about technical lineages, and crucially, about the **associated milieu** — the environment in which a technical object exists and which it partially creates.
+
+Simondon distinguishes:
+
+- **Technical milieu**: other technical objects, infrastructures, standards
+- **Geographical milieu**: the physical environment
+- **Human milieu**: practices, skills, knowledge required to operate and maintain the object
+
+For concrete technical objects, the associated milieu isn't merely external context — the object generates the conditions for its own functioning. Simondon's example is the Guimbal turbine, which uses the water it operates in for both input and cooling. The milieu isn't external; it's co-constituted with the object itself.
+
+The AWS Well-Architected Framework is such an object. But I want to push further than Simondon.
+
+### The Social Is Not Just Context — It's Protagonist
+
+Simondon's framework treats the human and social dimensions as part of the milieu. But I argue they should be **protagonists**, not supporting characters.
+
+The Well-Architected Framework is a *living text*. It's updated regularly. It incorporates lessons from thousands of customer architectures. It reflects debates, decisions, trade-offs made by real people in real organizations. It's written by humans, for humans, about systems that humans build to solve human problems.
+
+Lawrence Lessig famously argued that "code is law" — that software architecture shapes behavior as surely as legal statutes do. The same is true of architectural frameworks. The Well-Architected Framework encodes values: reliability matters, security isn't optional, cost is a design constraint. These aren't neutral technical observations. They're choices about what matters.
+
+When we write about "best practices," we're encoding social agreements about what "best" means. When we talk about "trade-offs," we're making explicit that different stakeholders value different things. The Framework is a negotiation between perspectives, frozen temporarily in text.
+
+### Concretization of Collective Wisdom
+
+Simondon talks about **concretization** — technical objects evolving so that each component serves multiple functions. The air-cooled engine's fins both dissipate heat and provide structural rigidity.
+
+The Well-Architected Framework has undergone its own concretization over a decade. The pillars weren't always six. The lenses — domain-specific perspectives like Serverless, SaaS, Machine Learning—emerged as the Framework recognized that different contexts require different questions. The Well-Architected Tool in the AWS Console transforms the Framework from document to practice.
+
+Each iteration makes the Framework more concrete in Simondon's sense: more integrated, more synergistic, more adapted to its *milieu*. But that *milieu* is fundamentally social. It's the community of builders, the enterprises running workloads, the startups trying to do more with less. The Framework concretizes in response to *people*, not just to technical constraints.
+
+## What the Framework Taught Me
+
+Over eight years of reading and re-reading the Well-Architected Framework, here's what I internalized:
+
+**Everything is a trade-off.** There's no perfect architecture. There's only the best architecture for this context, this team, these constraints. The Framework doesn't pretend otherwise.
+
+**Failure is expected.** "Everything fails all the time," as Werner Vogels says. The question isn't whether things will fail, but whether you've designed for graceful degradation when they do.
+
+**Operational excellence is a practice, not a state.** You don't achieve operational excellence and stop. You practice it continuously. It's a verb, not a noun.
+
+**Cost is a design constraint, not an afterthought.** Understanding your costs means understanding your architecture. If you're surprised by your AWS bill, you're surprised by what you built.
+
+**Security is everyone's responsibility.** Not the security team's job. Everyone's job. Built into the process, not bolted on at the end.
+
+## The Strangeness of Working on What You Studied
+
+And now I work on the team that owns this Framework.
+
+I still find this strange to write. For years, the Well-Architected Framework was something I consumed, something external, something written by "AWS" as an abstract entity. Now I'm part of that entity. The Framework I studied is something I can contribute to.
+
+This isn't a brag. It's a genuine disorientation. The text that taught me is now, in some small way, a text I can shape. The sociotechnical object has absorbed me into its associated *milieu*.
+
+What I bring to this work is the perspective of a reader. I remember what it was like to not know. I remember the questions the Framework answered and the new questions it opened. I remember applying it imperfectly at Nexo, learning from mistakes, gradually understanding not just *what* the Framework said but *why* it said it.
+
+As years later, I have a confession to make: still confused by the [**Do constant work**](https://docs.aws.amazon.com/wellarchitected/latest/reliability-pillar/rel_prevent_interaction_failure_constant_work.html) best practice.
+
+## Ten Years Forward
+
+The Well-Architected Framework will continue evolving. Sustainability, reflects changing priorities. Generative AI lenses are emerging as that technology reshapes what we build. The associated milieu is shifting, and the Framework will shift with it.
+
+My hope is that it remains what it has been for me: not a checklist to comply with, but a way of thinking. Not a set of answers, but a set of questions. Not a static document, but a living conversation between builders about what good architecture means.
+
+Ten years of accumulated wisdom, captured in a text that isn't quite a book but carries the weight of one. Happy anniversary to a document that taught me more than it knows.
+
+---
+
+## Further Reading
+
+- **[AWS Well-Architected Framework](https://aws.amazon.com/architecture/well-architected/)** — The official documentation and tools
+- **Gilbert Simondon**, *Du mode d'existence des objets techniques* (On the Mode of Existence of Technical Objects) — For the philosophy of technical objects
+- **Lawrence Lessig**, *Code and Other Laws of Cyberspace* — On how architecture encodes values
+- **My earlier post**: [AWS Well-Architected Framework](/blog/aws-well-architected-framework) — My 2021 take on the Framework as a "book"
