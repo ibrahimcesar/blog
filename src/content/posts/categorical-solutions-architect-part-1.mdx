@@ -42,7 +42,7 @@ This is the **Yoneda perspective**: a system *is* its interfaces.
 
 A **category** $\mathcal{C}$ consists of:
 
-1. **Objects** — Think of these as types, services, or bounded contexts
+1. **Objects** — Think of these as types, services, or bounded contexts[^1]
 2. **Morphisms** (arrows) — The relationships between objects: APIs, contracts, transformations
 3. **Composition** — Given $f: A \to B$ and $g: B \to C$, there exists $g \circ f: A \to C$
 4. **Identity** — Every object $A$ has an identity morphism $\text{id}_A: A \to A$
@@ -87,7 +87,7 @@ Client → Gateway → Service A
                  → Service C
 ```
 
-The gateway is a **product-like construction**: it presents a unified interface that projects to multiple downstream services. In categorical terms, it has morphisms to each backend service such that any client interaction factors through it uniquely.
+The gateway is a **product-like construction**[^2]: it presents a unified interface that projects to multiple downstream services. In categorical terms, it has morphisms to each backend service such that any client interaction factors through it uniquely.
 
 ### Pattern 2: Event Router
 
@@ -113,7 +113,7 @@ The categorical insight: these aren't just diagrams. They're *mathematical struc
 
 ## Morphisms as Contracts
 
-In category theory, morphisms between objects form a **hom-set**: $\text{Hom}(A, B)$ is the collection of all ways $A$ can relate to $B$.
+In category theory, morphisms between objects form a **hom-set**[^3]: $\text{Hom}(A, B)$ is the collection of all ways $A$ can relate to $B$.
 
 In architecture, this is:
 
@@ -200,7 +200,7 @@ If you can't reliably chain operations, you have a category theory problem, not 
 
 ## The Yoneda Perspective: Systems Are Their Interfaces
 
-The **Yoneda lemma** is often called the most important result in category theory. The intuition:
+The **Yoneda lemma**[^4] is often called the most important result in category theory. The intuition:
 
 > An object is completely determined by how all other objects relate to it.
 
@@ -274,7 +274,7 @@ Category theory gives Solutions Architects three things:
 
 ### 1. Precise Vocabulary
 
-Instead of "these services don't work well together," you can say "composition fails because the intermediate service introduces hidden state." Instead of "this migration is risky," you can ask "is this transformation functorial—does it preserve the structure that matters?"
+Instead of "these services don't work well together," you can say "composition fails because the intermediate service introduces hidden state." Instead of "this migration is risky," you can ask "is this transformation functorial[^5]—does it preserve the structure that matters?"
 
 ### 2. Universal Patterns
 
@@ -309,3 +309,13 @@ You're already doing category theory. This series will give you the vocabulary a
 ---
 
 *Next in the series: **Morphisms All the Way Down: API Design as Arrow-First Thinking** — Where we go deep on why the arrows, not the boxes, are the architecture.*
+
+[^1]: **Bounded contexts** come from Domain-Driven Design (DDD), coined by Eric Evans. A bounded context is a boundary within which a particular domain model applies consistently. Different bounded contexts can have different models for the same real-world concept (e.g., "Customer" might mean different things in Sales vs. Shipping). In categorical terms, each bounded context is its own category, and integrations between them are functors.
+
+[^2]: A **product** in category theory is the categorical generalization of Cartesian product. Given objects $A$ and $B$, their product $A \times B$ comes with projection morphisms $\pi_1: A \times B \to A$ and $\pi_2: A \times B \to B$. The key property: for any object $X$ with morphisms to both $A$ and $B$, there's a unique morphism $X \to A \times B$ that factors through the projections. The **coproduct** (or sum) is the dual: multiple sources inject into a common target. In architecture, API gateways are product-like (project to multiple backends), event routers are coproduct-like (collect from multiple sources).
+
+[^3]: A **hom-set** $\text{Hom}(A, B)$ is the collection of all morphisms from $A$ to $B$. The name comes from "homomorphism," the structure-preserving maps in algebra. In programming, think of it as all functions with type signature `A → B`. The size of a hom-set measures coupling: a large hom-set means many ways to interact, which often means tight coupling.
+
+[^4]: The **Yoneda lemma** states that for any functor $F: \mathcal{C} \to \text{Set}$ and object $A$, there's a natural bijection between natural transformations $\text{Hom}(A, -) \Rightarrow F$ and elements of $F(A)$. The practical intuition: an object is completely determined by the morphisms into it from all other objects. You don't need to "look inside" an object—its external relationships tell you everything. Named after mathematician Nobuo Yoneda.
+
+[^5]: A transformation is **functorial** if it preserves categorical structure: it maps objects to objects, morphisms to morphisms, respects composition ($F(g \circ f) = F(g) \circ F(f)$), and preserves identities ($F(\text{id}_A) = \text{id}_{F(A)}$). When migrating systems, asking "is this functorial?" means: does the migration preserve the relationships that matter? If composition breaks during migration, the transformation isn't a proper functor.

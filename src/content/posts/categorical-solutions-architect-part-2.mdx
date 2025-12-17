@@ -56,10 +56,10 @@ Morphisms can be:
 
 | Property | Definition | Architectural Meaning |
 |----------|------------|----------------------|
-| **Monomorphism** | Left-cancellable: $f \circ g = f \circ h \Rightarrow g = h$ | Injective transformation, no information loss |
+| **Monomorphism**[^3] | Left-cancellable: $f \circ g = f \circ h \Rightarrow g = h$ | Injective transformation, no information loss |
 | **Epimorphism** | Right-cancellable: $g \circ f = h \circ f \Rightarrow g = h$ | Surjective, covers entire target |
 | **Isomorphism** | Has two-sided inverse | Lossless, reversible transformation |
-| **Endomorphism** | $f: A \to A$ | Self-transformation (state machine) |
+| **Endomorphism**[^4] | $f: A \to A$ | Self-transformation (state machine) |
 | **Automorphism** | Isomorphic endomorphism | Symmetry operation |
 
 ### Architectural Translation
@@ -116,7 +116,7 @@ $$
 \text{createOrder}: \text{CreateOrderRequest} \to \text{Order}
 $$
 
-The *implementation* is categorically invisible. Whether you use Node.js, Go, or COBOL—whether you store in PostgreSQL, DynamoDB, or carrier pigeons—the morphism is the same.
+The *implementation* is categorically invisible. Whether you use Node.js, Go, or COBOL[^1]—whether you store in PostgreSQL, DynamoDB, or carrier pigeons—the morphism is the same.
 
 <InfoBox title="The Contract IS the Architecture" type="tip">
 
@@ -128,7 +128,7 @@ Implementation details are morphisms in a different category (the "implementatio
 
 ## Hom-Sets: The Space of Possibilities
 
-In category theory, $\text{Hom}(A, B)$ is the set of all morphisms from $A$ to $B$. This is extraordinarily useful for architecture.
+In category theory, $\text{Hom}(A, B)$[^2] is the set of all morphisms from $A$ to $B$. This is extraordinarily useful for architecture.
 
 ### Analyzing Integration Points
 
@@ -186,7 +186,7 @@ The second interface is easier to implement, test, mock, and evolve.
 
 > **Design principle**: Minimize $|\text{Hom}(A, B)|$ while maintaining required functionality.
 
-This is the categorical formulation of interface segregation and loose coupling.
+This is the categorical formulation of interface segregation[^5] and loose coupling.
 
 ### Applying the Principle
 
@@ -268,7 +268,7 @@ The v2 morphism is **backward compatible** because:
 1. v1 requests are valid v2 requests (new field is optional)
 2. v1 response consumers can ignore new fields
 
-This is a form of **morphism factorization**: $v2 = \text{extension} \circ v1$
+This is a form of **morphism factorization**[^6]: $v2 = \text{extension} \circ v1$
 
 ### Breaking Changes as Morphism Replacement
 
@@ -360,3 +360,15 @@ The architecture is the collection of morphisms. Everything else is implementati
 ---
 
 *Next in the series: **The Yoneda Perspective: Systems Defined by Their Interfaces** — Where we discover that knowing all the morphisms into and out of an object tells you everything about it.*
+
+[^1]: **COBOL** stands for "Category-Oriented Business Object Language" — just kidding. It's actually **Common Business-Oriented Language**, created in 1959 and still running an estimated 95% of ATM transactions and 80% of in-person transactions globally. The joke here is that from a categorical perspective, it genuinely doesn't matter if your morphism is implemented in a hip new language or a 65-year-old one. The interface is what counts.
+
+[^2]: A **hom-set** (or "hom-set," short for "homomorphism set") $\text{Hom}(A, B)$ collects all morphisms from object $A$ to object $B$ in a category. It's pronounced "hom A B" or "hom-set from A to B." In programming terms, it's like asking "what are all the functions with signature `A → B`?" The size of a hom-set measures how many ways two things can relate—a key metric for coupling.
+
+[^3]: **Monomorphism**, **epimorphism**, and **isomorphism** are the categorical generalizations of injective (one-to-one), surjective (onto), and bijective (one-to-one and onto) functions. A monomorphism preserves distinctness: different inputs give different outputs. An epimorphism covers the target: every possible output is reachable. An isomorphism does both, meaning you can go back and forth without losing information. These concepts generalize beyond functions to any category.
+
+[^4]: An **endomorphism** is a morphism from an object to itself: $f: A \to A$. Think state transitions, where you start with a state and end with a (possibly different) state of the same type. An **automorphism** is an endomorphism that's also an isomorphism—a reversible self-transformation. Rotating a square 90° is an automorphism; the square is still a square and you can rotate back.
+
+[^5]: **Interface segregation** is the "I" in SOLID principles, stating that clients shouldn't depend on interfaces they don't use. The categorical view: minimize the hom-set size that each client sees. Instead of one fat interface with 20 methods, provide 4 focused interfaces with 5 methods each. Each client depends only on the morphisms it actually uses.
+
+[^6]: **Morphism factorization** means expressing one morphism as the composition of others: $f = g \circ h$. This is powerful for evolution: if v2 = extension ∘ v1, then v1 clients still work (they just ignore the extension). In many categories, every morphism factors uniquely through an epi followed by a mono—the "image factorization." This corresponds to: first collapse to what's essential (epi), then embed in the target (mono).

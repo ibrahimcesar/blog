@@ -50,7 +50,7 @@ Don't worry about the formula. The intuition is what matters.
 Consider PostgreSQL. You could describe it as:
 
 - "A relational database management system"
-- "Software that stores data in tables with ACID guarantees"
+- "Software that stores data in tables with ACID guarantees"[^1]
 - "An object-relational database with extensibility features"
 
 These descriptions focus on *what it is*. Yoneda says: describe *what you can do with it*.
@@ -99,7 +99,7 @@ Some interfaces are special: they're so well-designed that any interaction with 
 
 ### The Universal Property
 
-A **representable functor** is one where there exists a "universal element" that generates all other elements. In architecture:
+A **representable functor**[^2] is one where there exists a "universal element" that generates all other elements. In architecture:
 
 ```
 Universal Interface: If you can do X, you can do anything.
@@ -138,7 +138,7 @@ Everything else—projections, snapshots, queries—derives from this. The event
 
 ## Consumer-Driven Contracts: Yoneda in Practice
 
-Consumer-driven contracts (CDC) embody the Yoneda perspective perfectly.
+Consumer-driven contracts[^3] (CDC) embody the Yoneda perspective perfectly.
 
 ### Traditional (Provider-Driven)
 
@@ -268,7 +268,7 @@ interface LeakyUserRepository {
 
 ## The Presheaf Perspective
 
-In category theory, a **presheaf** on a category $\mathcal{C}$ is a functor $\mathcal{C}^{op} \to \text{Set}$. This assigns to each object a set and to each morphism a function going the "opposite" direction.
+In category theory, a **presheaf**[^4] on a category $\mathcal{C}$ is a functor $\mathcal{C}^{op} \to \text{Set}$. This assigns to each object a set and to each morphism a function going the "opposite" direction.
 
 For architecture, this means:
 
@@ -317,7 +317,7 @@ If views disagree, the presheaf is broken.
 
 ## Interface Segregation Is Yoneda
 
-The Interface Segregation Principle (ISP) from SOLID says:
+The Interface Segregation Principle[^5] (ISP) from SOLID says:
 
 > "Clients should not be forced to depend on methods they do not use."
 
@@ -468,3 +468,13 @@ When you understand a system's interfaces, you understand the system. Everything
 ---
 
 *Next in the series: **Composition as Architectural Law: Diagnosing Integration Failures** — Where we learn that composition failures aren't bugs—they're category-theoretic impossibilities.*
+
+[^1]: **ACID** stands for Atomicity (transactions are all-or-nothing), Consistency (transactions move the database from one valid state to another), Isolation (concurrent transactions don't interfere), and Durability (committed transactions survive crashes). These properties define what it means for a database to be "reliable" in the transactional sense. The term was coined by Andreas Reuter and Theo Härder in 1983.
+
+[^2]: A **representable functor** is a functor $F: \mathcal{C} \to \text{Set}$ that is naturally isomorphic to $\text{Hom}(A, -)$ for some object $A$. That object $A$ is called the "representing object." In programming terms: if you have a generic interface, and there's one concrete type that "represents" all possible uses of that interface, the functor is representable. The representing object is like a universal remote control—it can do everything the interface allows.
+
+[^3]: **Consumer-driven contracts** is a testing pattern where API consumers define their expectations, and the provider verifies it meets all of them. Popularized by tools like [Pact](https://pact.io/), it inverts traditional API testing: instead of the provider dictating the contract, consumers specify what they need. This aligns with the Yoneda perspective—the service is characterized by how its consumers use it, not by its internal implementation.
+
+[^4]: A **presheaf** is a contravariant functor from a category to Set—meaning it reverses the direction of morphisms. If $f: A \to B$ is a morphism in your category, the presheaf gives you a function $F(B) \to F(A)$ going backwards. Intuitively: as you "zoom in" (follow a morphism), information "flows back." In architecture, this captures how observations at a fine-grained level (a specific service) can be pulled back to observations at a coarse-grained level (the whole system).
+
+[^5]: The **Interface Segregation Principle** is the "I" in SOLID, articulated by Robert C. Martin. It states that no client should be forced to depend on methods it doesn't use. The solution is to split fat interfaces into smaller, role-specific ones. This reduces coupling and makes systems easier to understand, test, and evolve. From a categorical view, you're restricting which morphisms each consumer can see.

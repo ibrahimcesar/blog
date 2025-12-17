@@ -1,14 +1,13 @@
 ---
 title: "Composition as Architectural Law: Diagnosing Integration Failures"
 description: "When services don't compose, it's not a bug—it's a mathematical impossibility. Part 4 of applying category theory to Solutions Architecture, where we develop a diagnostic framework for integration failures."
-featured: false
-pubDate: "2025-12-06T12:00:00.000Z"
+featured: true
+pubDate: "2025-12-17T12:00:00.000Z"
 language: en
 category: "Architecture"
 series: "Categorical Solutions Architecture"
 seriesOrder: 4
 tags: ["Category Theory", "Solutions Architecture", "Integration", "Software Architecture", "AWS"]
-draft: true
 ---
 
 import Lead from '../../components/editorial/Lead.astro';
@@ -20,7 +19,7 @@ import InfoBox from '../../components/editorial/InfoBox.astro';
 
 <Lead>
 
-Category theory's composition axiom seems trivially obvious: if you can go from A to B, and B to C, you can go from A to C. But in distributed systems, composition fails constantly—and these failures have categorical explanations. Understanding *why* composition fails gives us a systematic approach to designing systems that actually work together.
+Category theory's composition axiom seems trivially obvious: if you can go from A to B, and B to C, you can go from A to C. But in distributed systems, composition fails constantly — and these failures have categorical explanations. Understanding *why* composition fails gives us a systematic approach to designing systems that actually work together.
 
 </Lead>
 
@@ -54,7 +53,7 @@ Real systems fail to compose in predictable ways. Each failure mode corresponds 
 
 ### Failure Mode 1: Type Mismatch
 
-The most basic failure: the codomain of $f$ doesn't match the domain of $g$.
+The most basic failure: the codomain[^2] of $f$ doesn't match the domain of $g$.
 
 ```typescript
 // Service A returns:
@@ -105,9 +104,9 @@ const updateUserPrefs = async (id: string, prefs: Prefs) => {
 };
 ```
 
-**Diagnosis**: `getUser` isn't a pure morphism—it depends on hidden state (cache). The "type" of User is actually `User × CacheState`, but this isn't reflected in the signature.
+**Diagnosis**: `getUser` isn't a pure morphism — it depends on hidden state (cache). The "type" of User is actually `User × CacheState`, but this isn't reflected in the signature.
 
-**Categorical interpretation**: You're in a **Kleisli category** for some state monad, but pretending you're not.
+**Categorical interpretation**: You're in a **Kleisli category**[^1] for some state monad, but pretending you're not.
 
 **Fix**: Make state explicit
 
@@ -230,7 +229,7 @@ g(y) = g(y)?  (Always?)
 Non-repeatable operations aren't true morphisms. Solutions:
 - Idempotency keys
 - At-most-once / at-least-once semantics
-- Outbox pattern
+- Outbox pattern[^3]
 
 ### 4. Does order matter?
 
@@ -404,7 +403,7 @@ interface OrderService {
 Errors should compose as cleanly as successes:
 
 ```typescript
-// Railway-oriented programming
+// Railway-oriented programming[^4]
 const pipeline = pipe(
   parseOrder,      // Result<Order, ParseError>
   validateOrder,   // Result<Order, ValidationError>
@@ -508,3 +507,11 @@ Systems that compose well aren't accidents. They're designed with categorical di
 ---
 
 *Next in the series: **Functors: The Mathematics of Migration** — Where we learn how to move entire systems between categories while preserving their structure.*
+
+[^1]: A **Kleisli category** is a category constructed from a monad. Given a monad $T$ on a category $\mathcal{C}$, the Kleisli category $\mathcal{C}_T$ has the same objects as $\mathcal{C}$, but morphisms $A \to B$ in $\mathcal{C}_T$ are morphisms $A \to T(B)$ in $\mathcal{C}$. In programming terms: if $T$ is `Promise`, then Kleisli morphisms are functions that return promises. If $T$ is `Result<_, Error>`, they're functions that might fail. The Kleisli category lets you compose these "effectful" functions as if they were pure, with the monad handling the plumbing. Named after mathematician Heinrich Kleisli.
+
+[^2]: In category theory and type theory, the **codomain** (also called "target") of a morphism $f: A \to B$ is $B$ — the set or type that the function maps *into*. The **domain** (or "source") is $A$ — where the function maps *from*. For composition $g \circ f$ to be defined, the codomain of $f$ must equal the domain of $g$. In programming: if `f` returns `string` and `g` expects `number`, they don't compose.
+
+[^3]: The **Outbox pattern** solves the dual-write problem: when you need to update a database AND publish an event, but can't do both atomically. Instead of publishing directly, you write the event to an "outbox" table in the same transaction as your data change. A separate process reads the outbox and publishes events, with at-least-once delivery guarantees. This makes the "publish event" operation idempotent — retrying the transaction just overwrites the same outbox row. Common in event-driven architectures and particularly useful with CDC (Change Data Capture) tools like Debezium.
+
+[^4]: **Railway-oriented programming** is a metaphor coined by Scott Wlaschin for composing functions that can fail. Imagine two parallel railway tracks: the "success track" and the "failure track." Each function is a switch: if it succeeds, it stays on the success track; if it fails, it switches to the failure track. Once on the failure track, you stay there (subsequent functions are bypassed). This maps directly to the `Result` or `Either` monad, where `bind`/`flatMap` only executes the next function if the previous succeeded. The result is clean, linear composition of fallible operations without nested try-catch blocks.
