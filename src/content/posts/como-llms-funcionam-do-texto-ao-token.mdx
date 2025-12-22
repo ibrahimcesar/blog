@@ -1,0 +1,351 @@
+---
+title: "Como LLMs Funcionam: A Jornada do Texto ao Token (e de Volta)"
+description: "Uma explicação visual e interativa de como Large Language Models processam texto, desde a tokenização até a geração de respostas. Descubra por que eles 'alucinam' e não são determinísticos."
+featured: true
+pubDate: "2025-12-22T12:00:00.000Z"
+language: pt-br
+category: "Inteligência Artificial"
+tags: ["LLM", "Machine Learning", "Transformers", "Deep Learning", "IA Generativa"]
+---
+
+import Lead from '../../components/editorial/Lead.astro';
+import InfoBox from '../../components/editorial/InfoBox.astro';
+import DiveDeep from '../../components/editorial/DiveDeep.astro';
+import {
+  TokenizationDemo,
+  OneHotEncodingDemo,
+  EmbeddingDemo,
+  AttentionDemo,
+  MLPDemo,
+  TemperatureDemo,
+  HallucinationDemo,
+  NonDeterminismDemo,
+  GrokkingDemo,
+  FullPipelineDemo
+} from '../../components/widgets/LLMVisualization';
+
+> *"Ninguém entende realmente a IA moderna. Cada pequeno pedaço de texto produzido pelo ChatGPT é o resultado de centenas de bilhões de cálculos separados."*
+
+<Lead>
+
+Quando você digita "Qual é a capital da França?" no ChatGPT e recebe "Paris" como resposta, o que exatamente acontece entre esses dois momentos? A resposta envolve tokenização, vetores de embeddings, mecanismos de atenção, redes neurais profundas e amostragem probabilística. Vamos desmontar essa caixa preta, peça por peça.
+
+</Lead>
+
+## O Pipeline Completo
+
+Antes de mergulharmos nos detalhes, vamos ter uma visão geral do processo:
+
+<FullPipelineDemo client:load />
+
+Cada pedaço de texto que você envia para um LLM passa por todas essas etapas. O modelo não "entende" texto da forma que humanos entendem — ele processa padrões numéricos. Vamos explorar cada etapa.
+
+---
+
+## 1. Tokenização: Quebrando o Texto
+
+O primeiro passo é transformar texto legível em algo que o computador possa processar. Mas LLMs não trabalham com letras individuais nem com palavras completas — eles usam **tokens**.
+
+<TokenizationDemo client:load />
+
+<InfoBox title="Por que tokens e não palavras?" type="tip">
+
+Usar palavras inteiras criaria um vocabulário gigantesco (milhões de palavras em todas as línguas!). Usar letras individuais perderia muito contexto. Tokens são um meio-termo: pedaços de texto que equilibram tamanho do vocabulário com preservação de significado.
+
+O GPT-4 usa cerca de 100.000 tokens. O Claude usa aproximadamente 200.000.
+
+</InfoBox>
+
+---
+
+## 2. Codificação One-Hot: Números para o Modelo
+
+Computadores não entendem texto — apenas números. Cada token é convertido em um vetor onde apenas uma posição está "ligada":
+
+<OneHotEncodingDemo client:load />
+
+Esses vetores são extremamente **esparsos** (quase todos zeros). Se o vocabulário tem 100.000 tokens, cada vetor one-hot tem 99.999 zeros e apenas um único 1.
+
+<DiveDeep title="A matemática por trás" defaultOpen={false}>
+
+Se temos um vocabulário $V$ com $|V|$ tokens, um vetor one-hot $\mathbf{x}$ para o token $i$ é:
+
+$$
+\mathbf{x}_j = \begin{cases} 1 & \text{se } j = i \\ 0 & \text{caso contrário} \end{cases}
+$$
+
+Isso cria vetores de dimensão $|V|$, que para modelos modernos significa vetores com 100.000+ dimensões onde apenas uma é não-zero.
+
+</DiveDeep>
+
+---
+
+## 3. Embeddings: Significado em Vetores Densos
+
+Vetores one-hot são ineficientes e não capturam relacionamentos entre palavras. A **matriz de embedding** transforma cada vetor esparso em um vetor denso de números reais:
+
+<EmbeddingDemo client:load />
+
+<InfoBox title="A magia dos embeddings" type="info">
+
+Embeddings capturam **semântica**! Palavras com significados similares terão vetores similares. Por exemplo:
+
+- `rei - homem + mulher ≈ rainha`
+- `Paris - França + Japão ≈ Tóquio`
+
+Essas relações **emergem** do treinamento, não são programadas manualmente!
+
+</InfoBox>
+
+Os embeddings do GPT-4 têm 12.288 dimensões. Cada token é representado por 12.288 números de ponto flutuante que capturam seu "significado" em relação a todos os outros tokens.
+
+---
+
+## 4. Atenção: "A Quem Devo Prestar Atenção?"
+
+Aqui está o coração dos Transformers: o **mecanismo de atenção**. Cada token pode "olhar" para tokens anteriores e decidir quais são relevantes para o contexto atual:
+
+<AttentionDemo client:load />
+
+<DiveDeep title="Self-Attention: A Matemática" defaultOpen={false}>
+
+Para cada token, calculamos três vetores através de matrizes aprendidas:
+- **Query (Q)**: "O que estou procurando?"
+- **Key (K)**: "O que eu ofereço?"
+- **Value (V)**: "Qual é meu conteúdo?"
+
+A atenção é calculada como:
+
+$$
+\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V
+$$
+
+Onde $d_k$ é a dimensão dos vetores de key. A divisão por $\sqrt{d_k}$ estabiliza os gradientes durante o treinamento.
+
+</DiveDeep>
+
+### Multi-Head Attention
+
+Modelos reais usam múltiplas "cabeças" de atenção em paralelo, cada uma aprendendo a focar em diferentes tipos de relacionamentos:
+
+- Uma cabeça pode aprender relações sintáticas (sujeito-verbo)
+- Outra pode aprender referências pronominais
+- Outra pode capturar padrões de longa distância
+
+O GPT-4 usa 96 cabeças de atenção em cada uma de suas 96+ camadas!
+
+---
+
+## 5. MLP: Processamento Não-Linear
+
+Após a atenção, cada token passa por um bloco **MLP (Multi-Layer Perceptron)**:
+
+<MLPDemo client:load />
+
+O MLP expande a representação (tipicamente 4x), aplica uma função de ativação não-linear, e comprime de volta. Isso permite ao modelo:
+
+1. **Armazenar conhecimento factual** — neurônios específicos ativam para conceitos específicos
+2. **Realizar transformações complexas** — combinar informações de maneiras não-lineares
+3. **Especializar-se** — diferentes neurônios "aprendem" diferentes padrões
+
+<InfoBox title="Descoberta fascinante" type="tip">
+
+Pesquisadores da Anthropic descobriram que o Claude usa um manifold de 6 dimensões em suas ativações para decidir quando criar quebras de linha! Neurônios específicos "contam" caracteres e comparam com a largura desejada da linha.
+
+</InfoBox>
+
+---
+
+## 6. Camadas Empilhadas
+
+Um transformer moderno empilha dezenas (ou centenas) de blocos Atenção + MLP:
+
+```
+Entrada → Embedding → [Atenção → MLP] × N → Saída
+```
+
+| Modelo | Camadas | Parâmetros |
+|--------|---------|------------|
+| GPT-2 | 12-48 | 117M - 1.5B |
+| GPT-3 | 96 | 175B |
+| GPT-4 | ~120 (estimado) | ~1.7T (estimado) |
+| Claude 3.5 | Desconhecido | Desconhecido |
+| Llama 3.1 | 80-128 | 8B - 405B |
+
+Cada camada refina progressivamente a representação, de padrões superficiais (sintaxe) para conceitos abstratos (semântica, raciocínio).
+
+---
+
+## 7. Saída: De Vetores para Probabilidades
+
+Após passar por todas as camadas, o vetor final é multiplicado por uma matriz de **unembedding** (o inverso do embedding), produzindo um **logit** para cada token do vocabulário:
+
+$$
+\text{logits} = W_{\text{unembed}} \cdot h_{\text{final}}
+$$
+
+Esses logits são convertidos em probabilidades via **softmax**:
+
+$$
+P(\text{token}_i) = \frac{e^{\text{logit}_i}}{\sum_j e^{\text{logit}_j}}
+$$
+
+<TemperatureDemo client:load />
+
+---
+
+## Por Que LLMs Não São Determinísticos
+
+Aqui está algo que confunde muita gente: se LLMs são baseados em matemática pura, por que dão respostas diferentes para o mesmo prompt?
+
+<NonDeterminismDemo client:load />
+
+### As Três Fontes de "Aleatoriedade"
+
+1. **Amostragem Probabilística**: O modelo não escolhe sempre o token mais provável. Ele *sorteia* baseado na distribuição de probabilidades. Com temperatura > 0, tokens menos prováveis têm chance de serem escolhidos.
+
+2. **Efeito Cascata**: Uma pequena diferença no primeiro token muda o contexto inteiro. "Paris, a" vs "Paris é" leva a continuações completamente diferentes.
+
+3. **Aritmética de Ponto Flutuante**: GPUs executam operações em paralelo, e a ordem de execução pode variar. Somas de números de ponto flutuante não são comutativas em precisão finita: $(a + b) + c \neq a + (b + c)$ em floats!
+
+<InfoBox title="Tornando determinístico" type="warning">
+
+Você *pode* tornar um LLM determinístico:
+- Temperatura = 0 (sempre escolhe o mais provável)
+- Seed fixa para o gerador de números aleatórios
+- Precisão determinística nas operações de GPU
+
+Mas isso remove criatividade e pode prender o modelo em loops repetitivos!
+
+</InfoBox>
+
+---
+
+## Alucinação: Por Que LLMs "Inventam" Coisas
+
+Esta é talvez a pergunta mais importante: por que modelos treinados em trilhões de tokens ainda "inventam" informações falsas?
+
+<HallucinationDemo client:load />
+
+### A Raiz do Problema
+
+LLMs são treinados para um único objetivo: **prever o próximo token mais provável dado o contexto**. Eles não são treinados para:
+
+- Dizer "eu não sei"
+- Verificar fatos
+- Distinguir verdade de ficção
+- Raciocinar sobre sua própria certeza
+
+Quando você pergunta sobre algo que não estava nos dados de treinamento (ou estava de forma ambígua), o modelo faz o que foi treinado para fazer: **continua gerando texto que parece plausível**.
+
+### Por Que Parece Tão Convincente?
+
+O modelo aprendeu padrões como:
+
+- "O presidente de [país] foi [nome]"
+- "A capital de [país] é [cidade]"
+- "[Pessoa famosa] nasceu em [data]"
+
+Quando encontra "O primeiro presidente de Gondwana foi ___", ele preenche com algo que *se encaixa no padrão*, mesmo que Gondwana seja um supercontinente pré-histórico!
+
+<InfoBox title="A ilusão de conhecimento" type="warning">
+
+A fluência linguística não implica conhecimento factual. Um modelo pode gerar texto gramaticalmente perfeito, estilisticamente apropriado e completamente falso.
+
+Isso é particularmente perigoso porque humanos tendem a confiar em texto bem escrito.
+
+</InfoBox>
+
+---
+
+## Grokking: Quando Modelos Realmente "Entendem"
+
+Um fenômeno fascinante descoberto por acidente na OpenAI: **grokking** é quando um modelo subitamente generaliza após parecer ter apenas memorizado os dados.
+
+<GrokkingDemo client:load />
+
+### A História do Grokking
+
+Em 2021, um pesquisador da OpenAI saiu de férias e esqueceu um modelo treinando. Quando voltou, descobriu algo incrível:
+
+1. O modelo tinha atingido 100% de acurácia no treino após ~200 steps
+2. Por milhares de steps, a acurácia de teste ficou péssima (~20%)
+3. De repente, após ~7000 steps, a acurácia de teste saltou para 100%!
+
+### O Que Estava Acontecendo Internamente?
+
+Pesquisadores analisaram as ativações internas e descobriram que o modelo estava silenciosamente construindo representações baseadas em **senos e cossenos**!
+
+Para resolver aritmética modular ($a + b \mod p$), o modelo aprendeu:
+
+1. Calcular $\sin(2\pi a/p)$ e $\cos(2\pi a/p)$
+2. Calcular $\sin(2\pi b/p)$ e $\cos(2\pi b/p)$
+3. Usar a identidade trigonométrica:
+   $$\cos(a+b) = \cos(a)\cos(b) - \sin(a)\sin(b)$$
+4. Converter de volta para a resposta
+
+O modelo **redescobriu** uma identidade matemática fundamental sem nunca ter sido ensinado trigonometria!
+
+<DiveDeep title="Implicações Profundas" defaultOpen={false}>
+
+Grokking sugere que:
+
+1. **Métricas de treino mentem**: Performance perfeita no treino pode esconder que o modelo apenas memorizou.
+
+2. **Aprendizado real leva tempo**: A generalização pode exigir muito mais passos que a memorização.
+
+3. **Estruturas internas importam**: Não basta olhar as saídas — precisamos entender as representações internas.
+
+4. **Regularização ajuda**: Weight decay e dropout aceleram grokking ao penalizar memorização.
+
+</DiveDeep>
+
+---
+
+## O Manifold de 6 Dimensões do Claude
+
+Uma descoberta recente da Anthropic ilustra o quão alienígenas são essas representações internas.
+
+Pesquisadores investigaram como o Claude Haiku decide quando criar quebras de linha. Descobriram que o modelo representa a contagem de caracteres e a largura da linha em um **manifold de 6 dimensões**!
+
+As representações formam hélices que giram uma em relação à outra nas camadas de atenção (um "QK twist"). Quando a contagem se aproxima da largura da linha, os pontos ficam próximos no espaço de embedding, ativando a geração de uma nova linha.
+
+<InfoBox title="Alienígena, não humano" type="info">
+
+O pesquisador Andrej Karpathy comentou que treinar LLMs "é menos como construir inteligência animal e mais como invocar fantasmas."
+
+As soluções que esses modelos encontram são funcionais, mas frequentemente incompreensíveis para humanos — uma forma de "inteligência alienígena".
+
+</InfoBox>
+
+---
+
+## Conclusão: A Caixa Preta Transparente
+
+LLMs são, ao mesmo tempo, uma das tecnologias mais impressionantes já criadas e uma das menos compreendidas. Sabemos *o que* fazem (prever o próximo token) e *como* fazem (transformers, atenção, MLPs), mas ainda não entendemos completamente *por que* funcionam tão bem.
+
+Algumas reflexões finais:
+
+1. **Não são bases de dados**: LLMs não "armazenam" fatos de forma recuperável. Eles codificam padrões estatísticos.
+
+2. **Não são determinísticos**: A mesma pergunta pode gerar respostas diferentes devido a amostragem e variações computacionais.
+
+3. **Não sabem que não sabem**: Foram treinados para sempre gerar o próximo token, nunca para dizer "eu não sei".
+
+4. **São alienígenas**: As representações internas que desenvolvem são funcionais mas frequentemente incompreensíveis.
+
+À medida que modelos ficam maiores e mais capazes, entender suas mecânicas internas torna-se cada vez mais crítico — não apenas para melhorá-los, mas para garantir que sejam seguros e alinhados com valores humanos.
+
+---
+
+## Referências e Leitura Adicional
+
+- **Grokking paper**: [Grokking: Generalization Beyond Overfitting on Small Algorithmic Datasets](https://arxiv.org/abs/2201.02177) (OpenAI, 2022)
+- **Neel Nanda's Analysis**: [A Mechanistic Interpretability Analysis of Grokking](https://arxiv.org/abs/2301.05217)
+- **Anthropic Circuit Analysis**: [Scaling Monosemanticity](https://transformer-circuits.pub/2024/scaling-monosemanticity/)
+- **Attention Is All You Need**: [O paper original dos Transformers](https://arxiv.org/abs/1706.03762)
+- **Welch Labs**: [The Most Complex AI That We Fully Understand](https://www.youtube.com/watch?v=D8GOeCFFby4) — a inspiração para este post
+
+---
+
+*Este post foi inspirado pelo excelente vídeo do Welch Labs sobre grokking e interpretabilidade mecanística. Se você quer ir mais fundo, recomendo assistir o vídeo completo e explorar os papers linkados acima.*
