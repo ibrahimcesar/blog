@@ -1,0 +1,33 @@
+---
+title: "Evaluating Large Language Models in Scientific Discovery"
+pubDate: 2025-12-23
+sourceUrl: "https://arxiv.org/abs/2512.15567"
+author: "Zhangde Song, Jieyu Lu, Yuanqi Du, et al."
+source: "arXiv"
+type: paper
+description: "A scenario-grounded benchmark that evaluates LLMs across biology, chemistry, materials, and physics for scientific discovery tasks."
+language: en
+tags: ["LLM", "Scientific Discovery", "AI", "Benchmarks", "Research"]
+featured: true
+---
+
+## Summary
+
+This paper introduces a new benchmark framework (SDE - Scientific Discovery Evaluation) that evaluates LLMs on actual scientific discovery tasks rather than decontextualized knowledge tests. Domain experts define real research projects across biology, chemistry, materials science, and physics, decomposed into modular scenarios.
+
+The framework assesses models at two levels:
+1. **Question-level**: accuracy on scenario-specific items
+2. **Project-level**: ability to propose testable hypotheses, design experiments/simulations, and interpret results
+
+Key findings:
+- Consistent performance gap compared to general science benchmarks
+- Diminishing returns from scaling up model size and reasoning
+- Systematic weaknesses shared across top-tier models from different providers
+- Large variation across scenarios means the "best" model changes depending on the project
+- All current LLMs are far from general scientific "superintelligence"
+
+## My thoughts
+
+The most interesting finding: LLMs show promise even when constituent scenario scores are low, highlighting the role of *guided exploration and serendipity* in discovery. Science isn't just answering questions correctly—it's about asking the right questions and making unexpected connections.
+
+This echoes my view that LLMs are tools for augmenting human cognition, not replacing it. The benchmark's focus on iterative reasoning, hypothesis generation, and observation interpretation feels much closer to how science actually works than typical Q&A benchmarks.

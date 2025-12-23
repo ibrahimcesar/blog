@@ -1,0 +1,419 @@
+---
+title: "Why Your Services Don't Compose: A Diagnostic Framework for Integration Failures"
+description: "When services don't work together, it's not random—it's one of four predictable failure modes. A practical guide to diagnosing and fixing integration problems using insights from category theory."
+featured: false
+pubDate: "2025-12-17T14:00:00.000Z"
+language: en
+category: "Architecture"
+tags: ["Solutions Architecture", "Integration", "Software Architecture", "AWS", "Distributed Systems"]
+---
+
+import Lead from '../../components/editorial/Lead.astro';
+import InfoBox from '../../components/editorial/InfoBox.astro';
+
+> *"The purpose of abstraction is not to be vague, but to create a new semantic level in which one can be absolutely precise."*
+>
+> — **Edsger W. Dijkstra**
+
+<Lead>
+
+"These services should work together, but they don't." Sound familiar? Integration failures aren't random—they fall into four predictable categories. Once you recognize the pattern, you can apply the right fix. This is a practical diagnostic framework for when your distributed systems refuse to play nice.
+
+</Lead>
+
+## The Promise of Composition
+
+The dream of microservices and distributed systems is composition: if Service A produces output that Service B consumes, you should be able to chain them together. Call A, feed the result to B, get the final output. Simple.
+
+Except it isn't. In practice:
+- Data formats don't quite match
+- Retries create duplicate orders
+- Operations that should be independent interfere with each other
+- Timeouts cascade unpredictably
+
+These aren't random bugs. They're **composition failures**—and each has a specific diagnosis and fix.
+
+---
+
+## The Four Failure Modes
+
+### Failure Mode 1: Type Mismatch
+
+The most obvious failure: what one service produces isn't what the next one expects.
+
+```typescript
+// Service A returns:
+interface OrderResponse {
+  orderId: string;
+  items: Array<{ productId: string; quantity: number }>;
+  total: number;
+}
+
+// Service B expects:
+interface FulfillmentRequest {
+  order_id: string;  // Different naming convention
+  line_items: Array<{ sku: string; qty: number }>;  // Different structure
+  amount: Money;  // Different type for money
+}
+
+// You can't just pipe A's output to B's input
+```
+
+**Symptoms**:
+- Serialization errors
+- "Field X is required" errors when the field exists (under a different name)
+- Silent data loss when optional fields are ignored
+
+**Fix**: Explicit translation layer
+
+```typescript
+const translate = (order: OrderResponse): FulfillmentRequest => ({
+  order_id: order.orderId,
+  line_items: order.items.map(i => ({ sku: i.productId, qty: i.quantity })),
+  amount: { value: order.total, currency: 'USD' }
+});
+
+// Now: B(translate(A(request)))
+```
+
+**AWS Pattern**: API Gateway request/response mapping templates handle this at the infrastructure level.
+
+### Failure Mode 2: Hidden State
+
+The services look composable, but results are unpredictable because of invisible dependencies.
+
+```typescript
+// Looks composable
+const getUser = (id: string): Promise<User> => fetchFromCache(id);
+const updatePreferences = (user: User, prefs: Prefs): Promise<User> =>
+  saveToDatabase({ ...user, preferences: prefs });
+
+// But composition fails unpredictably
+const updateUserPrefs = async (id: string, prefs: Prefs) => {
+  const user = await getUser(id);  // Gets cached (stale) version
+  return updatePreferences(user, prefs);  // Overwrites newer data!
+};
+```
+
+**Symptoms**:
+- Intermittent failures
+- "It works sometimes"
+- Race conditions
+- Lost updates
+
+**Fix**: Make state explicit
+
+```typescript
+const getUser = (id: string): Promise<{ user: User; version: number }> =>
+  fetchWithVersion(id);
+
+const updatePreferences = (
+  user: User,
+  version: number,
+  prefs: Prefs
+): Promise<{ user: User; version: number }> =>
+  saveWithOptimisticLocking(user, version, prefs);
+
+// Now stale data is detected and rejected
+```
+
+**AWS Pattern**: DynamoDB conditional writes, S3 ETags, optimistic locking.
+
+### Failure Mode 3: Non-Idempotent Operations
+
+Retrying the same operation produces different results.
+
+```typescript
+const createOrder = (items: Item[]): Promise<Order> => { /* creates in DB */ };
+const processPayment = (order: Order): Promise<Payment> => { /* charges card */ };
+
+// First attempt
+const result1 = await processPayment(await createOrder(items));
+
+// Retry after timeout - same input, different result
+const result2 = await processPayment(await createOrder(items));
+// Oops: two orders, two charges!
+```
+
+**Symptoms**:
+- Duplicate records after retries
+- Double charges
+- "Phantom" entities that shouldn't exist
+- Inconsistent counts
+
+**Fix**: Idempotency keys
+
+```typescript
+const createOrder = (
+  items: Item[],
+  idempotencyKey: string
+): Promise<Order> =>
+  upsertOrder(idempotencyKey, items);  // Same key = same order
+
+const processPayment = (
+  order: Order,
+  idempotencyKey: string
+): Promise<Payment> =>
+  chargeOnce(idempotencyKey, order);  // Same key = one charge
+
+// Now retries are safe
+```
+
+**AWS Pattern**: Lambda with SQS (message deduplication), Step Functions (built-in idempotency), DynamoDB conditional writes.
+
+### Failure Mode 4: Order Dependencies
+
+Operations that should be independent actually depend on execution order.
+
+```typescript
+// Both update shared state
+const updateInventory = (orderId: string) => decrementStock(orderId);
+const updateShipping = (orderId: string) => scheduleShipment(orderId);
+
+// Order matters!
+await updateInventory(orderId);
+await updateShipping(orderId);
+// vs
+await updateShipping(orderId);  // Checks inventory... which hasn't been updated
+await updateInventory(orderId);
+// Different results!
+```
+
+**Symptoms**:
+- "It worked in testing" (where order was consistent)
+- Race conditions between parallel processes
+- Inconsistent state depending on timing
+
+**Fix**: Explicit orchestration
+
+```typescript
+// Make the order explicit and enforced
+const fulfillmentWorkflow = sequence([
+  step('reserve-inventory', reserveInventory),
+  step('process-payment', processPayment),
+  step('schedule-shipping', scheduleShipment),
+  step('confirm-order', confirmOrder)
+]);
+```
+
+**AWS Pattern**: Step Functions (explicit state machine), SQS FIFO queues (ordered processing), EventBridge with ordering.
+
+---
+
+## The Diagnostic Checklist
+
+When integration fails, run through this checklist:
+
+<InfoBox title="Quick Diagnosis" type="tip">
+
+**Type mismatch?** → Add translation layer
+**Hidden state?** → Make state explicit (versioning, ETags)
+**Non-idempotent?** → Add idempotency keys
+**Order-dependent?** → Add explicit orchestration
+
+</InfoBox>
+
+### Diagnostic Questions
+
+**1. Do the types match?**
+```
+Service A outputs: Type X
+Service B expects: Type Y
+Is X exactly Y?
+```
+If not → translation layer.
+
+**2. Is state hidden?**
+```
+Does Service A depend on anything not in its input?
+Does Service B depend on anything not passed to it?
+```
+If yes → make state explicit.
+
+**3. Are operations repeatable?**
+```
+Call f(x) twice. Same result both times?
+```
+If not → idempotency keys.
+
+**4. Does order matter?**
+```
+Can A and B run in either order with the same result?
+```
+If not → explicit orchestration.
+
+---
+
+## Why This Framework Works
+
+These four failure modes aren't arbitrary—they correspond to the fundamental requirements for things to "fit together" mathematically:
+
+1. **Type mismatch** = trying to connect incompatible interfaces
+2. **Hidden state** = functions that aren't really functions (they depend on context)
+3. **Non-idempotency** = operations that aren't deterministic
+4. **Order dependency** = non-commutative operations treated as commutative
+
+This is why the same integration problems keep appearing across different technologies and architectures. The underlying mathematical structure is the same.
+
+---
+
+## Practical Patterns
+
+### Pattern: The Anti-Corruption Layer
+
+When integrating with a service you don't control:
+
+```typescript
+// External service with weird API
+interface LegacyOrderService {
+  createOrd(cust_id: string, prod_codes: string, qtys: string): string;
+}
+
+// Your clean interface
+interface OrderService {
+  createOrder(request: CreateOrderRequest): Promise<Order>;
+}
+
+// Anti-corruption layer translates
+class OrderServiceAdapter implements OrderService {
+  constructor(private legacy: LegacyOrderService) {}
+
+  async createOrder(request: CreateOrderRequest): Promise<Order> {
+    const prodCodes = request.items.map(i => i.productId).join(',');
+    const qtys = request.items.map(i => i.quantity.toString()).join(',');
+    const orderId = this.legacy.createOrd(request.customerId, prodCodes, qtys);
+    return this.fetchOrder(orderId);
+  }
+}
+```
+
+### Pattern: Idempotent Write with Deduplication
+
+```typescript
+interface IdempotentRequest<T> {
+  idempotencyKey: string;
+  payload: T;
+  timestamp: Date;
+}
+
+async function idempotentWrite<T, R>(
+  request: IdempotentRequest<T>,
+  execute: (payload: T) => Promise<R>,
+  cache: IdempotencyCache
+): Promise<R> {
+  // Check if already processed
+  const cached = await cache.get(request.idempotencyKey);
+  if (cached) return cached;
+
+  // Execute and cache
+  const result = await execute(request.payload);
+  await cache.set(request.idempotencyKey, result, TTL);
+  return result;
+}
+```
+
+### Pattern: Explicit State Threading
+
+```typescript
+interface Versioned<T> {
+  data: T;
+  version: number;
+}
+
+async function updateWithVersion<T>(
+  current: Versioned<T>,
+  update: (data: T) => T,
+  save: (data: T, expectedVersion: number) => Promise<Versioned<T>>
+): Promise<Versioned<T>> {
+  const newData = update(current.data);
+  return save(newData, current.version);  // Fails if version changed
+}
+```
+
+---
+
+## AWS Implementation Examples
+
+### API Gateway: Type Translation
+
+```yaml
+# Transform between external and internal schemas
+x-amazon-apigateway-integration:
+  requestTemplates:
+    application/json: |
+      {
+        "internal_order_id": "$input.json('$.orderId')",
+        "line_items": $input.json('$.items')
+      }
+```
+
+### Step Functions: Explicit Composition
+
+```json
+{
+  "StartAt": "ValidateOrder",
+  "States": {
+    "ValidateOrder": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:...:validate",
+      "Next": "ProcessPayment"
+    },
+    "ProcessPayment": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:...:payment",
+      "Next": "FulfillOrder",
+      "Retry": [{
+        "ErrorEquals": ["PaymentRetryable"],
+        "MaxAttempts": 3
+      }]
+    },
+    "FulfillOrder": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:...:fulfill",
+      "End": true
+    }
+  }
+}
+```
+
+### EventBridge: Decoupled Composition
+
+```typescript
+// Producer doesn't know about consumers
+await eventBridge.putEvents({
+  Entries: [{
+    Source: 'orders',
+    DetailType: 'OrderCreated',
+    Detail: JSON.stringify(order)
+  }]
+});
+
+// Consumers compose independently via rules
+// Rule 1: OrderCreated → Inventory Lambda
+// Rule 2: OrderCreated → Notification Lambda
+// Rule 3: OrderCreated → Analytics Firehose
+```
+
+---
+
+## The Takeaway
+
+Integration failures aren't mysterious. They fall into four categories:
+
+| Failure Mode | Symptom | Fix |
+|-------------|---------|-----|
+| Type mismatch | Serialization errors, missing fields | Translation layer |
+| Hidden state | Intermittent failures, race conditions | Explicit versioning |
+| Non-idempotent | Duplicates on retry | Idempotency keys |
+| Order dependency | Works sometimes, timing-dependent | Explicit orchestration |
+
+Next time services refuse to work together, diagnose first. The fix depends on the failure mode—and now you know all four.
+
+---
+
+## Further Reading
+
+- **Enterprise Integration Patterns** by Hohpe & Woolf — The classic reference for integration patterns
+- **Designing Data-Intensive Applications** by Martin Kleppmann — Deep dive on distributed systems challenges
+- **AWS Step Functions Developer Guide** — Explicit composition in practice
+- **Idempotency Keys: How PayPal and Stripe Prevent Duplicate Payments** — Real-world idempotency patterns
