@@ -1,8 +1,7 @@
 ---
 title: "Functors: The Mathematics of Migration"
-description: "Every migration is a functor—a structure-preserving transformation between systems. Part 5 of applying category theory to Solutions Architecture, where we learn when migrations succeed and why they fail."
-featured: false
-pubDate: "2025-12-07T12:00:00.000Z"
+description: "Every migration is a functor — a structure - preserving transformation between systems. Part 5 of applying category theory to Solutions Architecture, where we learn when migrations succeed and why they fail."
+pubDate: "2025-12-24T12:00:00.000Z"
 language: en
 category: "Architecture"
 series: "Categorical Solutions Architecture"
@@ -15,7 +14,7 @@ import Lead from '../../components/editorial/Lead.astro';
 import InfoBox from '../../components/editorial/InfoBox.astro';
 import { FunctorDiagram } from '../../components/widgets/CategoryDiagram';
 
-> *"A functor is a morphism of categories—it maps objects to objects and morphisms to morphisms, preserving composition and identity."*
+> *"A functor is a morphism of categories — it maps objects to objects and morphisms to morphisms, preserving composition and identity."*
 >
 > — Standard definition
 
@@ -27,7 +26,7 @@ When you migrate from one database to another, refactor a monolith to microservi
 
 ## What Is a Functor?
 
-A **functor** $F: \mathcal{C} \to \mathcal{D}$ between categories $\mathcal{C}$ and $\mathcal{D}$ consists of:
+A **functor**[^1] $F: \mathcal{C} \to \mathcal{D}$ between categories $\mathcal{C}$ and $\mathcal{D}$ consists of:
 
 1. **Object mapping**: For every object $A$ in $\mathcal{C}$, an object $F(A)$ in $\mathcal{D}$
 2. **Morphism mapping**: For every morphism $f: A \to B$ in $\mathcal{C}$, a morphism $F(f): F(A) \to F(B)$ in $\mathcal{D}$
@@ -68,7 +67,7 @@ SELECT * FROM orders o JOIN users u ON o.user_id = u.id;
 
 ### The Target Category (DynamoDB)
 
-**Objects**: Tables, GSIs
+**Objects**: Tables, GSIs[^2]
 **Morphisms**: GetItem, Query, Scan, Transactions
 
 ### The Functor (Migration)
@@ -115,7 +114,7 @@ Document which operations won't work and handle them as errors.
 
 Functors come in two flavors:
 
-### Covariant Functor
+### Covariant Functor[^3]
 
 Morphisms map in the same direction:
 
@@ -131,7 +130,7 @@ PostgreSQL query → DynamoDB Query
 Direction preserved
 ```
 
-### Contravariant Functor
+### Contravariant Functor[^4]
 
 Morphisms map in the opposite direction:
 
@@ -248,7 +247,7 @@ const process = async (data: Input): Promise<Output> => {
 
 <InfoBox title="The Distributed Transaction Problem" type="warning">
 
-If $F$ doesn't preserve transactional composition, you need sagas, eventual consistency, or to redesign the boundaries.
+If $F$ doesn't preserve transactional composition, you need sagas[^5], eventual consistency, or to redesign the boundaries.
 
 </InfoBox>
 
@@ -256,7 +255,7 @@ If $F$ doesn't preserve transactional composition, you need sagas, eventual cons
 
 ## Endofunctors: Self-Transformations
 
-An **endofunctor** is a functor from a category to itself: $F: \mathcal{C} \to \mathcal{C}$
+An **endofunctor**[^6] is a functor from a category to itself: $F: \mathcal{C} \to \mathcal{C}$
 
 These are incredibly common in programming and architecture.
 
@@ -327,7 +326,7 @@ Each layer is an endofunctor. The composition is still a functor.
 
 Not all functors preserve structure equally:
 
-### Faithful Functor
+### Faithful Functor[^7]
 
 Injective on morphisms: if $F(f) = F(g)$, then $f = g$.
 
@@ -340,7 +339,7 @@ Injective on morphisms: if $F(f) = F(g)$, then $f = g$.
 // No two source morphisms collapse to the same target
 ```
 
-### Full Functor
+### Full Functor[^8]
 
 Surjective on morphisms: every morphism in the target comes from the source.
 
@@ -353,7 +352,7 @@ Surjective on morphisms: every morphism in the target comes from the source.
 // Nothing is hidden
 ```
 
-### Fully Faithful Functor
+### Fully Faithful Functor[^9]
 
 Both full and faithful: morphisms correspond bijectively.
 
@@ -516,3 +515,21 @@ Design migrations as functors, and you'll know exactly what works and what doesn
 ---
 
 *Next in the series: **Natural Transformations: Coherent Change Across Systems** — Where we learn how to transform one functor into another while maintaining consistency everywhere.*
+
+[^1]: The word **functor** comes from the Latin *functor* ("performer"), derived from the verb *fungī* meaning "to perform" or "to execute" (unrelated to mushrooms, despite the spelling). In category theory, a functor "performs" a translation between categories. The concept was introduced by Samuel Eilenberg and Saunders Mac Lane in 1945, along with the definition of category itself. Functors formalize the notion of "structure-preserving map" — they're homomorphisms between categories, just as group homomorphisms preserve group structure and ring homomorphisms preserve ring structure.
+
+[^2]: **GSI** stands for Global Secondary Index in DynamoDB. Unlike primary keys which define the main access pattern, GSIs allow you to query the table using alternative key attributes. A GSI has its own partition key and optional sort key, enabling efficient queries on non-primary-key attributes. Each table can have up to 20 GSIs. They're "global" because queries can span all partitions, unlike Local Secondary Indexes (LSIs) which are constrained to items with the same partition key.
+
+[^3]: A **covariant functor** (often just called "functor") preserves the direction of morphisms: if $f: A \to B$, then $F(f): F(A) \to F(B)$. Think of it as "going with the flow." In programming, `Array.map` is covariant — if you have a function `string → number`, you get `Array<string> → Array<number>` in the same direction. Most functors you encounter are covariant.
+
+[^4]: A **contravariant functor** reverses the direction of morphisms: if $f: A \to B$, then $F(f): F(B) \to F(A)$. This appears naturally in "consumer" or "input" positions. For example, `Predicate<T>` (functions `T → boolean`) is contravariant in `T`: if you can handle `Animal`, you can handle `Cat` (because every `Cat` is an `Animal`). In TypeScript, function parameter types are contravariant. Contravariant functors are sometimes called *cofunctors* or *presheaves* (when the target is **Set**).
+
+[^5]: The **Saga pattern** is a way to manage distributed transactions without distributed locks. Instead of one atomic transaction spanning multiple services, a saga is a sequence of local transactions where each step publishes an event that triggers the next. If a step fails, the saga executes *compensating transactions* to undo previous steps (e.g., if payment fails after reserving inventory, release the reservation). There are two coordination approaches: *choreography* (services react to events independently) and *orchestration* (a central coordinator directs the sequence). The pattern was first described by Hector Garcia-Molina and Kenneth Salem in 1987.
+
+[^6]: An **endofunctor** is a functor from a category to itself ($F: \mathcal{C} \to \mathcal{C}$). The prefix "endo-" means "within" (from Greek *éndon*). Endofunctors are ubiquitous in programming: `Array<T>`, `Promise<T>`, `Option<T>`, and `Result<T, E>` are all endofunctors on the category of types. The famous (and often misunderstood) phrase "a monad is just a monoid in the category of endofunctors" refers to this: monads are endofunctors with additional structure (unit and join) satisfying monoid laws.
+
+[^7]: A **faithful functor** is injective (one-to-one) on hom-sets: for any two objects $A, B$, the mapping $F: \text{Hom}(A,B) \to \text{Hom}(F(A), F(B))$ is injective. This means distinct morphisms in the source map to distinct morphisms in the target — no information about relationships is lost. A faithful functor "remembers" all the structure. In database terms: if two queries do different things, they remain different after migration.
+
+[^8]: A **full functor** is surjective (onto) on hom-sets: for any two objects $A, B$, every morphism $g: F(A) \to F(B)$ in the target comes from some morphism $f: A \to B$ in the source. This means the target doesn't introduce new relationships — everything you can do in the target, you could already do in the source. A full functor "covers" all the structure. In migration terms: the new system doesn't have capabilities the old one lacked.
+
+[^9]: A **fully faithful functor** is both full and faithful — it's a bijection on hom-sets. This means the functor is an *embedding*: the source category sits inside the target category with its structure perfectly preserved. No morphisms are lost (faithful) and no new morphisms appear (full). Fully faithful functors represent "perfect" translations where the source and its image are structurally identical. In practice, most real-world migrations are neither full nor faithful — there are always trade-offs.
