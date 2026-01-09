@@ -14,7 +14,7 @@ import InfoBox from '../../components/editorial/InfoBox.astro';
 
 > *"The purpose of computing is insight, not numbers."*
 >
-> — **Richard Hamming**
+> — **Richard Hamming**[^1]
 
 <Lead>
 
@@ -30,7 +30,7 @@ $$
 G \circ F = \text{Id}_{\mathcal{C}} \quad \text{and} \quad F \circ G = \text{Id}_{\mathcal{D}}
 $$
 
-This is strict equality—round-tripping gives you exactly what you started with.
+This is strict equality—round-tripping gives you exactly what you started with.[^2]
 
 An **equivalence** is weaker but more useful:
 
@@ -38,7 +38,7 @@ $$
 G \circ F \cong \text{Id}_{\mathcal{C}} \quad \text{and} \quad F \circ G \cong \text{Id}_{\mathcal{D}}
 $$
 
-Round-tripping gives you something *isomorphic* to what you started with—not identical, but indistinguishable.
+Round-tripping gives you something *isomorphic* to what you started with—not identical, but indistinguishable.[^3]
 
 ---
 
@@ -131,7 +131,7 @@ class UserClient {
 
 ### Natural Isomorphisms
 
-$G \circ F \cong \text{Id}_A$: Decomposing then recomposing gives something isomorphic to the original.
+$G \circ F \cong \text{Id}_A$: Decomposing then recomposing gives something isomorphic to the original.[^9]
 
 ```typescript
 // Original monolith call
@@ -161,7 +161,7 @@ async createOrderWithPayment(userId: string, items: Item[]) {
   const payment = await this.paymentRepo.charge(order.total);
   // Both succeed or both fail
 }
-```
+```[^4]
 
 **Microservices**:
 ```typescript
@@ -174,7 +174,7 @@ async createOrderWithPayment(userId: string, items: Item[]) {
 
 The morphism "atomic create-and-pay" exists in the monolith category but not in the naive microservices category.
 
-**To restore equivalence**: Add saga/compensation pattern
+**To restore equivalence**: Add saga/compensation pattern[^5]
 
 ```typescript
 async createOrderWithPayment(userId: string, items: Item[]) {
@@ -202,7 +202,7 @@ const user = await userService.getUser(id);
 const orders = await orderService.getOrdersForUser(user);
 ```
 
-If latency matters to correctness (real-time systems, trading), these aren't equivalent—the microservices version can't meet the same temporal constraints.
+If latency matters to correctness (real-time systems, trading), these aren't equivalent—the microservices version can't meet the same temporal constraints.[^6]
 
 ### Data Locality Matters
 
@@ -221,7 +221,7 @@ WHERE o.total > 1000;
 
 ## Skeleton and Coskeleton
 
-Every category has a **skeleton**: the smallest equivalent category with no isomorphic objects.
+Every category has a **skeleton**: the smallest equivalent category with no isomorphic objects.[^7]
 
 **Architecture insight**: The skeleton is your "essential" architecture—with all redundancy removed.
 
@@ -251,7 +251,7 @@ The skeleton tells you: "This is what you *really* have, ignoring deployment det
 
 ## Morita Equivalence for Databases
 
-Two databases are **Morita equivalent** if their categories of "modules" (queries, views) are equivalent.
+Two databases are **Morita equivalent** if their categories of "modules" (queries, views) are equivalent.[^8]
 
 ### Example: Relational vs. Document
 
@@ -318,7 +318,7 @@ describe('Architecture Equivalence', () => {
 
 ### Contract Equivalence
 
-Using consumer-driven contracts:
+Using consumer-driven contracts:[^10]
 
 ```typescript
 // Both systems must satisfy the same contracts
@@ -340,7 +340,7 @@ testContract(microservices.userService, userContract);
 
 ## Adjoint Equivalences
 
-An **adjoint equivalence** is an equivalence where the functors form an adjunction (which we'll cover in Part 11). This is the "best" kind of equivalence.
+An **adjoint equivalence** is an equivalence where the functors form an adjunction (which we'll cover in Part 11). This is the "best" kind of equivalence.[^11]
 
 **Architectural meaning**: Not only are the architectures equivalent, but there's a canonical way to translate between them.
 
@@ -384,7 +384,7 @@ Single Table Design ≅ Multi-Table Design
 
 If: Proper GSI design mirrors the joins you need
 If: Access patterns are known and stable
-```
+```[^12]
 
 **Equivalent for**: Known access patterns
 **Not equivalent for**: Ad-hoc querying, complex reporting
@@ -454,3 +454,31 @@ The answer tells you whether the choice matters.
 ---
 
 *Next in the series: **Products and Coproducts: The Algebra of Service Composition** — Where we learn the universal patterns for combining and decomposing services.*
+
+---
+
+## Footnotes
+
+[^1]: Richard Hamming (1915-1998) was an American mathematician and computer scientist, known for his work on error-correcting codes (Hamming codes) and information theory. This quote reflects his philosophy that computing should serve as a tool for understanding and insight, not mere calculation—directly relevant to architectural equivalence, where we focus on structural insights rather than implementation details.
+
+[^2]: In category theory notation: $\circ$ represents composition of functors, and $\text{Id}_{\mathcal{C}}$ is the identity functor on category $\mathcal{C}$ (which maps every object to itself and every morphism to itself). The equation states that composing the functors $F$ and $G$ in either order gives exactly the identity functor.
+
+[^3]: The symbol $\cong$ means "is isomorphic to" (structurally the same but not necessarily identical), as opposed to $=$ which means strict equality. This weaker condition makes equivalence more practical than isomorphism for real-world architectures, where exact identity is too strict a requirement.
+
+[^4]: The `@Transactional` annotation works in monoliths because both operations target the same database. ACID (Atomicity, Consistency, Isolation, Durability) guarantees ensure both operations either succeed together or fail together. This property doesn't automatically transfer to distributed systems where data lives in different databases or services.
+
+[^5]: The saga pattern was introduced by Hector Garcia-Molina and Kenneth Salem in their 1987 paper "Sagas" (Princeton University). It provides long-lived transactions through compensating actions. AWS Step Functions implements this pattern natively, allowing you to define compensating workflows for distributed transactions. See: [AWS Step Functions](https://aws.amazon.com/step-functions/).
+
+[^6]: Examples of systems where latency differences are critical: High-Frequency Trading (HFT) systems where microseconds matter, industrial control systems with real-time constraints, gaming servers requiring low latency for player experience, and robotics systems with hard real-time deadlines. In these domains, a 100x latency increase breaks functional equivalence.
+
+[^7]: The skeleton of a category is formally defined in Saunders Mac Lane's "Categories for the Working Mathematician" (1971). It's constructed by choosing one representative from each isomorphism class of objects. This construction is unique up to isomorphism, making it a canonical way to simplify category structure while preserving equivalence.
+
+[^8]: Morita equivalence is named after Japanese mathematician Kiiti Morita, who introduced the concept in ring theory in 1958. Two rings are Morita equivalent if their categories of modules are equivalent. This generalizes naturally to databases: two database schemas are Morita equivalent if their categories of queries/views are equivalent, regardless of internal representation.
+
+[^9]: A natural isomorphism is a collection of isomorphisms that "vary naturally" with the objects—meaning the transformation respects the category structure. This is crucial because it means the equivalence isn't arbitrary but follows from the fundamental structure of the architectures. Natural transformations will be covered in detail in Part 8 of this series.
+
+[^10]: Consumer-driven contracts are a pattern where service consumers define the contracts they expect, rather than providers dictating them. Tools like [Pact](https://pact.io/) enable testing these contracts across different implementations. This is particularly useful for verifying architectural equivalence between systems that must satisfy the same client requirements.
+
+[^11]: Adjunctions are pairs of functors with optimal translation properties—they preserve the most structure possible. When an equivalence is also an adjunction (adjoint equivalence), the round-trip translations are not just isomorphic but universal (no other translation is "better"). We'll explore adjunctions in depth in Part 11: "Adjunctions: The Universal Translation Pattern."
+
+[^12]: Rick Houlihan's talks at AWS re:Invent popularized DynamoDB single-table design patterns. Key resources: [AWS DynamoDB single-table design](https://aws.amazon.com/blogs/compute/creating-a-single-table-design-with-amazon-dynamodb/) and his advanced design pattern talks. Single-table design trades schema flexibility for performance and cost optimization when access patterns are well-understood.
