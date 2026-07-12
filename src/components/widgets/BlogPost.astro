@@ -32,6 +32,7 @@ const showCommentsSection = post.data.showComments !== false; // Default to true
       </p>
       <h1
         class="px-4 sm:px-6 max-w-3xl mx-auto text-center text-5xl md:text-[3.50rem] font-bold leading-tighter tracking-tighter mb-6 md:mb-8 post-title-color"
+        transition:name={`post-title-${post.slug}`}
       >
         {post.data.title}
       </h1>

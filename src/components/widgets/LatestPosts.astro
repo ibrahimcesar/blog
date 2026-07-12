@@ -30,7 +30,7 @@ const latestPosts = posts.slice(0, count);
             </time>
 
             <div class="flex-grow">
-              <h3 class="text-xl sm:text-2xl font-semibold leading-snug">
+              <h3 class="text-xl sm:text-2xl font-semibold leading-snug" transition:name={`post-title-${post.slug}`}>
                 <a
                   href={`/blog/${post.slug}`}
                   class="text-slate-900 dark:text-slate-100 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors duration-200"

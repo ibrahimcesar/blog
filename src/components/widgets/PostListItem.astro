@@ -20,7 +20,7 @@ const isEnglish = post.data.language === "en";
     </time>
 
     <div class="flex-grow">
-      <h2 class="text-xl font-semibold leading-snug mb-1">
+      <h2 class="text-xl font-semibold leading-snug mb-1" transition:name={`post-title-${post.slug}`}>
         <a
           href={`/blog/${post.slug}`}
           class="text-slate-900 dark:text-slate-100 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors duration-200"
