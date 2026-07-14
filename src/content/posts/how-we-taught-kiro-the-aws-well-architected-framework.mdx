@@ -1,0 +1,145 @@
+---
+title: "How We Taught Kiro the AWS Well-Architected Framework — and Measured Whether It Actually Worked"
+description: "A behind-the-scenes look at building open-source skills & steering for AI coding agents, and the empirical story of getting from 15% recall to 100%."
+pubDate: "2026-07-14T12:00:00.000Z"
+language: en
+category: "AWS"
+tags: ["AWS", "Well-Architected", "Kiro", "AI Agents", "Developer Experience"]
+---
+
+import Lead from '../../components/editorial/Lead.astro';
+import InfoBox from '../../components/editorial/InfoBox.astro';
+
+<InfoBox title="Disclaimer" type="warning">
+
+**This post reflects my personal views and experiences only.** The opinions, interpretations, and conclusions expressed here are entirely my own and do not represent the views, policies, or official positions of Amazon Web Services (AWS) or Amazon. This is a personal, behind-the-scenes reflection — not an official statement.
+
+</InfoBox>
+
+<Lead>
+
+A behind-the-scenes look at building open-source skills & steering for AI coding agents, and the empirical story of getting from 15% recall to 100%.
+
+</Lead>
+
+## The problem: AI coding agents don't know your architecture standards
+
+AI coding agents are astonishingly good at writing code. What they're *not* good at — out of the box — is writing code that follows the AWS Well-Architected Framework. Ask a fresh agent to spin up an S3 bucket and it'll happily give you one with no encryption, no versioning, and a wide-open bucket policy. It's not wrong, exactly. It just doesn't know what "good" looks like in *your* world.
+
+For a year now, Kiro has been my daily driver for a lot of this work. And the more I built with it, the clearer the gap became: the agent is only as good as the guidance you give it.
+
+But here's the thing that kept nagging at me: **how do you know whether the guidance actually works?**
+
+## The idea: teach the agent, don't babysit it
+
+Instead of reviewing every PR to catch the same Well-Architected gaps over and over, what if the agent already knew the best practices *before* it wrote a single line?
+
+That's the premise behind **[Well-Architected Skills & Steering for AI Coding Agents](https://github.com/aws-samples/sample-well-architected-skills-and-steering)** — a set of plug-and-play skill files and steering rules that teach an AI coding agent how to apply the AWS Well-Architected Framework directly inside your IDE.
+
+Two things I care about most:
+
+1. **It's credential-free.** No AWS account, no keys, nothing to configure. The skills are guidance, not API calls — so partners, customers, and students can all use them.
+2. **It's agent-agnostic.** It works across Kiro, Claude Code, Cursor, and 10+ other platforms. We built it for the ecosystem, not a single tool.
+
+## The uncomfortable truth about AI-generated reviews
+
+Before I get into how we built it, I need to share something that changed how I think about this problem.
+
+When we started measuring AI-generated Well-Architected reviews, we found something unsettling: **without explicit guidance, AI agents consistently cite only 15% of applicable best practices — while producing a report that looks comprehensive.**
+
+The AWS Well-Architected Framework has 307 best practices across 6 pillars. When we asked agents to perform a review using a standard MCP-based approach, they reliably stopped at 20–60 best practices — regardless of how explicitly we instructed them to "evaluate all 307." The reports looked thorough. They had headings, tables, severity labels, specific recommendations. A developer reading the output would have no idea that 85% of applicable guidance was missing.
+
+This creates a genuine risk: **teams were making architectural decisions on incomplete assessments without knowing it.** AI-generated reviews produce false confidence.
+
+The root cause isn't a model quality problem. It's an architecture problem.
+
+## Why AI agents plateau on coverage tasks
+
+Here's what's actually happening. When an agent is tasked with a broad coverage requirement — "evaluate all 307 best practices" — it faces a stopping problem. After citing 20 or 30 best practices, it has *enough material* to write a coherent, complete-looking report. And it does. The concision priors in the model win over the explicit completeness instruction.
+
+This is what Alan Perlis captured in his *Epigrams on Programming* (1982):
+
+> "It is better to have 100 functions operate on one data structure than to have 10 functions operate on 10 data structures."
+
+The equivalent for AI agents: it is better to have one agent operate on a complete, pre-loaded dataset than to have many agents iteratively searching for pieces of one. When the agent has the full pillar in context, it can't miss a best practice. When it's searching for relevant content, it stops when it has enough.
+
+**The fix isn't better prompting. It's agent architecture.**
+
+## How the skill actually works
+
+The `wa-review` skill in the project solves the coverage problem through a three-layer architecture:
+
+### 1. Scope decomposition
+
+Instead of asking one agent to review all 307 best practices, the skill dispatches **6 parallel Task subagents** — one per Well-Architected pillar. Each subagent loads only its own pillar's reference file (~150–580 KB) and evaluates all 30–55 best practices in that pillar. Narrow scope, complete coverage per scope.
+
+The parallelism matters: wall clock is bounded by the slowest single pillar (~11 minutes), not the sum of all pillars (~66 minutes). The 6 subagents run simultaneously.
+
+### 2. Structured output format
+
+Each subagent is required to return a markdown table — one row per best practice — not a narrative summary. BP ID | Status | Severity | Evidence | Recommendation. 50 rows, not 5 paragraphs. This prevents the model from compressing its analysis during output.
+
+### 3. Assembly contract
+
+The top-level agent that receives the 6 subagent reports is explicitly required to produce a **Full BP Ledger** — every row from every subagent, concatenated, no filtering. Anti-compression rules prevent it from "summarizing" the 300+ rows into a shorter narrative.
+
+These three layers together take recall from **15% to 100%**, F1 from **0.26 to 0.96**, measured across 18 real Claude Code CLI runs against a verified ground truth.
+
+## Measuring honestly: two frameworks, one honest answer
+
+One thing I'm genuinely proud of in this project is how we measure it.
+
+A naive evaluation would run the skill against a simple benchmark and report a score. We do something harder: we run the skill via real `claude -p` CLI — the actual runtime users will use — with a **matched baseline** of the same prompts run with no skill loaded, and score both against a ground truth built from a 2-model × 5-run consensus panel.
+
+The numbers that come out:
+
+| Configuration | Mean F1 | Recall |
+|---|---|---|
+| With skill (wa-review v2.2) | **0.960** | **1.00** |
+| Without skill (bare Claude Code CLI) | 0.264 | 0.15 |
+
++70 F1 lift. Recall from 15% to 100%. That's the actual delta the skill delivers in the runtime your developers are using.
+
+We also ship the measurement harness — `evals/cli_effectiveness/` — so anyone can reproduce these numbers. Trust but verify.
+
+## A skill is encoded agent strategy, not documentation
+
+The framing that changed how I think about this: **a skill is not documentation. It is encoded agent strategy.**
+
+The coverage improvement comes from three things that have nothing to do with the content of the Well-Architected Framework:
+
+- **Which tasks to dispatch** (one subagent per pillar, not one monolithic review)
+- **What structure to return** (table per BP, not narrative prose)
+- **What the assembler must do** (preserve every citation, never compress)
+
+A static documentation file about Well-Architected can tell an agent about best practices. A skill file tells an agent *how to reason about* best practices systematically. The former increases the agent's knowledge. The latter changes how it acts under that knowledge.
+
+That's why the skill works on models it wasn't designed for, across runtimes it wasn't tested on. The strategy is in the instructions, not the content.
+
+## What shipped, and what it meant
+
+The project launched open-source at [aws-samples/sample-well-architected-skills-and-steering](https://github.com/aws-samples/sample-well-architected-skills-and-steering) with:
+
+- **5 core skills** (wa-review, wa-builder, wa-guardrails, wafr-facilitator, migration-readiness)
+- **27 lens extensions** covering Serverless, GenAI, Machine Learning, SaaS, IoT, and more
+- **307 best practices** from the Well-Architected Framework
+- **14 supported tools** — Kiro, Claude Code, Cursor, GitHub Copilot, Windsurf, Amazon Q, and more
+- **~219 GitHub stars** and counting
+
+The response exceeded my expectations — including a shout-out from Jeff Barr amplifying the launch. But the quieter win matters more: teams can now catch architecture gaps *while they code*, not three weeks later in a review.
+
+We also built an evaluation framework so other skill authors can measure their own work honestly. Not all skills depend on multi-agent dispatch — the framework cleanly separates "skills that work in standard API runtimes" from "skills that need the full agent loop." The harness ships with the repo.
+
+## Reflecting on a year with Kiro
+
+Kiro turning 1 is a good moment to zoom out. A year ago, "AI coding agent" mostly meant faster autocomplete. Today, I'm building production tooling *on top of* these agents — steering them, extending them, teaching them domain knowledge like Well-Architected.
+
+The biggest lesson? **The best AI coding agents aren't the ones that write the most code. They're the ones that help you write the *right* code.** And measuring "right" precisely — with recall, precision, F1 — turns out to be as important as building "right" in the first place.
+
+If you ship an agent feature without measuring it, you're shipping false confidence. We measured. The numbers are in the repo. The harness is open-source. Try it on your own models and tell me what you find.
+
+Happy birthday, Kiro. 🎂
+
+---
+
+*Want to try it? [github.com/aws-samples/sample-well-architected-skills-and-steering](https://github.com/aws-samples/sample-well-architected-skills-and-steering)*
