@@ -2,13 +2,12 @@
 title: "Products and Coproducts: The Algebra of Service Composition"
 description: "API Gateways are products. Event routers are coproducts. Part 8 of applying category theory to Solutions Architecture—the universal patterns for combining and decomposing services."
 featured: false
-pubDate: "2025-12-10T12:00:00.000Z"
+pubDate: "2026-07-21T12:00:00.000Z"
 language: en
 category: "Architecture"
 series: "Categorical Solutions Architecture"
 seriesOrder: 8
 tags: ["Category Theory", "Solutions Architecture", "API Gateway", "Software Architecture", "AWS"]
-draft: true
 ---
 
 import Lead from '../../components/editorial/Lead.astro';
@@ -30,24 +29,21 @@ $$
 \pi_1: A \times B \to A \quad \text{and} \quad \pi_2: A \times B \to B
 $$
 
-With the **universal property**: for any object $C$ with morphisms $f: C \to A$ and $g: C \to B$, there exists a *unique* morphism $\langle f, g \rangle: C \to A \times B$ such that:
+With the **universal property**:[^1] for any object $C$ with morphisms $f: C \to A$ and $g: C \to B$, there exists a *unique* morphism $\langle f, g \rangle: C \to A \times B$ such that:
 
 $$
 \pi_1 \circ \langle f, g \rangle = f \quad \text{and} \quad \pi_2 \circ \langle f, g \rangle = g
 $$
 
 ```
-        f
-    C -----> A
-    |        ^
-    | <f,g>  | π₁
-    v        |
-  A × B -----+
-    |
-    | π₂
-    v
-    B <----- C
-        g
+                 C
+               / | \
+             f ⟨f,g⟩ g
+            /    |    \
+           v     v     v
+    A <--π₁-- A × B --π₂--> B
+
+    π₁ ∘ ⟨f,g⟩ = f   and   π₂ ∘ ⟨f,g⟩ = g
 ```
 
 ---
@@ -56,7 +52,7 @@ $$
 
 ### The API Gateway Pattern
 
-An API Gateway is a product construction:
+An API Gateway is a product construction:[^3]
 
 ```
 Client -----> Gateway -----> Service A
@@ -100,8 +96,8 @@ interface Gateway {
 }
 
 // Projections
-const toServiceA: (req: GatewayRequest) => ServiceARequest;
-const toServiceB: (req: GatewayRequest) => ServiceBRequest;
+declare const toServiceA: (req: GatewayRequest) => ServiceARequest;
+declare const toServiceB: (req: GatewayRequest) => ServiceBRequest;
 
 // Universal property: for any client with specific service needs,
 // there's exactly ONE way to express this through the gateway
@@ -123,7 +119,7 @@ const uniqueFactorization = <T>(
 
 ## The Coproduct: Canonical Choice
 
-The **coproduct** (or sum) is the dual of the product. For objects $A$ and $B$, the coproduct $A + B$ has injection morphisms:
+The **coproduct** (or sum) is the dual of the product.[^2] For objects $A$ and $B$, the coproduct $A + B$ has injection morphisms:
 
 $$
 \iota_1: A \to A + B \quad \text{and} \quad \iota_2: B \to A + B
@@ -136,12 +132,14 @@ $$
 $$
 
 ```
-    A -----> A + B <----- B
-    |          |          |
-    f        [f,g]        g
-    |          |          |
-    v          v          v
-    C <--------+--------> C
+    A --ι₁--> A + B <--ι₂-- B
+     \          |          /
+      f       [f,g]       g
+       \        |        /
+        v       v       v
+                C
+
+    [f,g] ∘ ι₁ = f   and   [f,g] ∘ ι₂ = g
 ```
 
 ---
@@ -190,9 +188,9 @@ const handleEvent = (
 };
 ```
 
-### Union Types Are Coproducts
+### Discriminated Unions Are Coproducts
 
-TypeScript union types are coproducts:
+TypeScript discriminated unions are coproducts[^4]—untagged unions that overlap (like `1 | number`) collapse their injections and lose the universal property:
 
 ```typescript
 // Coproduct type
@@ -279,7 +277,11 @@ paths:
 
 The gateway is the product; each route is a projection.
 
+(A single request taking one path is actually the dual reading—selecting *one* backend is copairing on the request side. The product view is about the gateway as a whole: it holds a projection to *every* backend, and an aggregating client uses several at once.)
+
 ### EventBridge as Coproduct
+
+Multiple sources inject into a single bus:[^5]
 
 ```typescript
 // Multiple sources inject into EventBridge
@@ -302,7 +304,7 @@ await eventBridge.putEvents({
 
 ### Step Functions: Both
 
-Step Functions combine products and coproducts:
+Step Functions combine products and coproducts:[^6]
 
 ```json
 {
@@ -314,6 +316,7 @@ Step Functions combine products and coproducts:
         { "StartAt": "BranchA", "States": {...} },
         { "StartAt": "BranchB", "States": {...} }
       ],
+      "ResultPath": "$.results",  // keep the input's $.type; branch outputs land here
       "Next": "Choice"
     },
     "Choice": {
@@ -321,7 +324,8 @@ Step Functions combine products and coproducts:
       "Choices": [
         { "Variable": "$.type", "StringEquals": "A", "Next": "HandleA" },
         { "Variable": "$.type", "StringEquals": "B", "Next": "HandleB" }
-      ]
+      ],
+      "Default": "HandleOther"
     }
   }
 }
@@ -464,3 +468,21 @@ The universal properties tell you exactly what your design must satisfy.
 ---
 
 *Next in the series: **Pullbacks and Pushouts: Integration Points That Don't Lie** — Where we learn how to construct integration points that preserve consistency.*
+
+---
+
+## Footnotes
+
+[^1]: Universal properties are fundamental to category theory and define constructions uniquely "up to isomorphism." A construction with a universal property is the "best" or "most efficient" solution—all other solutions must factor through it. This concept appears throughout mathematics: products, limits, free objects, and adjunctions all have universal properties. In architecture, recognizing universal properties helps identify canonical patterns that all other designs must ultimately reference.
+
+[^2]: Duality is a pervasive concept in category theory: for any construction in a category, you can obtain its dual by reversing all arrows. The product and coproduct are perfect duals—the product has arrows pointing out (projections), while the coproduct has arrows pointing in (injections). Other dual pairs include: monomorphisms/epimorphisms, limits/colimits, and pullbacks/pushouts (covered in Part 9). In architecture, understanding duality helps you recognize that aggregation patterns (products) and routing patterns (coproducts) are fundamentally related.
+
+[^3]: The API Gateway pattern has become a cornerstone of microservices architecture. Amazon API Gateway, Kong, Nginx, and similar tools all implement the product construction: they provide a single entry point (the product object) with routes/projections to various backend services. The universal property manifests as the requirement that any client access must factor through the gateway's routing logic—you can't bypass it while maintaining the same access patterns and guarantees (authentication, rate limiting, monitoring).
+
+[^4]: This connection between union types and coproducts is formalized in the Curry-Howard-Lambek correspondence, which relates type theory, logic, and category theory. In typed functional programming languages (Haskell, OCaml, TypeScript with discriminated unions), sum types directly implement categorical coproducts. Pattern matching implements the universal property of the coproduct—it's the unique way to handle all cases. Languages without proper sum types (classic Java, C) lack this direct categorical structure.
+
+[^5]: Amazon EventBridge is AWS's serverless event bus service that implements the coproduct pattern at scale. Multiple event sources (AWS services, custom applications, SaaS providers) inject events into the bus, and EventBridge rules route events to targets. The service handles the copairing function [f, g] through its rule engine. EventBridge supports events from over 200 AWS services plus SaaS and custom sources; throughput is governed by per-Region quotas (the PutEvents default is in the thousands of events per second, raisable on request). See: [AWS EventBridge documentation](https://aws.amazon.com/eventbridge/).
+
+[^6]: AWS Step Functions' state machine language (Amazon States Language) explicitly supports both product and coproduct constructions. The "Parallel" state type runs multiple branches concurrently and combines results (product), while the "Choice" state type selects one execution path based on conditions (coproduct). This makes Step Functions particularly powerful for orchestrating complex workflows that require both aggregation and conditional routing. The Map state also implements a product over dynamic collections.
+
+
