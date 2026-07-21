@@ -180,13 +180,13 @@ Non-idempotent operations resist composition. Each retry creates a different mor
 Service X and Service Y both update Database Z
 ```
 
-If the order of updates matters, then:
+If the order of updates matters, then—writing $X; Y$ for "X then Y" in diagrammatic order, i.e. $Y \circ X$:
 
 $$
 (X; Y) \neq (Y; X)
 $$
 
-This violates the spirit of composition. The "result" depends on extra-categorical information (timing).
+The inequality itself is lawful—composition is associative and unital, never commutative, and both composites exist as perfectly good morphisms. The failure is elsewhere: under concurrency, nothing in the model determines *which* composite occurs. The system's behavior isn't a single well-defined morphism—it depends on extra-categorical information (timing).
 
 <InfoBox title="Diagnostic Question" type="note">
 
@@ -278,7 +278,7 @@ Instead of "these services don't work well together," you can say "composition f
 
 ### 2. Universal Patterns
 
-Products, coproducts, limits, colimits—these aren't just abstract constructions. They're the mathematically optimal solutions to specific problems. An API gateway isn't "like" a product—it *is* a product, and that tells you exactly what properties it must satisfy.
+Products, coproducts, limits, colimits—these aren't just abstract constructions. They're the mathematically optimal solutions to specific problems. An API gateway aspires to be a product—and the product's universal property tells you exactly what an ideal gateway must satisfy.
 
 ### 3. Trade-off Analysis
 
@@ -312,10 +312,10 @@ You're already doing category theory. This series will give you the vocabulary a
 
 [^1]: **Bounded contexts** come from Domain-Driven Design (DDD), coined by Eric Evans. A bounded context is a boundary within which a particular domain model applies consistently. Different bounded contexts can have different models for the same real-world concept (e.g., "Customer" might mean different things in Sales vs. Shipping). In categorical terms, each bounded context is its own category, and integrations between them are functors.
 
-[^2]: A **product** in category theory is the categorical generalization of Cartesian product. Given objects $A$ and $B$, their product $A \times B$ comes with projection morphisms $\pi_1: A \times B \to A$ and $\pi_2: A \times B \to B$. The key property: for any object $X$ with morphisms to both $A$ and $B$, there's a unique morphism $X \to A \times B$ that factors through the projections. The **coproduct** (or sum) is the dual: multiple sources inject into a common target. In architecture, API gateways are product-like (project to multiple backends), event routers are coproduct-like (collect from multiple sources).
+[^2]: A **product** in category theory is the categorical generalization of Cartesian product. Given objects $A$ and $B$, their product $A \times B$ comes with projection morphisms $\pi_1: A \times B \to A$ and $\pi_2: A \times B \to B$. The key property: given any $f: X \to A$ and $g: X \to B$, there is a unique $h: X \to A \times B$ with $\pi_1 \circ h = f$ and $\pi_2 \circ h = g$. The **coproduct** (or sum) is the dual: multiple sources inject into a common target. In architecture, API gateways are product-like (project to multiple backends), event routers are coproduct-like (collect from multiple sources).
 
 [^3]: A **hom-set** $\text{Hom}(A, B)$ is the collection of all morphisms from $A$ to $B$. The name comes from "homomorphism," the structure-preserving maps in algebra. In programming, think of it as all functions with type signature `A → B`. The size of a hom-set measures coupling: a large hom-set means many ways to interact, which often means tight coupling.
 
-[^4]: The **Yoneda lemma** states that for any functor $F: \mathcal{C} \to \text{Set}$ and object $A$, there's a natural bijection between natural transformations $\text{Hom}(A, -) \Rightarrow F$ and elements of $F(A)$. The practical intuition: an object is completely determined by the morphisms into it from all other objects. You don't need to "look inside" an object—its external relationships tell you everything. Named after mathematician Nobuo Yoneda.
+[^4]: The **Yoneda lemma** states that for any functor $F: \mathcal{C}^{op} \to \text{Set}$ and object $A$, there's a natural bijection between natural transformations $\text{Hom}(-, A) \Rightarrow F$ and elements of $F(A)$. The practical intuition: an object is determined, up to isomorphism, by the morphisms into it from all other objects. You don't need to "look inside" an object—its external relationships tell you everything. Named after mathematician Nobuo Yoneda.
 
 [^5]: A transformation is **functorial** if it preserves categorical structure: it maps objects to objects, morphisms to morphisms, respects composition ($F(g \circ f) = F(g) \circ F(f)$), and preserves identities ($F(\text{id}_A) = \text{id}_{F(A)}$). When migrating systems, asking "is this functorial?" means: does the migration preserve the relationships that matter? If composition breaks during migration, the transformation isn't a proper functor.

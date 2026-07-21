@@ -75,7 +75,7 @@ interface FulfillmentRequest {
 // g ∘ f doesn't exist! Types don't match.
 ```
 
-**Diagnosis**: You're trying to compose morphisms in different categories. You need a **functor** (transformation) between them.
+**Diagnosis**: The objects don't match: $\text{cod}(f) \neq \text{dom}(g)$. Both morphisms live in the same category — you need a translation morphism $h: \text{OrderResponse} \to \text{FulfillmentRequest}$ so that $g \circ h \circ f$ is defined.
 
 **Fix**: Explicit translation layer
 
@@ -138,7 +138,7 @@ const result2 = await processPayment(await createOrder(items));
 
 **Diagnosis**: These aren't really morphisms—they're *effects*. The "same" input produces different outputs on different invocations.
 
-**Categorical interpretation**: True morphisms are deterministic. Side effects mean you're in a different category (e.g., Kleisli category for IO).
+**Categorical interpretation**: In the naive category of types and functions, morphisms are deterministic. Side effects mean you're in a different category — a Kleisli category for IO, where effectful arrows are perfectly good morphisms — but you have to acknowledge it and compose accordingly.
 
 **Fix**: Make operations idempotent with idempotency keys
 
@@ -174,7 +174,7 @@ await updateInventory(orderId);
 
 **Diagnosis**: Morphisms don't commute—order matters. You have a **non-commutative** structure.
 
-**Categorical interpretation**: In most categories, $g \circ f \neq f \circ g$ in general. But if your architecture *requires* a specific order, that's extra structure you need to enforce.
+**Categorical interpretation**: For $f, g: A \to A$ — operations on the same object — generally $g \circ f \neq f \circ g$. (For mismatched objects, $f \circ g$ isn't even defined.) If your architecture *requires* a specific order, that's extra structure you need to enforce.
 
 **Fix**: Make ordering explicit with sequence or saga
 
@@ -222,8 +222,9 @@ Hidden dependencies break composition. Solutions:
 ### 3. Are operations repeatable?
 
 ```
-f(x) = f(x)?  (Always?)
-g(y) = g(y)?  (Always?)
+Does calling f(x) twice give the same result?
+Does calling g(y) twice give the same result?
+(Are they actually functions?)
 ```
 
 Non-repeatable operations aren't true morphisms. Solutions:
@@ -234,6 +235,7 @@ Non-repeatable operations aren't true morphisms. Solutions:
 ### 4. Does order matter?
 
 ```
+For operations on the same object:
 g ∘ f = f ∘ g?  (Does it need to?)
 ```
 
@@ -268,13 +270,13 @@ const b = () => callServiceB(); // up to 30s
 const c = () => callServiceC(); // up to 30s
 
 // Composition 1: (c ∘ b) ∘ a
-// Total possible time: 90s, but your gateway times out at 60s
+// Worst case: 90s, but your gateway times out at 60s
 
 // Composition 2: c ∘ (b ∘ a)
-// Same problem from a different angle
+// Same worst case — 90s either way
 ```
 
-The timeouts don't compose associatively. You need:
+Note that associativity *holds* here — both groupings give the same 90s worst case. The failure is different: composition amplifies worst-case latency beyond the gateway's 60s budget. The composite exceeds a resource constraint no individual stage violates. (Genuine non-associativity would require timeout wrappers around composites — `timeout(60, c ∘ b) ∘ a` really does differ from `c ∘ timeout(60, b ∘ a)`.) You need:
 - Per-stage timeout budgets
 - Total timeout that accounts for all stages
 - Circuit breakers
@@ -283,18 +285,18 @@ The timeouts don't compose associatively. You need:
 
 ```typescript
 // Each can fail independently
-const parse = (raw: string): Result<Data, ParseError>;
-const validate = (data: Data): Result<Data, ValidationError>;
-const transform = (data: Data): Result<Output, TransformError>;
+declare const parse: (raw: string) => Result<Data, ParseError>;
+declare const validate: (data: Data) => Result<Data, ValidationError>;
+declare const transform: (data: Data) => Result<Output, TransformError>;
 
-// Do errors compose?
+// Do these compose at all?
 // (transform ∘ validate) ∘ parse
 // transform ∘ (validate ∘ parse)
 
-// Need consistent error handling strategy
+// Not without widening the error types
 ```
 
-For associativity, use consistent error types:
+Strictly, heterogeneous error types are a *composability* problem, not an associativity problem — the composites aren't even defined until the errors unify. Once they do, Kleisli associativity comes for free from the monad laws. Use consistent error types:
 
 ```typescript
 type PipelineError = ParseError | ValidationError | TransformError;
@@ -307,14 +309,14 @@ type Pipeline<T> = Result<T, PipelineError>;
 
 Every object needs an identity morphism: $\text{id}_A: A \to A$ such that $f \circ \text{id} = f = \text{id} \circ f$
 
-### The Health Check as Identity
+### The Health Check as Baseline
 
 ```typescript
-// The simplest morphism: do nothing, return success
+// The simplest morphism: ignore input, return success
 app.get('/health', (req, res) => res.status(200).send('OK'));
 ```
 
-If your health check passes but composition fails, the problem is in the composition, not the service.
+Strictly, this is a **constant morphism**, not an identity — it ignores its input and returns the same thing every time, while $\text{id}_A$ must return exactly what it received. But it serves the same diagnostic role: if your health check passes but composition fails, the problem is in the composition, not the service.
 
 ### The Passthrough Test
 
@@ -367,14 +369,14 @@ Don't hide failures in the happy path:
 
 ```typescript
 // Bad: failure hidden
-const getUser = (id: string): Promise<User | null>;
+declare const getUser: (id: string) => Promise<User | null>;
 
 // Better: failure explicit
-const getUser = (id: string): Promise<Result<User, NotFound | Timeout>>;
+declare const getUser: (id: string) => Promise<Result<User, NotFound | Timeout>>;
 
-// Best: categorical
-type UserF<T> = Kleisli<Result<T, UserError>>;
-const getUser: UserF<UserId, User> = (id) => /* ... */;
+// Best: categorical — a Kleisli arrow
+type UserF<A, B> = (a: A) => Promise<Result<B, UserError>>;
+declare const getUser: UserF<UserId, User>;
 ```
 
 ### Principle 3: Idempotency by Default
@@ -400,10 +402,10 @@ interface OrderService {
 
 ### Principle 4: Composition-Friendly Error Handling
 
-Errors should compose as cleanly as successes:
+Errors should compose as cleanly as successes — this is railway-oriented programming[^4]:
 
 ```typescript
-// Railway-oriented programming[^4]
+// Railway-oriented programming
 const pipeline = pipe(
   parseOrder,      // Result<Order, ParseError>
   validateOrder,   // Result<Order, ValidationError>
@@ -435,7 +437,7 @@ x-amazon-apigateway-integration:
   requestTemplates:
     application/json: |
       {
-        "internal_order_id": "$input.json('$.orderId')",
+        "internal_order_id": $input.json('$.orderId'),
         "line_items": $input.json('$.items')
       }
 ```

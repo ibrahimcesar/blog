@@ -89,16 +89,18 @@ const newProcess = (order: Order): ProcessedOrder => {
 A natural transformation $\alpha: F \Rightarrow G$ must satisfy:
 
 ```typescript
-// For any order transformation t: Order → Order
-// (e.g., applying a discount, modifying items)
+// For any operation f (e.g., applying a discount):
+// F(f) = legacyApplyDiscount — the operation as legacy runs it
+// G(f) = newApplyDiscount — the operation as the new system runs it
+// α = transformResult — the migration map
 
-// Path 1: Legacy process, then transform result
-const path1 = transformResult(legacyProcess(applyDiscount(order)));
+// Path 1: legacy operation, then migrate
+const path1 = transformResult(legacyApplyDiscount(order));
 
-// Path 2: Transform input, then new process
-const path2 = newProcess(applyDiscount(order));
+// Path 2: migrate, then new operation
+const path2 = newApplyDiscount(transformResult(order));
 
-// Naturality requires: path1 === path2 (for equivalent transformResult)
+// Naturality requires: path1 === path2
 ```
 
 If this doesn't hold, your migration will produce inconsistent results depending on *when* orders hit which system.
@@ -222,7 +224,7 @@ assert(migrateOrder(null) === null); // or throws consistently
 
 ## Feature Flags as Natural Transformations
 
-Feature flags implement a controlled natural transformation:
+Feature flags control which functor handles each request:
 
 ```typescript
 // Feature flag controls which functor to use
@@ -238,8 +240,8 @@ const processOrder = (order: Order): ProcessedOrder => {
 For this to work correctly:
 
 ```typescript
-// Naturality: same user should get consistent results
-// regardless of which processing path they're on
+// Consistent routing: same user stays on the same path
+// — a precondition for sanity, not naturality itself
 
 const user = { id: '123' };
 const order1 = createOrder(user, items1);
@@ -249,9 +251,11 @@ const order2 = createOrder(user, items2);
 // (Assuming we want user-level consistency)
 ```
 
+One caveat: the flag itself is not the natural transformation. It supplies no components $\alpha_A: F(A) \to G(A)$ — it just routes each input to $F$ or $G$. Pinning a user to one path is session stickiness. What makes mixed operation coherent is the underlying migration map $\alpha$: legacy results must migrate to what the new system would have produced.
+
 <InfoBox title="Gradual Rollout" type="tip">
 
-A gradual rollout is a family of natural transformations $\alpha_t: F \Rightarrow G$ parameterized by time $t$ or percentage. At $t=0$, $\alpha$ is identity on $F$. At $t=1$, $\alpha$ is the full transformation to $G$.
+A gradual rollout is a time-indexed family of *functors* $F_t$ — the per-request routing in effect at time $t$ — with $F_0 = F$ and $F_1 = G$, connected by natural transformations between successive stages. The rollout moves through intermediate functors, not through "partial" transformations: any $\alpha: F \Rightarrow G$ is already the full transformation.
 
 </InfoBox>
 
@@ -394,7 +398,7 @@ This is a natural transformation from the "plain handler" functor to the "logged
 
 ### Step Functions State Transformations
 
-Step Functions InputPath/OutputPath/ResultPath are natural transformations:
+Step Functions InputPath/OutputPath/ResultPath are data-mapping morphisms:
 
 ```json
 {
@@ -408,7 +412,7 @@ Step Functions InputPath/OutputPath/ResultPath are natural transformations:
 }
 ```
 
-The paths define how data transforms between states—and these must compose naturally.
+The paths define how data transforms between states—each is a single data-mapping function, chained by ordinary function composition. No functor pair, no naturality square — just morphisms.
 
 ---
 
@@ -417,11 +421,15 @@ The paths define how data transforms between states—and these must compose nat
 A blue-green deployment is a natural transformation with extra structure:
 
 ```
-Blue Environment (F) -----> Green Environment (G)
-        |                           |
-        v                           v
-   Blue Response              Green Response
+F(Request) --F(handle)--> F(Response)
+     |                         |
+     α_Request                 α_Response
+     |                         |
+     v                         v
+G(Request) --G(handle)--> G(Response)
 ```
+
+Blue is $F$, green is $G$; `handle` is request processing. The square must commute: handle in blue then migrate the response, or migrate the request then handle in green — same result.
 
 ### The Naturality Requirement
 
@@ -447,8 +455,9 @@ const route = (request: Request): Response => {
   }
 };
 
-// Naturality: same user always hits same environment
-// (until we change the percentage)
+// Consistent routing: same user always hits same environment
+// (until we change the percentage) — a precondition, not naturality.
+// Naturality proper: run blue then migrate === migrate then run green
 ```
 
 ---
@@ -529,9 +538,9 @@ Design transformations to be natural, and your migrations will be predictable.
 
 [^4]: **Vertical composition** of natural transformations stacks them: given $\alpha: F \Rightarrow G$ and $\beta: G \Rightarrow H$ (both between the same categories), their vertical composition $\beta \circ \alpha: F \Rightarrow H$ has components $(\beta \circ \alpha)_A = \beta_A \circ \alpha_A$. It's called "vertical" because if you draw functors as vertical arrows and natural transformations as horizontal double arrows, this composition stacks vertically. This corresponds to chaining migrations: v1 → v2 → v3.
 
-[^5]: **Horizontal composition** (also called Godement product or whiskering) is more subtle. Given $\alpha: F \Rightarrow G$ (between $\mathcal{C}$ and $\mathcal{D}$) and $\beta: H \Rightarrow K$ (between $\mathcal{D}$ and $\mathcal{E}$), you get $\beta * \alpha: H \circ F \Rightarrow K \circ G$. The components are $(\beta * \alpha)_A = \beta_{G(A)} \circ H(\alpha_A) = K(\alpha_A) \circ \beta_{F(A)}$ (these are equal by naturality of $\beta$). This corresponds to migrating multiple systems in parallel — the order doesn't matter because the transformations are independent.
+[^5]: **Horizontal composition** (also called the Godement product) is more subtle. Given $\alpha: F \Rightarrow G$ (between $\mathcal{C}$ and $\mathcal{D}$) and $\beta: H \Rightarrow K$ (between $\mathcal{D}$ and $\mathcal{E}$), you get $\beta * \alpha: H \circ F \Rightarrow K \circ G$. The components are $(\beta * \alpha)_A = \beta_{G(A)} \circ H(\alpha_A) = K(\alpha_A) \circ \beta_{F(A)}$ (these are equal by naturality of $\beta$). This corresponds to migrating multiple systems in parallel — the order doesn't matter because the transformations are independent. **Whiskering** is the special case where one of the two transformations is an identity — composing a natural transformation with a functor on one side, written $H\alpha$ or $\alpha H$.
 
-[^6]: A **natural isomorphism** is a natural transformation where every component $\alpha_A: F(A) \to G(A)$ is an isomorphism (has an inverse). This means the two functors $F$ and $G$ are "essentially the same" — they capture the same structure, just represented differently. Natural isomorphisms are written $F \cong G$. When two categories are connected by functors that are natural isomorphisms to identities, the categories are called *equivalent* — the subject of the next post.
+[^6]: A **natural isomorphism** is a natural transformation where every component $\alpha_A: F(A) \to G(A)$ is an isomorphism (has an inverse). This means the two functors $F$ and $G$ are "essentially the same" — they capture the same structure, just represented differently. Natural isomorphisms are written $F \cong G$. Two categories are *equivalent* when there are functors $F: \mathcal{C} \to \mathcal{D}$ and $G: \mathcal{D} \to \mathcal{C}$ whose composites are naturally isomorphic to the identities ($G \circ F \cong \mathrm{Id}_{\mathcal{C}}$ and $F \circ G \cong \mathrm{Id}_{\mathcal{D}}$) — the subject of the next post.
 
 [^7]: **Blue-green deployment** is a release strategy that maintains two identical production environments: "blue" (current) and "green" (new). Traffic initially goes to blue. You deploy updates to green, test it, then switch traffic atomically (usually via load balancer or DNS). If problems occur, you switch back to blue. The key insight: at any moment, only one environment serves production traffic, eliminating the "mixed state" problem of rolling deployments. AWS services supporting this include Elastic Beanstalk, CodeDeploy, and Route 53 weighted routing.
 

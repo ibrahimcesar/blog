@@ -76,7 +76,8 @@ class OrderModule {
 // Microservices equivalent
 class OrderService {
   async createOrder(userId: string, items: Item[]): Promise<Order> {
-    const user = await fetch(`${USER_SERVICE}/users/${userId}`);
+    const res = await fetch(`${USER_SERVICE}/users/${userId}`);
+    const user = await res.json();
     return this.processOrder(user, items);
   }
 }
@@ -153,22 +154,28 @@ Equivalence fails when structural properties don't transfer:
 
 ### Transactions Don't Transfer
 
-**Monolith**:
+**Monolith**[^4]:
 ```typescript
-@Transactional
-async createOrderWithPayment(userId: string, items: Item[]) {
-  const order = await this.orderRepo.create(items);
-  const payment = await this.paymentRepo.charge(order.total);
-  // Both succeed or both fail
+class CheckoutModule {
+  constructor(private orderRepo: OrderRepo, private paymentRepo: PaymentRepo) {}
+
+  @Transactional
+  async createOrderWithPayment(userId: string, items: Item[]) {
+    const order = await this.orderRepo.create(items);
+    const payment = await this.paymentRepo.charge(order.total);
+    // Both succeed or both fail
+  }
 }
-```[^4]
+```
 
 **Microservices**:
 ```typescript
-async createOrderWithPayment(userId: string, items: Item[]) {
-  const order = await orderService.create(items);
-  const payment = await paymentService.charge(order.total);
-  // What if payment fails? Order already exists!
+class CheckoutService {
+  async createOrderWithPayment(userId: string, items: Item[]) {
+    const order = await orderService.create(items);
+    const payment = await paymentService.charge(order.total);
+    // What if payment fails? Order already exists!
+  }
 }
 ```
 
@@ -177,18 +184,20 @@ The morphism "atomic create-and-pay" exists in the monolith category but not in 
 **To restore equivalence**: Add saga/compensation pattern[^5]
 
 ```typescript
-async createOrderWithPayment(userId: string, items: Item[]) {
-  const order = await orderService.create(items);
-  try {
-    const payment = await paymentService.charge(order.total);
-  } catch (e) {
-    await orderService.cancel(order.id);  // Compensating action
-    throw e;
+class CheckoutService {
+  async createOrderWithPayment(userId: string, items: Item[]) {
+    const order = await orderService.create(items);
+    try {
+      const payment = await paymentService.charge(order.total);
+    } catch (e) {
+      await orderService.cancel(order.id);  // Compensating action
+      throw e;
+    }
   }
 }
 ```
 
-Now there's an equivalent morphism (though implemented differently).
+Now there's an equivalent morphism (though implemented differently)—but only in a coarsened observational category. Sagas lack isolation: the transient order is visible before compensation runs, compensation itself can fail, and the failure end-state is a *cancelled* order, not *no* order. The equivalence holds only if your requirements ignore intermediate states, concurrency, and compensation failure.
 
 ### Latency Changes Semantics
 
@@ -206,20 +215,22 @@ If latency matters to correctness (real-time systems, trading), these aren't equ
 
 ### Data Locality Matters
 
-```typescript
-// Monolith: single database, joins are cheap
+```sql
+-- Monolith: single database, joins are cheap
 SELECT o.*, u.*
 FROM orders o
 JOIN users u ON o.user_id = u.id
 WHERE o.total > 1000;
+```
 
+```typescript
 // Microservices: data is distributed
 // This query doesn't have a direct equivalent!
 ```
 
 ---
 
-## Skeleton and Coskeleton
+## Skeletons
 
 Every category has a **skeleton**: the smallest equivalent category with no isomorphic objects.[^7]
 
@@ -340,22 +351,17 @@ testContract(microservices.userService, userContract);
 
 ## Adjoint Equivalences
 
-An **adjoint equivalence** is an equivalence where the functors form an adjunction (which we'll cover in Part 11). This is the "best" kind of equivalence.[^11]
+An **adjoint equivalence** is an equivalence where the functors form an adjunction (which we'll cover in Part 11). It's not a stronger relationship between the categories—every equivalence can be promoted to an adjoint equivalence using the same two functors—but a convenient normalization of one.[^11]
 
-**Architectural meaning**: Not only are the architectures equivalent, but there's a canonical way to translate between them.
+**Architectural meaning**: The architectures are no *more* equivalent; adjointness just tidies the translation data so the round-trip witnesses fit together coherently.
 
 ```typescript
-// Left adjoint: free construction
-const decompose = (monolith: Monolith): Microservices => {
-  // Canonical decomposition
-};
+// Quasi-inverse pair—each undoes the other up to isomorphism
+declare const decompose: (monolith: Monolith) => Microservices;
+declare const compose: (microservices: Microservices) => Monolith;
 
-// Right adjoint: forgetful/aggregation
-const compose = (microservices: Microservices): Monolith => {
-  // Canonical composition
-};
-
-// Adjunction means these translations are "optimal"
+// In an equivalence, each functor is both left and right adjoint
+// to the other—no free ⊣ forgetful asymmetry here
 ```
 
 ---
@@ -384,9 +390,9 @@ Single Table Design ≅ Multi-Table Design
 
 If: Proper GSI design mirrors the joins you need
 If: Access patterns are known and stable
-```[^12]
+```
 
-**Equivalent for**: Known access patterns
+**Equivalent for**: Known access patterns[^12]
 **Not equivalent for**: Ad-hoc querying, complex reporting
 
 ### SQS + Lambda vs. Kinesis + Lambda
@@ -479,6 +485,6 @@ The answer tells you whether the choice matters.
 
 [^10]: Consumer-driven contracts are a pattern where service consumers define the contracts they expect, rather than providers dictating them. Tools like [Pact](https://pact.io/) enable testing these contracts across different implementations. This is particularly useful for verifying architectural equivalence between systems that must satisfy the same client requirements.
 
-[^11]: Adjunctions are pairs of functors with optimal translation properties—they preserve the most structure possible. When an equivalence is also an adjunction (adjoint equivalence), the round-trip translations are not just isomorphic but universal (no other translation is "better"). We'll explore adjunctions in depth in Part 11: "Adjunctions: The Universal Translation Pattern."
+[^11]: Any equivalence can be promoted to an adjoint equivalence with the same two functors by adjusting one of the natural isomorphisms—see Mac Lane, *Categories for the Working Mathematician*, Theorem IV.4.1. So adjointness is a normalization every equivalence admits, not an extra property distinguishing "better" equivalences. We'll explore adjunctions in depth in Part 11: "Adjunctions: The Universal Translation Pattern."
 
 [^12]: Rick Houlihan's talks at AWS re:Invent popularized DynamoDB single-table design patterns. Key resources: [AWS DynamoDB single-table design](https://aws.amazon.com/blogs/compute/creating-a-single-table-design-with-amazon-dynamodb/) and his advanced design pattern talks. Single-table design trades schema flexibility for performance and cost optimization when access patterns are well-understood.

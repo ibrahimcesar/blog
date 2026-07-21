@@ -140,11 +140,12 @@ $$
 **Example**: API consumer perspective
 
 ```
-Service provides: getUser(id) → User
-Consumer needs:   User → void (callback/handler)
+Service provides: getUser: Id → User
+Consumer functor: F(A) = A → void (handlers)
 
-// The consumer functor reverses arrows
-F(getUser) = userHandler: User → void
+// F reverses the arrow: F(getUser): F(User) → F(Id)
+F(getUser) = (userHandler: User → void) => (id) => userHandler(getUser(id))
+// A User-handler becomes an Id-handler — fetch, then handle
 ```
 
 This explains why producer changes propagate "backwards" to consumers.
@@ -189,14 +190,14 @@ $$
 
 **Violation example**: Health checks fail after migration
 
-```typescript
+```
 // Source: identity works
-GET /users/123 → User(123)  // Returns same user
+GET /users/123 → User(123)  // Reading changes nothing
 
-// Target: migration adds transformation
-GET /users/123 → User(123) + { migrated: true, legacyId: 'old-123' }
+// Target: reads write back a migration flag on access
+GET /users/123 → stores { ...User(123), migrated: true }, then returns it
 
-// F(id) ≠ id — "do nothing" now does something
+// F(id) ≠ id — "do nothing" now mutates the stored item
 ```
 
 **Fix**: Ensure read-then-write cycles are stable.
@@ -237,9 +238,12 @@ const process = (data: Input): Output =>
 The functor must map this to microservices:
 ```typescript
 const process = async (data: Input): Promise<Output> => {
-  const user = await fetch('/users/' + data.userId);
-  const order = await fetch('/orders', { body: { user, items: data.items } });
-  return order;
+  const user = await fetch('/users/' + data.userId).then(r => r.json());
+  const res = await fetch('/orders', {
+    method: 'POST',
+    body: JSON.stringify({ user, items: data.items }),
+  });
+  return res.json();
 };
 // Distributed, async, no transaction guarantees by default
 ```
@@ -275,10 +279,8 @@ This is an endofunctor on the category of TypeScript types.
 
 ```typescript
 // F: ServiceCall → ServiceCall (with retry logic)
-const withRetry = <A, B>(
-  call: (a: A) => Promise<B>,
-  maxRetries: number
-): (a: A) => Promise<B> =>
+const withRetry = (maxRetries: number) =>
+  <A, B>(call: (a: A) => Promise<B>): ((a: A) => Promise<B>) =>
   async (a: A) => {
     for (let i = 0; i <= maxRetries; i++) {
       try {
@@ -296,16 +298,14 @@ const withRetry = <A, B>(
 
 ```typescript
 // F: ServiceCall → ServiceCall (with circuit breaker)
-const withCircuitBreaker = <A, B>(
-  call: (a: A) => Promise<B>,
-  config: CircuitBreakerConfig
-): (a: A) => Promise<B> => {
-  const breaker = new CircuitBreaker(config);
-  return (a: A) => breaker.execute(() => call(a));
-};
+const withCircuitBreaker = (config: CircuitBreakerConfig) =>
+  <A, B>(call: (a: A) => Promise<B>): ((a: A) => Promise<B>) => {
+    const breaker = new CircuitBreaker(config);
+    return (a: A) => breaker.execute(() => call(a));
+  };
 ```
 
-These endofunctors *compose*:
+These wrappers *compose*:
 
 ```typescript
 const resilientCall = pipe(
@@ -317,7 +317,7 @@ const resilientCall = pipe(
 );
 ```
 
-Each layer is an endofunctor. The composition is still a functor.
+Each layer preserves the shape of a service call. But an honest caveat: strictly, `withRetry` and `withCircuitBreaker` are not endofunctors — they're morphism decorators, transformations on hom-sets. They preserve types, not composition: retrying $g \circ f$ as a whole is not composing per-step retries, and one breaker around a pipeline is not a breaker per step — $F(g \circ f) \neq F(g) \circ F(f)$. The genuine endofunctor here is `Option` with `map`, above.
 
 ---
 
@@ -327,7 +327,7 @@ Not all functors preserve structure equally:
 
 ### Faithful Functor[^7]
 
-Injective on morphisms: if $F(f) = F(g)$, then $f = g$.
+Injective on each hom-set: for parallel morphisms $f, g: A \to B$, if $F(f) = F(g)$, then $f = g$.
 
 **Meaning**: No information loss in morphisms.
 
@@ -340,7 +340,7 @@ Injective on morphisms: if $F(f) = F(g)$, then $f = g$.
 
 ### Full Functor[^8]
 
-Surjective on morphisms: every morphism in the target comes from the source.
+Surjective on each hom-set: for each pair $A, B$, every morphism $F(A) \to F(B)$ between images comes from some $f: A \to B$ in the source.
 
 **Meaning**: All target operations exist in source.
 
@@ -386,7 +386,7 @@ Lost morphisms:
   - Full OS access
 ```
 
-This functor is **neither full nor faithful**—it's a significant structural change.
+With unmapped morphisms, this isn't a total functor at all—it's a **partial functor**, a significant structural change.
 
 ### RDS → Aurora Serverless
 
@@ -398,9 +398,9 @@ Objects:
 Morphisms:
   F(SQL query) = SQL query (identical)
   F(Stored procedures) = Stored procedures (identical)
+```
 
 This is nearly fully faithful—minimal structural change.
-```
 
 ### ECS → EKS
 
@@ -454,7 +454,7 @@ For each operation, define the target operation:
 
 **Composition**: Does sequential operation order still work?
 
-```typescript
+```
 // Source: guaranteed order
 insert(order) → insert(items) → commit
 
@@ -515,7 +515,7 @@ Design migrations as functors, and you'll know exactly what works and what doesn
 
 *Next in the series: **Natural Transformations: Coherent Change Across Systems** — Where we learn how to transform one functor into another while maintaining consistency everywhere.*
 
-[^1]: The word **functor** comes from the Latin *functor* ("performer"), derived from the verb *fungī* meaning "to perform" or "to execute" (unrelated to mushrooms, despite the spelling). In category theory, a functor "performs" a translation between categories. The concept was introduced by Samuel Eilenberg and Saunders Mac Lane in 1945, along with the definition of category itself. Functors formalize the notion of "structure-preserving map" — they're homomorphisms between categories, just as group homomorphisms preserve group structure and ring homomorphisms preserve ring structure.
+[^1]: The word **functor** was borrowed by Saunders Mac Lane from Rudolf Carnap's *Logical Syntax of Language* — a debt credited in the 1945 Eilenberg–Mac Lane paper that introduced functors along with the definition of category itself. The root is the Latin verb *fungī*, "to perform" or "to execute" (unrelated to mushrooms, despite the spelling). In category theory, a functor "performs" a translation between categories. Functors formalize the notion of "structure-preserving map" — they're homomorphisms between categories, just as group homomorphisms preserve group structure and ring homomorphisms preserve ring structure.
 
 [^2]: **GSI** stands for Global Secondary Index in DynamoDB. Unlike primary keys which define the main access pattern, GSIs allow you to query the table using alternative key attributes. A GSI has its own partition key and optional sort key, enabling efficient queries on non-primary-key attributes. Each table can have up to 20 GSIs. They're "global" because queries can span all partitions, unlike Local Secondary Indexes (LSIs) which are constrained to items with the same partition key.
 
@@ -529,6 +529,6 @@ Design migrations as functors, and you'll know exactly what works and what doesn
 
 [^7]: A **faithful functor** is injective (one-to-one) on hom-sets: for any two objects $A, B$, the mapping $F: \text{Hom}(A,B) \to \text{Hom}(F(A), F(B))$ is injective. This means distinct morphisms in the source map to distinct morphisms in the target — no information about relationships is lost. A faithful functor "remembers" all the structure. In database terms: if two queries do different things, they remain different after migration.
 
-[^8]: A **full functor** is surjective (onto) on hom-sets: for any two objects $A, B$, every morphism $g: F(A) \to F(B)$ in the target comes from some morphism $f: A \to B$ in the source. This means the target doesn't introduce new relationships — everything you can do in the target, you could already do in the source. A full functor "covers" all the structure. In migration terms: the new system doesn't have capabilities the old one lacked.
+[^8]: A **full functor** is surjective (onto) on hom-sets: for any two objects $A, B$, every morphism $g: F(A) \to F(B)$ in the target comes from some morphism $f: A \to B$ in the source. This means the target doesn't introduce new relationships between migrated objects — everything you can do between them in the target, you could already do in the source. A full functor "covers" all the structure. In migration terms: the new system doesn't have capabilities the old one lacked.
 
 [^9]: A **fully faithful functor** is both full and faithful — it's a bijection on hom-sets. This means the functor is an *embedding*: the source category sits inside the target category with its structure perfectly preserved. No morphisms are lost (faithful) and no new morphisms appear (full). Fully faithful functors represent "perfect" translations where the source and its image are structurally identical. In practice, most real-world migrations are neither full nor faithful — there are always trade-offs.

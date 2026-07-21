@@ -57,7 +57,7 @@ Morphisms can be:
 | Property | Definition | Architectural Meaning |
 |----------|------------|----------------------|
 | **Monomorphism**[^3] | Left-cancellable: $f \circ g = f \circ h \Rightarrow g = h$ | Injective transformation, no information loss |
-| **Epimorphism** | Right-cancellable: $g \circ f = h \circ f \Rightarrow g = h$ | Surjective, covers entire target |
+| **Epimorphism** | Right-cancellable: $g \circ f = h \circ f \Rightarrow g = h$ | Surjective, covers entire target (in $\mathbf{Set}$)[^3] |
 | **Isomorphism** | Has two-sided inverse | Lossless, reversible transformation |
 | **Endomorphism**[^4] | $f: A \to A$ | Self-transformation (state machine) |
 | **Automorphism** | Isomorphic endomorphism | Symmetry operation |
@@ -132,16 +132,18 @@ In category theory, $\text{Hom}(A, B)$[^2] is the set of all morphisms from $A$ 
 
 ### Analyzing Integration Points
 
-For any two services $A$ and $B$, ask: **what is $\text{Hom}(A, B)$?**
+For any two services $A$ and $B$, ask: **what operations does $A$ invoke on $B$?**
 
 ```
-Hom(OrderService, InventoryService) = {
+Coupling(OrderService, InventoryService) = {
   checkAvailability: Order → Availability,
   reserveItems: Order → Reservation,
   releaseReservation: ReservationId → Unit,
   decrementStock: Order → Unit
 }
 ```
+
+One precision: each operation above is a morphism between *data types*, so this set isn't literally $\text{Hom}(\text{OrderService}, \text{InventoryService})$—every element of a hom-set must go from $A$ to $B$, and these don't. With services as objects, each operation is instead one arrow $\text{OrderService} \to \text{InventoryService}$: four parallel arrows, with the payload typing living in the category of data types. That hom-set is the **coupling surface**.
 
 This set tells you:
 1. **All the ways** A can interact with B
@@ -158,7 +160,7 @@ If Service A has 47 different ways to call Service B, they're tightly coupled. I
 
 ```typescript
 // Tight coupling: many morphisms
-interface TightlyCoupleddInventoryService {
+interface TightlyCoupledInventoryService {
   checkStock(sku: string): number;
   checkStockBatch(skus: string[]): Map<string, number>;
   reserveStock(sku: string, qty: number): boolean;
@@ -195,6 +197,8 @@ This is the categorical formulation of interface segregation[^5] and loose coupl
 ```
 Hom(Client, MonolithAPI) = { 50+ endpoints }
 ```
+
+(Services as objects again: each endpoint is one arrow $\text{Client} \to \text{MonolithAPI}$.)
 
 **After**: Multiple focused APIs
 
@@ -241,7 +245,7 @@ const pipeline = (raw: RawEvent): StoredEvent =>
   store(transform(enrich(validate(parse(raw)))));
 
 // Or more explicitly with pipe
-const pipeline = pipe(parse, validate, enrich, transform, store);
+const composedPipeline = pipe(parse, validate, enrich, transform, store);
 ```
 
 ---
@@ -268,7 +272,7 @@ The v2 morphism is **backward compatible** because:
 1. v1 requests are valid v2 requests (new field is optional)
 2. v1 response consumers can ignore new fields
 
-This is a form of **morphism factorization**[^6]: $v2 = \text{extension} \circ v1$
+This is a **compatibility square**[^6]: with the inclusion $\text{incl}: \text{Req1} \to \text{Req2}$ and extension $\text{ext}: \text{Resp1} \to \text{Resp2}$, restricting v2 to old requests factors through v1—$v2 \circ \text{incl} = \text{ext} \circ v1$. Project away the new response fields with $\text{proj}: \text{Resp2} \to \text{Resp1}$ and you recover v1 exactly: $\text{proj} \circ v2 \circ \text{incl} = v1$.
 
 ### Breaking Changes as Morphism Replacement
 
@@ -308,7 +312,7 @@ Before any architecture review, enumerate the morphisms:
 
 ### API Gateway
 
-An API Gateway defines morphisms from external clients to internal services:
+In the services-as-objects picture, an API Gateway maps external routes—arrows into the gateway—to internal calls:
 
 ```
 Hom(ExternalClient, Gateway) → Σ Hom(Gateway, BackendService)
@@ -318,16 +322,16 @@ The gateway is a **morphism transformer**—it takes external morphisms and maps
 
 ### EventBridge
 
-EventBridge is a morphism composition engine:
+EventBridge is a routing engine:
 
 ```
-Rule: EventPattern → Target
+Rule: Event → TargetInput   # restricted to events matching the pattern
 ```
 
-Each rule is a morphism. EventBridge composes them:
+Each rule is a morphism. But fan-out is not composition—rules sharing the same source can't compose with each other. It's **tupling**, the universal property of the product:
 
 ```
-Source → [Rule1, Rule2, Rule3] → [Target1, Target2, Target3]
+⟨Rule1, Rule2, Rule3⟩: Source → Target1 × Target2 × Target3
 ```
 
 ### Step Functions
@@ -363,12 +367,12 @@ The architecture is the collection of morphisms. Everything else is implementati
 
 [^1]: **COBOL** stands for "Category-Oriented Business Object Language" — just kidding. It's actually **Common Business-Oriented Language**, created in 1959 and still running an estimated 95% of ATM transactions and 80% of in-person transactions globally. The joke here is that from a categorical perspective, it genuinely doesn't matter if your morphism is implemented in a hip new language or a 65-year-old one. The interface is what counts.
 
-[^2]: A **hom-set** (or "hom-set," short for "homomorphism set") $\text{Hom}(A, B)$ collects all morphisms from object $A$ to object $B$ in a category. It's pronounced "hom A B" or "hom-set from A to B." In programming terms, it's like asking "what are all the functions with signature `A → B`?" The size of a hom-set measures how many ways two things can relate—a key metric for coupling.
+[^2]: A **hom-set** (short for "homomorphism set") $\text{Hom}(A, B)$ collects all morphisms from object $A$ to object $B$ in a category. It's pronounced "hom A B" or "hom-set from A to B." In programming terms, it's like asking "what are all the functions with signature `A → B`?" The size of a hom-set measures how many ways two things can relate—a key metric for coupling.
 
-[^3]: **Monomorphism**, **epimorphism**, and **isomorphism** are the categorical generalizations of injective (one-to-one), surjective (onto), and bijective (one-to-one and onto) functions. A monomorphism preserves distinctness: different inputs give different outputs. An epimorphism covers the target: every possible output is reachable. An isomorphism does both, meaning you can go back and forth without losing information. These concepts generalize beyond functions to any category.
+[^3]: **Monomorphism**, **epimorphism**, and **isomorphism** are the categorical generalizations of injective (one-to-one), surjective (onto), and bijective (one-to-one and onto) functions. A monomorphism preserves distinctness: different inputs give different outputs. An epimorphism covers the target: every possible output is reachable. An isomorphism does both, meaning you can go back and forth without losing information. These concepts generalize beyond functions to any category—with one caution: in general categories epimorphisms need not be surjective (the ring inclusion $\mathbb{Z} \hookrightarrow \mathbb{Q}$ is an epi); the "covers the target" reading is specific to $\mathbf{Set}$.
 
 [^4]: An **endomorphism** is a morphism from an object to itself: $f: A \to A$. Think state transitions, where you start with a state and end with a (possibly different) state of the same type. An **automorphism** is an endomorphism that's also an isomorphism—a reversible self-transformation. Rotating a square 90° is an automorphism; the square is still a square and you can rotate back.
 
 [^5]: **Interface segregation** is the "I" in SOLID principles, stating that clients shouldn't depend on interfaces they don't use. The categorical view: minimize the hom-set size that each client sees. Instead of one fat interface with 20 methods, provide 4 focused interfaces with 5 methods each. Each client depends only on the morphisms it actually uses.
 
-[^6]: **Morphism factorization** means expressing one morphism as the composition of others: $f = g \circ h$. This is powerful for evolution: if v2 = extension ∘ v1, then v1 clients still work (they just ignore the extension). In many categories, every morphism factors uniquely through an epi followed by a mono—the "image factorization." This corresponds to: first collapse to what's essential (epi), then embed in the target (mono).
+[^6]: **Morphism factorization** means expressing one morphism as the composition of others: $f = g \circ h$. For API evolution the honest statement is a compatibility square: with $\text{incl}: \text{Req1} \to \text{Req2}$ and $\text{ext}: \text{Resp1} \to \text{Resp2}$, backward compatibility means $v2 \circ \text{incl} = \text{ext} \circ v1$—v2 restricted to old requests factors through v1, so v1 clients still work (they just ignore the extension). In many categories, every morphism factors essentially uniquely (uniquely up to isomorphism) through an epi followed by a mono—the "image factorization." This corresponds to: first collapse to what's essential (epi), then embed in the target (mono).

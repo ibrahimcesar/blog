@@ -188,11 +188,11 @@ interface UserForConsumerC {
 }
 ```
 
-The service is characterized by the **union of consumer expectations**. If all consumers are satisfied, the service is correct—regardless of how it's implemented.
+The service is characterized by the **union of consumer expectations**. If all consumers are satisfied, the service is correct—for the interactions those consumers exercise—regardless of how it's implemented.
 
 <InfoBox title="Yoneda Says" type="tip">
 
-The service *is* the collection of all consumer views. Any implementation that satisfies all consumer contracts is, categorically speaking, the same service.
+The service *is* the collection of all consumer views. Any implementation that satisfies all consumer contracts is, categorically speaking, the same service—relative to those contracts. One honest caveat: Yoneda requires agreement on *all* morphisms, naturally, while a contract suite only samples $\text{Hom}(-, A)$. Two implementations that pass every existing contract can still differ on interactions no current consumer exercises.
 
 </InfoBox>
 
@@ -219,8 +219,8 @@ interface DynamoDBDocumentClient {
   delete(params: DeleteCommandInput): Promise<DeleteCommandOutput>;
   query(params: QueryCommandInput): Promise<QueryCommandOutput>;
   scan(params: ScanCommandInput): Promise<ScanCommandOutput>;
-  transactWrite(params: TransactWriteCommandInput): Promise<...>;
-  batchWrite(params: BatchWriteCommandInput): Promise<...>;
+  transactWrite(params: TransactWriteCommandInput): Promise<TransactWriteCommandOutput>;
+  batchWrite(params: BatchWriteCommandInput): Promise<BatchWriteCommandOutput>;
   // ... many more
 }
 ```
@@ -302,16 +302,16 @@ Each stakeholder observes the system through different morphisms. The system *is
 
 ### Consistency Across Views
 
-The presheaf structure demands **naturality**: views must be consistent.
+Within any single view, the presheaf structure demands **functoriality**: observing along a composed morphism must equal composing the observations—$F(g \circ f) = F(f) \circ F(g)$. That keeps each view internally coherent, but it does *not* force different stakeholder views to agree with each other.
 
 ```
 If: Developer deploys version 2.0
 Then: Operations should see version 2.0 in metrics
       Business should see version 2.0 features in analytics
       Security should scan version 2.0
-
-If views disagree, the presheaf is broken.
 ```
+
+That stronger property—independent views agreeing on their overlaps and gluing into one global picture—is the **sheaf** condition. When it holds, you don't just have a presheaf, you have a sheaf. Presheaves famously need not satisfy it, which is exactly why stakeholder views drift apart unless you actively make them glue.
 
 ---
 
@@ -418,7 +418,7 @@ What is a Lambda function? Its interface:
 type LambdaHandler = (event: Event, context: Context) => Promise<Response>;
 ```
 
-Everything else—runtime, memory, timeout, VPC configuration—is implementation detail. Two Lambdas with the same interface are interchangeable.
+Everything else—runtime, memory, timeout, VPC configuration—is implementation detail. Two Lambdas with the same interface *and the same observable behavior on every event* are interchangeable.
 
 ### S3 as Universal Storage
 
