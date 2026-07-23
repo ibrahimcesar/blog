@@ -10,7 +10,7 @@ interface Props {
 const { currentPost, seriesPosts, seriesName } = Astro.props;
 
 // Find current post index
-const currentIndex = seriesPosts.findIndex((p) => p.slug === currentPost.slug);
+const currentIndex = seriesPosts.findIndex((p) => p.id === currentPost.id);
 const totalPosts = seriesPosts.length;
 
 // Get previous and next posts
@@ -54,7 +54,7 @@ const isEnglish = currentPost.data.language === "en";
     <ol class="series-list">
       {
         seriesPosts.map((post, index) => {
-          const isCurrent = post.slug === currentPost.slug;
+          const isCurrent = post.id === currentPost.id;
           const isCompleted = index < currentIndex;
 
           return (
@@ -68,7 +68,7 @@ const isEnglish = currentPost.data.language === "en";
                   </span>
                 </span>
               ) : (
-                <a href={`/blog/${post.slug}`} class="series-link">
+                <a href={`/blog/${post.id}`} class="series-link">
                   <span class="series-number">{index + 1}</span>
                   <span class="series-post-title">{post.data.title}</span>
                   {isCompleted && (
@@ -101,7 +101,7 @@ const isEnglish = currentPost.data.language === "en";
   <div class="series-nav-buttons">
     {
       previousPost ? (
-        <a href={`/blog/${previousPost.slug}`} class="nav-button prev">
+        <a href={`/blog/${previousPost.id}`} class="nav-button prev">
           <svg
             class="nav-icon"
             aria-hidden="true"
@@ -144,7 +144,7 @@ const isEnglish = currentPost.data.language === "en";
 
     {
       nextPost ? (
-        <a href={`/blog/${nextPost.slug}`} class="nav-button next">
+        <a href={`/blog/${nextPost.id}`} class="nav-button next">
           <div class="nav-content">
             <span class="nav-label">{isEnglish ? "Next" : "Próximo"}</span>
             <span class="nav-title">{nextPost.data.title}</span>

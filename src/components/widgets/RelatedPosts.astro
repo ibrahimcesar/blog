@@ -27,7 +27,7 @@ const isEnglish = currentPost.data.language === "en";
       const postIsEnglish = post.data.language === "en";
       return (
         <li class="related-item" lang={postIsEnglish ? "en" : "pt-BR"}>
-          <a href={`/blog/${post.slug}`} class="related-link">
+          <a href={`/blog/${post.id}`} class="related-link">
             {post.data.title}
           </a>
           <div class="related-meta">

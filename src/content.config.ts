@@ -1,4 +1,6 @@
-import { z, defineCollection } from 'astro:content';
+import { defineCollection } from 'astro:content';
+import { glob } from 'astro/loaders';
+import { z } from 'astro/zod';
 
 // Transform comma-separated string to array or keep array as-is
 const tagsSchema = z.union([
@@ -8,7 +10,7 @@ const tagsSchema = z.union([
 
 // Posts collection schema
 const postsCollection = defineCollection({
-  type: 'content',
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/posts' }),
   schema: z.object({
     // Required fields
     title: z.string(),
@@ -34,7 +36,7 @@ const postsCollection = defineCollection({
     excerpt: z.string().optional(),
 
     // Linking and organization
-    canonicalURL: z.string().url().optional(),
+    canonicalURL: z.url().optional(),
     series: z.string().optional(),
     seriesOrder: z.number().int().positive().optional(),
     relatedPosts: z.array(z.string()).default([]),
@@ -44,7 +46,7 @@ const postsCollection = defineCollection({
     showComments: z.boolean().default(true),
 
     // Discussion links
-    discussionUrl: z.string().url().optional(),
+    discussionUrl: z.url().optional(),
 
     // Quick summary
     tldr: z.string().optional(),
@@ -53,7 +55,7 @@ const postsCollection = defineCollection({
 
 // Talks collection schema
 const talksCollection = defineCollection({
-  type: 'content',
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/talks' }),
   schema: z.object({
     // Required fields
     title: z.string(),
@@ -63,8 +65,8 @@ const talksCollection = defineCollection({
     description: z.string().optional(),
     eventDate: z.string().optional(), // Display format (e.g., "2023-05-05 10h00")
     videoTime: z.string().optional(), // Duration (e.g., "45 minutes")
-    videoUrl: z.string().url().optional(),
-    slidesUrl: z.string().url().optional(),
+    videoUrl: z.url().optional(),
+    slidesUrl: z.url().optional(),
     event: z.string().optional(), // Event name
     location: z.string().optional(), // Physical or virtual location
     language: z.enum(['en', 'pt-br']).default('pt-br'),
@@ -75,7 +77,7 @@ const talksCollection = defineCollection({
 
 // What I Watched collection schema - YouTube videos with commentary
 const watchedCollection = defineCollection({
-  type: 'content',
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/watched' }),
   schema: z.object({
     // Required fields
     title: z.string(),
@@ -94,14 +96,14 @@ const watchedCollection = defineCollection({
 
 // What I Read collection schema - Articles, papers, books with commentary
 const readsCollection = defineCollection({
-  type: 'content',
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/reads' }),
   schema: z.object({
     // Required fields
     title: z.string(),
     pubDate: z.coerce.date(),
 
     // Source information
-    sourceUrl: z.string().url().optional(), // Link to the article/paper
+    sourceUrl: z.url().optional(), // Link to the article/paper
     author: z.string().optional(), // Author of the content
     source: z.string().optional(), // Publication/website name
 

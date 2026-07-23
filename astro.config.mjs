@@ -1,6 +1,6 @@
 import { defineConfig } from "astro/config";
+import { unified } from "@astrojs/markdown-remark";
 
-import tailwind from "@astrojs/tailwind";
 import sitemap from "@astrojs/sitemap";
 import mdx from "@astrojs/mdx";
 import react from "@astrojs/react";
@@ -39,7 +39,11 @@ const createSROnlyLabel = (text) => h('span.sr-only', `Section titled ${text}`);
 
 // https://astro.build/config
 export default defineConfig({
+  // Keep HTML-aware whitespace compression (v7 default is 'jsx')
+  compressHTML: true,
   markdown: {
+    // Keep the unified (remark/rehype) pipeline instead of v7's default processor
+    processor: unified(),
     shikiConfig: {
       theme: {
         name: 'Star gazer',
@@ -108,11 +112,6 @@ export default defineConfig({
     }),
     mdx(),
     react(),
-    tailwind({
-      config: {
-        applyBaseStyles: false,
-      },
-    }),
     sitemap()
   ],
 

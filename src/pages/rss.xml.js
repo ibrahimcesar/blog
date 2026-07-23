@@ -76,7 +76,7 @@ export const GET = async () => {
     site: import.meta.env.SITE,
     author: SITE.name,
     items: posts.map((post) => ({
-      link: `blog/${post.slug}`,
+      link: `blog/${post.id}`,
       title: post.data.title,
       description: post.data.description,
       pubDate: post.data.pubDate,

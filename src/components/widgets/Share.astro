@@ -6,7 +6,7 @@ interface Props {
 }
 
 const { post } = Astro.props;
-const url = post.slug;
+const url = post.id;
 const title = post.data.title;
 const description = post.data.description;
 const fullUrl = `https://ibrahimcesar.cloud/blog/${url}`;
