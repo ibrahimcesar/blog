@@ -1,12 +1,16 @@
 import { defineConfig } from "astro/config";
+import { unified } from "@astrojs/markdown-remark";
 
 import sitemap from "@astrojs/sitemap";
 import mdx from "@astrojs/mdx";
 import react from "@astrojs/react";
 import expressiveCode from "astro-expressive-code";
 import remarkMath from "remark-math";
+import remarkSmartypants from "remark-smartypants";
 import rehypeKatex from "rehype-katex";
 import rehypeMermaid from "rehype-mermaid";
+import rehypeSlug from "rehype-slug";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
 
 import { h } from 'hastscript';
 import { toString } from 'hast-util-to-string';
@@ -39,7 +43,11 @@ const createSROnlyLabel = (text) => {
 
 // https://astro.build/config
 export default defineConfig({
+  // Keep HTML-aware whitespace compression (v7 default is 'jsx')
+  compressHTML: true,
   markdown: {
+    // Keep the unified (remark/rehype) pipeline instead of v7's default processor
+    processor: unified(),
     shikiConfig: {
       theme: {
         name: 'Star gazer',
@@ -51,16 +59,16 @@ export default defineConfig({
       wrap: true
     },
     remarkPlugins: [
-      ['remark-smartypants', { dashes: false }],
+      [remarkSmartypants, { dashes: false }],
       remarkMath,
     ],
     rehypePlugins: [
       rehypeKatex,
       [rehypeMermaid, { strategy: 'pre-mermaid' }],
-      'rehype-slug',
+      rehypeSlug,
       // This adds links to headings
       [
-        'rehype-autolink-headings',
+        rehypeAutolinkHeadings,
         {
           properties: {
             class: 'anchor-link',
