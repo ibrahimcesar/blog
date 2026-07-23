@@ -10,7 +10,7 @@ const { post } = Astro.props;
 const isEnglish = post.data.language === "en";
 ---
 
-<article class="py-4 border-b border-slate-200 dark:border-slate-700 last:border-b-0">
+<article lang={isEnglish ? "en" : "pt-BR"} class="py-4 border-b border-slate-200 dark:border-slate-700 last:border-b-0">
   <div class="flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-6">
     <time
       datetime={post.data.pubDate.toISOString()}
@@ -38,8 +38,8 @@ const isEnglish = post.data.language === "en";
       <div class="flex flex-wrap gap-2 items-center">
         <span class={`inline-flex items-center text-xs px-2 py-0.5 rounded-md font-medium ${
           isEnglish
-            ? 'bg-blue-600 text-white dark:bg-blue-500'
-            : 'bg-green-600 text-yellow-300 dark:bg-green-700 dark:text-yellow-400'
+            ? 'bg-blue-600 text-white dark:bg-blue-700'
+            : 'bg-green-800 text-yellow-300 dark:bg-green-900 dark:text-yellow-300'
         }`}>
           {isEnglish ? "en" : "pt-br"}
         </span>

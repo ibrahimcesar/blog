@@ -30,6 +30,7 @@ const isEnglish = currentPost.data.language === "en";
     <div class="series-badge">
       <svg
         class="series-icon"
+        aria-hidden="true"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
         fill="none"
@@ -71,18 +72,22 @@ const isEnglish = currentPost.data.language === "en";
                   <span class="series-number">{index + 1}</span>
                   <span class="series-post-title">{post.data.title}</span>
                   {isCompleted && (
-                    <svg
-                      class="completed-icon"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    >
-                      <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
+                    <>
+                      <svg
+                        class="completed-icon"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                      </svg>
+                      <span class="sr-only">{isEnglish ? "(read)" : "(lido)"}</span>
+                    </>
                   )}
                 </a>
               )}
@@ -99,6 +104,7 @@ const isEnglish = currentPost.data.language === "en";
         <a href={`/blog/${previousPost.slug}`} class="nav-button prev">
           <svg
             class="nav-icon"
+            aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             fill="none"
@@ -118,6 +124,7 @@ const isEnglish = currentPost.data.language === "en";
         <div class="nav-button prev disabled">
           <svg
             class="nav-icon"
+            aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             fill="none"
@@ -144,6 +151,7 @@ const isEnglish = currentPost.data.language === "en";
           </div>
           <svg
             class="nav-icon"
+            aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             fill="none"
@@ -162,6 +170,7 @@ const isEnglish = currentPost.data.language === "en";
           </div>
           <svg
             class="nav-icon"
+            aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             fill="none"

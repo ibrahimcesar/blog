@@ -10,7 +10,7 @@ const yellow = {
 
 const blue = {
   0: "#66adff",
-  1: "#5E81AC",
+  1: "#81A1C1",
 };
 
 const green = {
@@ -132,7 +132,7 @@ export const tokens: IRawThemeSetting[] = [
     name: "Invalid Deprecated",
     scope: "invalid.deprecated",
     settings: {
-      foreground: foregroundPrimary,
+      foreground: grey[9],
       background: yellow[0],
     },
   },
@@ -140,7 +140,7 @@ export const tokens: IRawThemeSetting[] = [
     name: "Invalid Illegal",
     scope: "invalid.illegal",
     settings: {
-      foreground: foregroundPrimary,
+      foreground: grey[9],
       background: red[0],
     },
   },

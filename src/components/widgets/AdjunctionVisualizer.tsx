@@ -31,6 +31,9 @@ interface Demo {
   practicalNote: string;
 }
 
+const prefersReducedMotion = () =>
+  typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 const AdjunctionVisualizer: React.FC = () => {
   const [activeDemo, setActiveDemo] = useState<string>('unit');
   const [frameIndex, setFrameIndex] = useState(0);
@@ -142,6 +145,20 @@ promise.then(x => fetchMore(x))
   useEffect(() => {
     if (!isPlaying) return;
 
+    if (prefersReducedMotion()) {
+      // Skip the animated particle motion: jump to the end state immediately,
+      // frames still advance on Play (stepwise, no motion).
+      setAnimationProgress(1);
+      const timer = setTimeout(() => {
+        if (frameIndex < currentDemo.frames.length - 1) {
+          setFrameIndex(prev => prev + 1);
+        } else {
+          setIsPlaying(false);
+        }
+      }, 1500);
+      return () => clearTimeout(timer);
+    }
+
     const duration = 1500;
     const startTime = Date.now();
 
@@ -233,7 +250,7 @@ promise.then(x => fetchMore(x))
   const visibleObjects = objects.filter(o => visibleObjectIds.has(o.id));
 
   return (
-    <div className="my-8 rounded-xl bg-slate-800/50 p-6 backdrop-blur border border-slate-700">
+    <div className="my-8 rounded-xl bg-slate-800 p-6 border border-slate-700">
       <h3 className="text-2xl font-bold text-center mb-6 text-slate-200">
         Adjunction & Monad Visualizer
       </h3>
@@ -243,10 +260,12 @@ promise.then(x => fetchMore(x))
         {demos.map(demo => (
           <button
             key={demo.name}
+            type="button"
             onClick={() => setActiveDemo(demo.name)}
+            aria-pressed={activeDemo === demo.name}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
               activeDemo === demo.name
-                ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/30'
+                ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/30 ring-2 ring-indigo-300'
                 : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
             }`}
           >
@@ -256,50 +275,50 @@ promise.then(x => fetchMore(x))
       </div>
 
       {/* Diagram - Full width on top */}
-      <div className="bg-slate-900/50 rounded-lg p-4 mb-6">
+      <div className="bg-slate-900 rounded-lg p-4 mb-6">
         <div className="flex justify-between items-center mb-4">
           <span className="text-base text-slate-400 font-medium">Category Diagram</span>
           <div className="flex gap-2">
             <button
               onClick={() => setFrameIndex(Math.max(0, frameIndex - 1))}
               disabled={frameIndex === 0}
-              className="px-3 py-1.5 rounded bg-slate-700 disabled:opacity-40 hover:bg-slate-600 text-sm font-medium"
+              className="px-3 py-1.5 rounded bg-slate-700 text-slate-100 disabled:opacity-40 hover:bg-slate-600 text-sm font-medium"
             >
               ← Prev
             </button>
             <button
               onClick={playDemo}
               disabled={isPlaying}
-              className="px-4 py-1.5 rounded bg-emerald-600 hover:bg-emerald-500 disabled:opacity-40 text-sm font-medium"
+              className="px-4 py-1.5 rounded bg-emerald-600 text-slate-100 hover:bg-emerald-500 disabled:opacity-40 text-sm font-medium"
             >
               ▶ Play
             </button>
             <button
               onClick={() => setFrameIndex(Math.min(currentDemo.frames.length - 1, frameIndex + 1))}
               disabled={frameIndex === currentDemo.frames.length - 1}
-              className="px-3 py-1.5 rounded bg-slate-700 disabled:opacity-40 hover:bg-slate-600 text-sm font-medium"
+              className="px-3 py-1.5 rounded bg-slate-700 text-slate-100 disabled:opacity-40 hover:bg-slate-600 text-sm font-medium"
             >
               Next →
             </button>
           </div>
         </div>
 
-        <svg width="100%" viewBox="0 0 650 520" className="bg-slate-900 rounded-lg" style={{ minHeight: '400px' }}>
+        <svg width="100%" viewBox="0 0 650 520" role="img" aria-label={`Adjunction diagram: ${currentDemo.title}`} className="bg-slate-900 rounded-lg" style={{ minHeight: '400px' }}>
           {/* Category backgrounds */}
           <rect x="50" y="100" width="200" height="400" rx="16" fill="#1e293b" opacity="0.7" />
           <rect x="400" y="100" width="200" height="400" rx="16" fill="#1e293b" opacity="0.7" />
 
-          <text x="150" y="140" textAnchor="middle" fill="#64748b" fontSize="18" fontWeight="600">
+          <text x="150" y="140" textAnchor="middle" fill="#94a3b8" fontSize="18" fontWeight="600">
             Category C
           </text>
-          <text x="500" y="140" textAnchor="middle" fill="#64748b" fontSize="18" fontWeight="600">
+          <text x="500" y="140" textAnchor="middle" fill="#94a3b8" fontSize="18" fontWeight="600">
             Category D
           </text>
 
           {/* Adjunction notation */}
           <text x="325" y="180" textAnchor="middle" fill="#818cf8" fontSize="16">F →</text>
           <text x="325" y="205" textAnchor="middle" fill="#a78bfa" fontSize="16">← G</text>
-          <text x="325" y="232" textAnchor="middle" fill="#64748b" fontSize="14">F ⊣ G</text>
+          <text x="325" y="232" textAnchor="middle" fill="#94a3b8" fontSize="14">F ⊣ G</text>
 
           {/* Arrow markers */}
           <defs>
@@ -338,7 +357,7 @@ promise.then(x => fetchMore(x))
                   fill="none"
                   opacity={opacity}
                   markerEnd={`url(#arrow-${arrow.type})`}
-                  className="transition-all duration-300"
+                  className="motion-safe:transition-all duration-300"
                 />
                 {(() => {
                   const midPoint = getPointOnPath(arrow, 0.5);
@@ -375,7 +394,7 @@ promise.then(x => fetchMore(x))
                   r={36}
                   fill={obj.category === 'C' ? '#3b82f6' : '#8b5cf6'}
                   opacity={isInvolved ? 1 : 0.5}
-                  className="transition-all duration-300"
+                  className="motion-safe:transition-all duration-300"
                 />
                 <circle
                   cx={obj.position.x}
@@ -433,7 +452,7 @@ promise.then(x => fetchMore(x))
         </svg>
 
         {/* Step description */}
-        <div className="mt-4 p-4 bg-slate-700/50 rounded-lg">
+        <div className="mt-4 p-4 bg-slate-700 rounded-lg" aria-live="polite">
           <div className="text-sm text-slate-400 mb-2">
             Step {frameIndex + 1} of {currentDemo.frames.length}
           </div>
@@ -446,11 +465,13 @@ promise.then(x => fetchMore(x))
       {/* Code and info panels */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* Code panel */}
-        <div className="bg-slate-900/50 rounded-lg p-4">
+        <div className="bg-slate-900 rounded-lg p-4">
           <div className="flex items-center justify-between mb-3">
             <span className="text-base font-medium text-slate-300">TypeScript</span>
             <button
+              type="button"
               onClick={() => setShowCode(!showCode)}
+              aria-expanded={showCode}
               className="text-sm text-slate-400 hover:text-white"
             >
               {showCode ? 'Hide' : 'Show'}
@@ -475,7 +496,7 @@ promise.then(x => fetchMore(x))
           </div>
 
           {/* Legend */}
-          <div className="bg-slate-900/50 rounded-lg p-4">
+          <div className="bg-slate-900 rounded-lg p-4">
             <div className="text-sm font-medium text-slate-400 mb-3">Legend</div>
             <div className="grid grid-cols-2 gap-3 text-sm">
               <div className="flex items-center gap-2">

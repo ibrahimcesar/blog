@@ -7,7 +7,7 @@ interface Props {
   title?: string;
 }
 
-const { src, alt = '', title } = Astro.props;
+const { src, alt, title } = Astro.props;
 
 // Dynamic import of talk images from src/assets/talks/
 const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/talks/*');
@@ -24,7 +24,7 @@ const image = imageModule ? (await imageModule()).default : null;
   <figure class="extend">
     <Image
       src={image}
-      alt={alt || title || filename}
+      alt={alt ?? title ?? ''}
       title={title}
       loading="lazy"
       decoding="async"

@@ -4,6 +4,10 @@
 ---
 
 <script>
+  // Guard so the dark-mode observer is only attached once per page lifetime
+  let themeObserverAttached = false;
+  let rerenderCount = 0;
+
   // Initialize Mermaid on page load
   async function initMermaid() {
     // Check if there are any mermaid diagrams on the page
@@ -16,18 +20,24 @@
     // Dynamically import mermaid only if needed
     const { default: mermaid } = await import('https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs');
 
-    // Configure mermaid
-    mermaid.initialize({
-      startOnLoad: false,
-      theme: window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'default',
-      securityLevel: 'loose',
-      fontFamily: 'inherit',
-    });
+    // The site's dark mode is class-based (.dark on <html>), not media-query based
+    const isDark = () => document.documentElement.classList.contains('dark');
+
+    const configure = () =>
+      mermaid.initialize({
+        startOnLoad: false,
+        theme: isDark() ? 'dark' : 'default',
+        securityLevel: 'loose',
+        fontFamily: 'inherit',
+      });
+
+    configure();
 
     // Process each mermaid element
     mermaidElements.forEach(async (element, index) => {
       const code = element.textContent || '';
       const id = `mermaid-diagram-${index}`;
+      const title = element.getAttribute('data-title');
 
       try {
         const { svg } = await mermaid.render(id, code);
@@ -36,6 +46,10 @@
         const container = document.createElement('div');
         container.className = 'mermaid-diagram';
         container.innerHTML = svg;
+        container.setAttribute('role', 'img');
+        container.setAttribute('aria-label', title || 'Diagram');
+        // Keep the original source so diagrams can be re-rendered on theme change
+        container.setAttribute('data-mermaid-source', code);
 
         // Replace the pre/code element with the rendered diagram
         element.replaceWith(container);
@@ -46,13 +60,32 @@
       }
     });
 
-    // Update theme when color scheme changes
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-      const newTheme = e.matches ? 'dark' : 'default';
-      mermaid.initialize({ theme: newTheme });
-      // Re-render all diagrams
-      initMermaid();
-    });
+    // Re-render diagrams when the class-based dark mode toggles.
+    // The original pre elements are gone by then, so we re-render from the
+    // source stored on each container in data-mermaid-source.
+    if (!themeObserverAttached) {
+      themeObserverAttached = true;
+      let lastTheme = isDark() ? 'dark' : 'default';
+
+      const observer = new MutationObserver(() => {
+        const newTheme = isDark() ? 'dark' : 'default';
+        if (newTheme === lastTheme) return;
+        lastTheme = newTheme;
+
+        configure();
+        document.querySelectorAll('.mermaid-diagram[data-mermaid-source]').forEach(async (container) => {
+          const source = container.getAttribute('data-mermaid-source') || '';
+          try {
+            const { svg } = await mermaid.render(`mermaid-rerender-${rerenderCount++}`, source);
+            container.innerHTML = svg;
+          } catch (error) {
+            console.error('Mermaid re-rendering error:', error);
+          }
+        });
+      });
+
+      observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+    }
   }
 
   // Run on initial load

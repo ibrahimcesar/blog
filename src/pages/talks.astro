@@ -6,11 +6,14 @@ import { getTalks } from "~/utils/getTalksCollection";
 
 const page = await getTalks();
 
-const { } = Astro.props;
+const meta = {
+  title: "Talks — Ibrahim Cesar",
+  description:
+    "Public talks and speaking engagements by Ibrahim Cesar on cloud architecture, AWS, and software engineering.",
+};
 ---
 
-<Layout meta={}>
-<main>
+<Layout meta={meta}>
 <section class="px-4 sm:px-6 py-8 sm:py-16 lg:py-20 mx-auto max-w-2xl sec-talks" aria-label="Talks">
   <header>
     <h1
@@ -29,6 +32,5 @@ const { } = Astro.props;
     }
   </ul>
 </section>
-  </main>
 </Layout>
 

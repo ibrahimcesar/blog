@@ -27,6 +27,9 @@ const colors = {
   border: '#e2e8f0',       // slate-200
 };
 
+const prefersReducedMotion = () =>
+  typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 // ============================================================
 // Tokenization Visualization
 // ============================================================
@@ -84,7 +87,7 @@ export const TokenizationDemo: React.FC = () => {
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              animation: `fadeIn 0.3s ease ${i * 0.1}s both`
+              animation: prefersReducedMotion() ? 'none' : `fadeIn 0.3s ease ${i * 0.1}s both`
             }}>
               <div style={{
                 padding: '12px 16px',
@@ -164,12 +167,15 @@ export const OneHotEncodingDemo: React.FC = () => {
           {tokens.map((token, i) => (
             <button
               key={i}
+              type="button"
               onClick={() => setSelectedToken(i)}
+              aria-pressed={selectedToken === i}
               style={{
                 padding: '8px 16px',
                 backgroundColor: selectedToken === i ? colors.primary : colors.bgLight,
                 color: selectedToken === i ? 'white' : colors.text,
                 border: 'none',
+                boxShadow: selectedToken === i ? `0 0 0 2px ${colors.bg}, 0 0 0 4px ${colors.primary}` : 'none',
                 borderRadius: '6px',
                 cursor: 'pointer',
                 fontFamily: 'monospace',
@@ -227,7 +233,7 @@ export const OneHotEncodingDemo: React.FC = () => {
         </div>
       </div>
 
-      <div style={{
+      <div aria-live="polite" style={{
         padding: '16px',
         backgroundColor: colors.bgAccent,
         borderRadius: '8px',
@@ -376,7 +382,7 @@ export const EmbeddingDemo: React.FC = () => {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    color: 'white',
+                    color: Math.abs(v) > 0.55 ? 'white' : colors.text,
                     fontFamily: 'monospace'
                   }}>
                     {v.toFixed(2)}
@@ -437,7 +443,7 @@ export const AttentionDemo: React.FC = () => {
       </h4>
 
       <p style={{ color: colors.textLight, fontSize: '14px', marginBottom: '20px' }}>
-        Passe o mouse sobre um token para ver a quais tokens anteriores ele "presta atenção":
+        Passe o mouse, toque ou use Tab sobre um token para ver a quais tokens anteriores ele "presta atenção":
       </p>
 
       <div style={{ display: 'flex', gap: '12px', marginBottom: '20px', flexWrap: 'wrap' }}>
@@ -446,11 +452,16 @@ export const AttentionDemo: React.FC = () => {
           const attentionFromHovered = hoveredToken !== null ? attentionWeights[hoveredToken][i] : 0;
 
           return (
-            <div
+            <button
               key={i}
+              type="button"
               onMouseEnter={() => setHoveredToken(i)}
               onMouseLeave={() => setHoveredToken(null)}
+              onFocus={() => setHoveredToken(i)}
+              onBlur={() => setHoveredToken(null)}
+              onClick={() => setHoveredToken(prev => (prev === i ? null : i))}
               style={{
+                border: 'none',
                 padding: '12px 20px',
                 backgroundColor: isHovered
                   ? colors.primary
@@ -483,7 +494,7 @@ export const AttentionDemo: React.FC = () => {
                   {(attentionFromHovered * 100).toFixed(0)}%
                 </div>
               )}
-            </div>
+            </button>
           );
         })}
       </div>
@@ -531,7 +542,7 @@ export const AttentionDemo: React.FC = () => {
                     alignItems: 'center',
                     justifyContent: 'center',
                     fontSize: '10px',
-                    color: weight > 0.5 ? 'white' : colors.textLight,
+                    color: weight > 0.62 ? 'white' : colors.text,
                     border: `1px solid ${colors.border}`
                   }}
                 >
@@ -567,8 +578,6 @@ export const AttentionDemo: React.FC = () => {
 // ============================================================
 
 export const MLPDemo: React.FC = () => {
-  const [activeNeuron, setActiveNeuron] = useState<number | null>(null);
-
   return (
     <div style={{
       backgroundColor: colors.bg,
@@ -581,7 +590,7 @@ export const MLPDemo: React.FC = () => {
         🧠 Bloco MLP (Multi-Layer Perceptron)
       </h4>
 
-      <svg viewBox="0 0 400 200" style={{ width: '100%', maxWidth: '500px', display: 'block', margin: '0 auto' }}>
+      <svg viewBox="0 0 400 200" role="img" aria-label="Diagrama de MLP: entradas, camada oculta e saídas" style={{ width: '100%', maxWidth: '500px', display: 'block', margin: '0 auto' }}>
         {/* Input layer */}
         <text x="50" y="20" fill={colors.textLight} fontSize="12" textAnchor="middle">Entrada</text>
         {[0, 1, 2, 3].map((i) => (
@@ -604,12 +613,9 @@ export const MLPDemo: React.FC = () => {
               cx="200"
               cy={25 + i * 22}
               r="12"
-              fill={activeNeuron === i ? colors.primary : colors.bgLight}
+              fill={colors.bgLight}
               stroke={colors.secondary}
               strokeWidth="2"
-              style={{ cursor: 'pointer', transition: 'fill 0.2s' }}
-              onMouseEnter={() => setActiveNeuron(i)}
-              onMouseLeave={() => setActiveNeuron(null)}
             />
             {/* Connections from input */}
             {[0, 1, 2, 3].map((j) => (
@@ -848,12 +854,15 @@ export const HallucinationDemo: React.FC = () => {
 
       <div style={{ display: 'flex', gap: '12px', marginBottom: '20px' }}>
         <button
+          type="button"
           onClick={() => setShowReal(true)}
+          aria-pressed={showReal}
           style={{
             padding: '8px 16px',
             backgroundColor: showReal ? colors.success : colors.bgLight,
             color: showReal ? 'white' : colors.text,
             border: 'none',
+            boxShadow: showReal ? `0 0 0 2px ${colors.bg}, 0 0 0 4px ${colors.success}` : 'none',
             borderRadius: '6px',
             cursor: 'pointer',
             fontSize: '14px'
@@ -862,12 +871,15 @@ export const HallucinationDemo: React.FC = () => {
           ✓ Fato Real
         </button>
         <button
+          type="button"
           onClick={() => setShowReal(false)}
+          aria-pressed={!showReal}
           style={{
             padding: '8px 16px',
             backgroundColor: !showReal ? colors.accent : colors.bgLight,
             color: !showReal ? 'white' : colors.text,
             border: 'none',
+            boxShadow: !showReal ? `0 0 0 2px ${colors.bg}, 0 0 0 4px ${colors.accent}` : 'none',
             borderRadius: '6px',
             cursor: 'pointer',
             fontSize: '14px'
@@ -891,10 +903,10 @@ export const HallucinationDemo: React.FC = () => {
               <div style={{
                 padding: '8px 12px',
                 backgroundColor: item.prob > 0.7
-                  ? `rgba(16, 185, 129, ${item.prob})`
+                  ? '#047857'
                   : item.prob > 0.4
-                    ? `rgba(245, 158, 11, ${item.prob + 0.3})`
-                    : `rgba(239, 68, 68, ${item.prob + 0.4})`,
+                    ? '#b45309'
+                    : '#b91c1c',
                 color: 'white',
                 borderRadius: '6px',
                 fontFamily: 'monospace',
@@ -1005,6 +1017,7 @@ export const NonDeterminismDemo: React.FC = () => {
         {isRunning ? '⏳ Gerando...' : '▶️ Executar Modelo'}
       </button>
 
+      <div aria-live="polite">
       {runs.length > 0 && (
         <div style={{ marginBottom: '20px' }}>
           <div style={{ fontSize: '14px', color: colors.textLight, marginBottom: '8px' }}>
@@ -1027,6 +1040,7 @@ export const NonDeterminismDemo: React.FC = () => {
           ))}
         </div>
       )}
+      </div>
 
       <div style={{
         padding: '16px',
@@ -1136,6 +1150,8 @@ export const GrokkingDemo: React.FC = () => {
           max={stages.length - 1}
           value={step}
           onChange={(e) => { setStep(parseInt(e.target.value)); setIsPlaying(false); }}
+          aria-label="Passo de treinamento"
+          aria-valuetext={`Passo ${current.step} de 10000: ${current.phase}`}
           style={{ width: '100%' }}
         />
         <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: colors.textLight }}>
@@ -1170,7 +1186,7 @@ export const GrokkingDemo: React.FC = () => {
               right: 0,
               height: `${current.train}%`,
               backgroundColor: colors.success,
-              transition: 'height 0.5s ease'
+              transition: prefersReducedMotion() ? 'none' : 'height 0.5s ease'
             }} />
             <div style={{
               position: 'absolute',
@@ -1205,7 +1221,7 @@ export const GrokkingDemo: React.FC = () => {
               right: 0,
               height: `${current.test}%`,
               backgroundColor: current.test > 80 ? colors.primary : colors.warning,
-              transition: 'height 0.5s ease'
+              transition: prefersReducedMotion() ? 'none' : 'height 0.5s ease'
             }} />
             <div style={{
               position: 'absolute',
@@ -1222,7 +1238,7 @@ export const GrokkingDemo: React.FC = () => {
         </div>
       </div>
 
-      <div style={{
+      <div aria-live="polite" style={{
         padding: '16px',
         backgroundColor: current.phase === 'Grokking!'
           ? 'rgba(79, 70, 229, 0.15)'
@@ -1291,14 +1307,20 @@ export const FullPipelineDemo: React.FC = () => {
       }}>
         {steps.map((step, i) => (
           <React.Fragment key={i}>
-            <div
+            <button
+              type="button"
               onClick={() => setActiveStep(i)}
+              aria-label={step.name}
+              aria-current={i === activeStep ? 'step' : undefined}
               style={{
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
                 cursor: 'pointer',
-                opacity: i <= activeStep ? 1 : 0.4,
+                background: 'none',
+                border: 'none',
+                padding: 0,
+                font: 'inherit',
                 transition: 'all 0.3s ease'
               }}
             >
@@ -1312,6 +1334,7 @@ export const FullPipelineDemo: React.FC = () => {
                 justifyContent: 'center',
                 fontSize: '20px',
                 border: `3px solid ${step.color}`,
+                opacity: i <= activeStep ? 1 : 0.4,
                 transition: 'all 0.3s ease'
               }}>
                 {step.icon}
@@ -1326,7 +1349,7 @@ export const FullPipelineDemo: React.FC = () => {
               }}>
                 {step.name}
               </span>
-            </div>
+            </button>
             {i < steps.length - 1 && (
               <div style={{
                 width: '30px',

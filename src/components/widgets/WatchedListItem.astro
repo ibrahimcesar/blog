@@ -28,14 +28,14 @@ const thumbnailUrl = `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
         <div class="relative aspect-video rounded-lg overflow-hidden bg-slate-200 dark:bg-slate-700">
           <img
             src={thumbnailUrl}
-            alt={title}
+            alt=""
             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             loading="lazy"
           />
           <!-- Play icon overlay -->
           <div class="absolute inset-0 flex items-center justify-center">
             <div class="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center opacity-90 group-hover:opacity-100 group-hover:scale-110 transition-all">
-              <svg class="w-5 h-5 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+              <svg class="w-5 h-5 text-white ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M8 5v14l11-7z"/>
               </svg>
             </div>

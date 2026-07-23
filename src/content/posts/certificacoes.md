@@ -89,6 +89,6 @@ Dúvidas? Ponderações? Deixe nos comentários e podemos debater!
 
 As _badges_ acabaram de serem repaginadas, então, aproveitem para estudar e já receber uma badge bem mais bonita como esta 😀:
 
-<a href="https://www.credly.com/badges/d01a5f09-39af-4848-91e4-fd93c379429b/public_url"><img src="https://images.credly.com/size/680x680/images/2d84e428-9078-49b6-a804-13c15383d0de/image.png" style="background-color:transparent !important" /></a>
+<a href="https://www.credly.com/badges/d01a5f09-39af-4848-91e4-fd93c379429b/public_url"><img src="https://images.credly.com/size/680x680/images/2d84e428-9078-49b6-a804-13c15383d0de/image.png" alt="Badge AWS Certified Solutions Architect – Professional — ver credencial no Credly" style="background-color:transparent !important" /></a>
 
 _Revisão: Rafael B. Pires_

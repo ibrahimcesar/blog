@@ -7,8 +7,7 @@ const items = await getReads();
 ---
 
 <Layout meta={{ title: "What I Read", description: "Articles, papers, books, and content I've read with my thoughts and commentary" }}>
-  <main>
-    <section class="px-4 sm:px-6 py-8 sm:py-16 lg:py-20 mx-auto max-w-4xl" aria-label="What I Read">
+  <section class="px-4 sm:px-6 py-8 sm:py-16 lg:py-20 mx-auto max-w-4xl" aria-label="What I Read">
       <header class="mb-12">
         <h1 class="text-center text-4xl md:text-5xl font-bold leading-tighter tracking-tighter mb-4 text-slate-900 dark:text-white">
           What I Read
@@ -31,6 +30,5 @@ const items = await getReads();
           ))}
         </ul>
       )}
-    </section>
-  </main>
+  </section>
 </Layout>

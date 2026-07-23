@@ -52,6 +52,8 @@ const StringDiagram: React.FC<StringDiagramProps> = ({
         viewBox={`${-padding} ${-padding} ${paddedWidth} ${paddedHeight}`}
         width="100%"
         height="auto"
+        role="img"
+        aria-label={title || 'Category theory string diagram'}
         style={{
           maxWidth: `${paddedWidth}px`,
           margin: '0 auto',

@@ -25,17 +25,27 @@ const icons = {
 };
 
 const icon = icons[type];
+
+const typeLabels = {
+  info: "Info",
+  tip: "Tip",
+  warning: "Warning",
+  note: "Note"
+};
+
+const typeLabel = typeLabels[type];
 ---
 
-<aside class={`info-box info-box-${type}`} role="complementary">
+<div class={`info-box info-box-${type}`} role="note">
   <div class="info-box-header">
+    <span class="sr-only">{typeLabel}: </span>
     <span class="info-box-icon" aria-hidden="true">{icon}</span>
     {title && <h4 class="info-box-title">{title}</h4>}
   </div>
   <div class="info-box-content">
     <slot />
   </div>
-</aside>
+</div>
 
 <style>
   .info-box {

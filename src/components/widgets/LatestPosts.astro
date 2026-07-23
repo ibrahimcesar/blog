@@ -21,7 +21,7 @@ const latestPosts = posts.slice(0, count);
       const isEnglish = post.data.language === "en";
       return (
         <li class="group">
-          <article class="flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-6">
+          <article lang={isEnglish ? "en" : "pt-BR"} class="flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-6">
             <time
               datetime={post.data.pubDate.toISOString()}
               class="text-sm font-mono text-slate-500 dark:text-slate-400 shrink-0 tabular-nums"
@@ -49,8 +49,8 @@ const latestPosts = posts.slice(0, count);
                 {/* Language tag - Brazil green/yellow for pt-br, blue/white for en */}
                 <span class={`inline-flex items-center text-xs px-2 py-0.5 rounded-md font-medium ${
                   isEnglish
-                    ? 'bg-blue-600 text-white dark:bg-blue-500'
-                    : 'bg-green-600 text-yellow-300 dark:bg-green-700 dark:text-yellow-400'
+                    ? 'bg-blue-600 text-white dark:bg-blue-700'
+                    : 'bg-green-800 text-yellow-300 dark:bg-green-900 dark:text-yellow-300'
                 }`}>
                   {isEnglish ? "en" : "pt-br"}
                 </span>

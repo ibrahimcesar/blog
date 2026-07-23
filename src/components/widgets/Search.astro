@@ -39,6 +39,8 @@ const { id = "search" } = Astro.props;
           searching: "Searching for [SEARCH_TERM]...",
         },
       });
+
+      applyA11yAttributes();
     } catch (error) {
       // Pagefind not available (dev mode), show friendly message
       const searchEl = document.getElementById("pagefind__search");
@@ -53,11 +55,39 @@ const { id = "search" } = Astro.props;
     }
   }
 
+  // Pagefind renders its widget asynchronously; wait for the elements,
+  // stamp accessibility attributes, then disconnect the observer.
+  // The message div only appears after the first interaction.
+  function applyA11yAttributes() {
+    const stamp = () => {
+      const input = document.querySelector(".pagefind-ui__search-input");
+      const message = document.querySelector(".pagefind-ui__message");
+      input?.setAttribute("aria-label", "Search this site");
+      message?.setAttribute("aria-live", "polite");
+      return Boolean(input && message);
+    };
+
+    if (stamp()) return;
+
+    const target = document.getElementById("pagefind__search");
+    if (!target) return;
+    const observer = new MutationObserver(() => {
+      if (stamp()) observer.disconnect();
+    });
+    observer.observe(target, { childList: true, subtree: true });
+  }
+
   if (document.readyState === "complete") {
     loadPagefind();
   } else {
     window.addEventListener("DOMContentLoaded", loadPagefind);
   }
+
+  // Re-init after Astro view transitions swap in a fresh, empty container
+  document.addEventListener("astro:page-load", () => {
+    const el = document.getElementById("pagefind__search");
+    if (el && !el.hasChildNodes()) loadPagefind();
+  });
 </script>
 
 <style is:global>

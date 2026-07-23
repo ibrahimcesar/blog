@@ -97,9 +97,16 @@
   --plum-medium: #504bab;
 }
 
-.cloud-color,
-a:hover {
+.cloud-color {
   color: var(--cloud-blue);
+}
+
+a:hover {
+  color: #1d4ed8; /* blue-700 - passes contrast on white */
+}
+
+.dark a:hover {
+  color: #93c5fd; /* blue-300 - high contrast on slate-900 */
 }
 
 .sec-talks a,
@@ -108,6 +115,11 @@ a:hover {
   text-decoration: underline;
   text-decoration-thickness: 2px;
   text-underline-offset: 3px;
+}
+
+.dark .sec-talks a,
+.dark .post a {
+  color: #c084fc; /* purple-400 - 6.76:1 on dark */
 }
 
 /* Better readability for post content */
@@ -224,7 +236,11 @@ a.social[href^="https://"]::after,
 }
 
 .talk-date {
-  color: var(--cloud)
+  color: #c2410c; /* orange-700 - passes contrast on white */
+}
+
+.dark .talk-date {
+  color: var(--cloud);
 }
 
 .sec-talks figure,
@@ -304,11 +320,19 @@ figcaption {
 
 
 .en {
-  color: var(--cloud-blue)
+  color: #1d4ed8; /* blue-700 - passes contrast on white */
+}
+
+.dark .en {
+  color: var(--cloud-blue);
 }
 
 .br {
-  color: var(--green-apple)
+  color: #15803d; /* green-700 - passes contrast on white */
+}
+
+.dark .br {
+  color: var(--green-apple);
 }
 
 .line {
@@ -588,5 +612,20 @@ pre.mermaid svg .timeline-title {
   pre.mermaid svg .timeline-title {
     font-size: 24px !important;
     font-weight: bold;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  [data-astro-transition-scope] {
+    animation: none !important;
+  }
+  .__blinker::after {
+    animation: none;
+  }
+  html {
+    scroll-behavior: auto;
   }
 }

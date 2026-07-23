@@ -26,7 +26,7 @@ const isEnglish = currentPost.data.language === "en";
     {posts.map((post) => {
       const postIsEnglish = post.data.language === "en";
       return (
-        <li class="related-item">
+        <li class="related-item" lang={postIsEnglish ? "en" : "pt-BR"}>
           <a href={`/blog/${post.slug}`} class="related-link">
             {post.data.title}
           </a>

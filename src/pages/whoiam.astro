@@ -1,26 +1,30 @@
 ---
 import Layout from "~/layouts/PageLayout.astro";
 
-const { meta = {} } = Astro.props;
+const meta = {
+  title: "Who I Am — Ibrahim Cesar",
+  description:
+    "Ibrahim Cesar — Enterprise Solutions Architect at AWS, working in tech for more than 15 years.",
+};
 ---
 
 <Layout meta={meta}>
-  <main>
-    <section class="py-8 sm:py-16 lg:py-20 mx-auto">
+  <section class="py-8 sm:py-16 lg:py-20 mx-auto">
       <article>
         <header>
           <div class="grid place-items-center mb-6">
             <img
               src="https://raw.githubusercontent.com/MartinHeinz/MartinHeinz/master/wave.gif"
               width="82px"
+              alt=""
             />
           </div>
 
           <h1
             class="px-4 sm:px-6 max-w-3xl mx-auto text-center text-5xl md:text-[3.50rem] font-bold leading-tighter tracking-tighter mb-6 md:mb-8 text-slate-900 dark:text-white"
           >
-            <p class="mb-1">Olá! Hello! Hola! Ciao!</p>
-            <p>こんにちは ! 你好 !</p>
+            <span class="block mb-1">Olá! Hello! Hola! Ciao!</span>
+            <span class="block">こんにちは ! 你好 !</span>
           </h1>
         </header>
         <p class="en uppercase font-mono text-md text-center font-bold">
@@ -61,6 +65,7 @@ const { meta = {} } = Astro.props;
           {"{"} pt-br {"}"}
         </p>
         <div
+          lang="pt-BR"
           class="container mx-auto px-4 sm:px-6 max-w-3xl prose prose-lg lg:prose-xl dark:prose-invert dark:prose-headings:text-slate-300 prose-md prose-headings:leading-tighter prose-headings:tracking-tighter prose-headings:font-bold prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-img:rounded-md prose-img:shadow-lg mt-8"
         >
           <p>/ɪ́brəhɪjm/</p>
@@ -94,7 +99,6 @@ const { meta = {} } = Astro.props;
             >.
           </p>
         </div>
-      </article>
-    </section>
-  </main>
+    </article>
+  </section>
 </Layout>

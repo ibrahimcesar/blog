@@ -23,12 +23,12 @@ const alignmentClass = {
 }[align];
 ---
 
-<aside class={`pull-quote ${alignmentClass}`} role="complementary">
+<figure class={`pull-quote ${alignmentClass}`}>
   <blockquote>
     <slot />
     {cite && <footer>— {cite}</footer>}
   </blockquote>
-</aside>
+</figure>
 
 <style>
   .pull-quote {

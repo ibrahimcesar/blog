@@ -54,6 +54,7 @@ const {} = Astro.props;
       btn.className = 'mermaid-expand-btn';
       btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>`;
       btn.title = 'Expand diagram';
+      btn.setAttribute('aria-label', 'Expand diagram');
       btn.onclick = () => openModal(pre);
       wrapper.appendChild(btn);
     });
@@ -63,22 +64,41 @@ const {} = Astro.props;
     const svg = pre.querySelector('svg');
     if (!svg) return;
 
+    const trigger = document.activeElement;
+
     const overlay = document.createElement('div');
     overlay.className = 'mermaid-modal-overlay';
     overlay.innerHTML = `
-      <div class="mermaid-modal">
-        <button class="mermaid-modal-close" title="Close">&times;</button>
+      <div class="mermaid-modal" role="dialog" aria-modal="true" aria-label="Expanded diagram">
+        <button class="mermaid-modal-close" title="Close" aria-label="Close">&times;</button>
         <div class="mermaid-modal-content">${svg.outerHTML}</div>
       </div>
     `;
 
-    overlay.querySelector('.mermaid-modal-close').onclick = () => overlay.remove();
-    overlay.onclick = (e) => { if (e.target === overlay) overlay.remove(); };
-    document.addEventListener('keydown', function escClose(e) {
-      if (e.key === 'Escape') { overlay.remove(); document.removeEventListener('keydown', escClose); }
-    });
+    const closeBtn = overlay.querySelector('.mermaid-modal-close');
+
+    function closeModal() {
+      overlay.remove();
+      document.removeEventListener('keydown', onKeydown);
+      if (trigger && typeof trigger.focus === 'function') trigger.focus();
+    }
+
+    function onKeydown(e) {
+      if (e.key === 'Escape') {
+        closeModal();
+      } else if (e.key === 'Tab') {
+        // Trap focus inside the modal (the close button is its only focusable element)
+        e.preventDefault();
+        closeBtn.focus();
+      }
+    }
+
+    closeBtn.onclick = closeModal;
+    overlay.onclick = (e) => { if (e.target === overlay) closeModal(); };
+    document.addEventListener('keydown', onKeydown);
 
     document.body.appendChild(overlay);
+    closeBtn.focus();
   }
 
   // Run on initial load
@@ -118,38 +138,38 @@ const {} = Astro.props;
 
   document.addEventListener('astro:page-load', applyDarkMode);
 
-  function attachEvent(selector, event, fn) {
-    const matches = document.querySelectorAll(selector);
-    if (matches && matches.length) {
-      matches.forEach((elem) => {
-        elem.addEventListener(
-          event,
-          function () {
-            fn(elem);
-          },
-          false
+  // Document-level event delegation so the header controls keep working
+  // after Astro view transitions swap the DOM. Registered once.
+  if (!window._awDelegatedClicks) {
+    window._awDelegatedClicks = true;
+    document.addEventListener("click", function (e) {
+      if (!(e.target instanceof Element)) return;
+
+      const menuToggle = e.target.closest("[data-aw-toggle-menu]");
+      if (menuToggle) {
+        menuToggle.classList.toggle("expanded");
+        menuToggle.setAttribute(
+          "aria-expanded",
+          menuToggle.classList.contains("expanded") ? "true" : "false"
         );
-      });
-    }
+        document.getElementById("menu")?.classList.toggle("hidden");
+        return;
+      }
+
+      const schemeToggle = e.target.closest("[data-aw-toggle-color-scheme]");
+      if (schemeToggle) {
+        document.documentElement.classList.toggle("dark");
+        localStorage.theme = document.documentElement.classList.contains("dark")
+          ? "dark"
+          : "light";
+      }
+    });
   }
-
-  window.onload = function () {
-    attachEvent("[data-aw-toggle-menu]", "click", function (elem) {
-      elem.classList.toggle("expanded");
-      document.getElementById("menu")?.classList.toggle("hidden");
-    });
-
-    attachEvent("[data-aw-toggle-color-scheme]", "click", function (elem) {
-      document.documentElement.classList.toggle("dark");
-      localStorage.theme = document.documentElement.classList.contains("dark")
-        ? "dark"
-        : "light";
-    });
-  };
   window.onpageshow = function () {
     const elem = document.querySelector("[data-aw-toggle-menu]");
     if (elem) {
       elem.classList.remove("expanded");
+      elem.setAttribute("aria-expanded", "false");
     }
     document.getElementById("menu")?.classList.add("hidden");
   };

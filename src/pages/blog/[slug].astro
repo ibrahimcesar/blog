@@ -34,7 +34,7 @@ const seriesPosts = post.data.series
 const relatedPosts = await getRelatedPosts(post, 3);
 
 const title = `${post.data.title} — ${SITE.name}`;
-const lang = post.data.language ? "en" : null;
+const lang = post.data.language;
 const description = post.data.description;
 const canonical = new URL(`blog/${post.slug}`, Astro.site);
 
@@ -59,9 +59,7 @@ const image = await findImage(post.data.image);
     modifiedDate: post.data.updatedDate?.toISOString(),
   }}
 >
-  <main>
-    <BlogPost post={post} image={image} toc={toc} seriesPosts={seriesPosts} relatedPosts={relatedPosts}>
-      <Content />
-    </BlogPost>
-  </main>
+  <BlogPost post={post} image={image} toc={toc} seriesPosts={seriesPosts} relatedPosts={relatedPosts}>
+    <Content />
+  </BlogPost>
 </Layout>

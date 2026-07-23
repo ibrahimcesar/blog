@@ -42,7 +42,7 @@ const blogEntropy = calculateEntropy(allBlogText);
             title="Code for this blog & content!"
             target="_blank"
             href="https://github.com/ibrahimcesar/blog"
-            ><span class="external">Source Code</span>
+            ><span class="external">Source Code</span><span class="sr-only"> (opens in new tab)</span>
           </a>  ·
           <a
             class="text-gray-600 dark:text-gray-400 hover:underline transition duration-150 ease-in-out"
@@ -58,60 +58,70 @@ const blogEntropy = calculateEntropy(allBlogText);
 
       <div class="col-span-6 md:col-span-2 lg:col-span-2">
 
-        <div class="text-gray-800 dark:text-gray-300 font-medium mb-2">
+        <h2 class="text-base text-gray-800 dark:text-gray-300 font-medium mb-2">
           Find me
-        </div>
-        <ul class="text-sm">
+        </h2>
+        <ul class="text-sm flex flex-wrap gap-x-2">
+          <li>
             <a
               class="text-gray-600 dark:text-gray-400 transition duration-150 ease-in-out"
               rel="noopener noreferrer"
               target="_blank"
               title="My repositories & contributions"
               href="https://github.com/ibrahimcesar"
-              ><span class="external">GitHub</span>
-            </a> ·
+              ><span class="external">GitHub</span><span class="sr-only"> (opens in new tab)</span>
+            </a> <span aria-hidden="true">·</span>
+          </li>
+          <li>
             <a
               class="text-gray-600 dark:text-gray-400 transition duration-150 ease-in-out"
               rel="noopener noreferrer"
               target="_blank"
               title="My professional experience"
               href="https://www.linkedin.com/in/ibrahimcesar/?locale=en_US"
-              ><span class="external">LinkedIn</span>
-            </a> ·
+              ><span class="external">LinkedIn</span><span class="sr-only"> (opens in new tab)</span>
+            </a> <span aria-hidden="true">·</span>
+          </li>
+          <li>
             <a
               class="text-gray-600 dark:text-gray-400 transition duration-150 ease-in-out"
               rel="noopener noreferrer"
               target="_blank"
               title="View my Badges on Credly"
               href="https://www.credly.com/users/ibrahimcesar"
-              ><span class="external">Credly</span>
+              ><span class="external">Credly</span><span class="sr-only"> (opens in new tab)</span>
             </a>
+          </li>
         </ul>
       </div>
 
       <div class="col-span-6 md:col-span-2 lg:col-span-2">
-        <div class="text-gray-800 dark:text-gray-300 font-medium mb-2">
+        <h2 class="text-base text-gray-800 dark:text-gray-300 font-medium mb-2">
           Pages
-        </div>
-        <ul class="text-sm">
+        </h2>
+        <ul class="text-sm flex flex-wrap gap-x-2">
+          <li>
             <a
               class="text-gray-600  dark:text-gray-400 transition duration-150 ease-in-out"
               href="/talks"
               >Talks
-            </a> ·
+            </a> <span aria-hidden="true">·</span>
+          </li>
+          <li>
             <a
               class="text-gray-600  dark:text-gray-400 transition duration-150 ease-in-out"
               href="/whoiam"
               >About/Sobre
             </a>
+          </li>
         </ul>
       </div>
 
       <div class="col-span-12 md:col-span-8 lg:col-span-8">
         <div class="mb-3">
-          <div class="text-gray-800 dark:text-gray-300 font-medium mb-3">
+          <h2 class="text-base text-gray-800 dark:text-gray-300 font-medium mb-3">
             AWS Certifications
-          </div>
+          </h2>
 
           <!-- Visible Certifications -->
           <div class="mb-3">
@@ -128,6 +138,7 @@ const blogEntropy = calculateEntropy(allBlogText);
                     alt={cert.title}
                     width="100px"
                   >
+                  <span class="sr-only"> (opens in new tab)</span>
                 </a>
               </div>
             ))}
@@ -148,6 +159,7 @@ const blogEntropy = calculateEntropy(allBlogText);
                     alt={cert.title}
                     width="100px"
                   >
+                  <span class="sr-only"> (opens in new tab)</span>
                 </a>
               </div>
             ))}
@@ -157,7 +169,7 @@ const blogEntropy = calculateEntropy(allBlogText);
           <div class="mt-2">
             <button
               id="toggle-badges"
-              class="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 underline transition duration-150 ease-in-out"
+              class="inline-block py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 underline transition duration-150 ease-in-out"
               aria-expanded="false"
               aria-controls="additional-badges"
               data-original-text={`Show ${certifications.additional.length} more badges`}
@@ -169,10 +181,10 @@ const blogEntropy = calculateEntropy(allBlogText);
               href="https://www.credly.com/users/ibrahimcesar"
               target="_blank"
               rel="noopener noreferrer"
-              class="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 underline transition duration-150 ease-in-out"
+              class="inline-block py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 underline transition duration-150 ease-in-out"
               title="View all my badges on Credly"
             >
-              <span class="external">View all 50+ badges on Credly</span>
+              <span class="external">View all 50+ badges on Credly</span><span class="sr-only"> (opens in new tab)</span>
             </a>
           </div>
         </div>
@@ -184,12 +196,12 @@ const blogEntropy = calculateEntropy(allBlogText);
       <div class="text-sm text-gray-700 mr-4 dark:text-slate-400">
         &copy; 2020 — {new Date().getFullYear()} <em>All rights reserved</em>. Made with
       <span role="img" aria-label="puzzle piece">&nbsp;🧩&nbsp;</span>
-      in São Paulo, Brazil. Built with 🚀 <a rel="noopener noreferrer" href="https://astro.build" target="_blank" class="underline"><span class="external">Astro v5.15.8</span></a>, hosted on <a rel="noopener noreferrer" href="https://aws.amazon.com/amplify/" target="_blank" class="underline"><span class="external">AWS Amplify</span></a>. This blog represents my own viewpoints and not those of my employer, Amazon Web Services (AWS).
+      in São Paulo, Brazil. Built with 🚀 <a rel="noopener noreferrer" href="https://astro.build" target="_blank" class="underline"><span class="external">Astro v5.15.8</span><span class="sr-only"> (opens in new tab)</span></a>, hosted on <a rel="noopener noreferrer" href="https://aws.amazon.com/amplify/" target="_blank" class="underline"><span class="external">AWS Amplify</span><span class="sr-only"> (opens in new tab)</span></a>. This blog represents my own viewpoints and not those of my employer, Amazon Web Services (AWS).
       <details class="mt-2 text-xs">
-        <summary class="cursor-pointer font-mono text-gray-500 dark:text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+        <summary class="cursor-pointer font-mono text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300">
           Stats for nerds ▾
         </summary>
-        <div class="mt-2 font-mono text-gray-500 dark:text-gray-500 space-y-0.5 pl-2 border-l-2 border-gray-300 dark:border-gray-600">
+        <div class="mt-2 font-mono text-gray-500 dark:text-gray-400 space-y-0.5 pl-2 border-l-2 border-gray-300 dark:border-gray-600">
           <div>FCP: <span id="fcp-time">...</span></div>
           <div>LCP: <span id="lcp-time">...</span></div>
           <div>TTI: <span id="tti-time">...</span></div>
@@ -213,24 +225,32 @@ const blogEntropy = calculateEntropy(allBlogText);
 
 <script>
   // Toggle additional badges
-  const toggleButton = document.getElementById('toggle-badges');
-  const additionalBadges = document.getElementById('additional-badges');
+  function initBadgesToggle() {
+    const toggleButton = document.getElementById('toggle-badges');
+    const additionalBadges = document.getElementById('additional-badges');
 
-  if (toggleButton && additionalBadges) {
-    toggleButton.addEventListener('click', () => {
-      const isHidden = additionalBadges.classList.contains('hidden');
+    if (toggleButton && additionalBadges) {
+      // onclick assignment (not addEventListener) so re-runs never stack listeners
+      toggleButton.onclick = () => {
+        const isHidden = additionalBadges.classList.contains('hidden');
 
-      if (isHidden) {
-        additionalBadges.classList.remove('hidden');
-        toggleButton.setAttribute('aria-expanded', 'true');
-        toggleButton.textContent = 'Show fewer badges';
-      } else {
-        additionalBadges.classList.add('hidden');
-        toggleButton.setAttribute('aria-expanded', 'false');
-        toggleButton.textContent = toggleButton.dataset.originalText;
-      }
-    });
+        if (isHidden) {
+          additionalBadges.classList.remove('hidden');
+          toggleButton.setAttribute('aria-expanded', 'true');
+          toggleButton.textContent = 'Show fewer badges';
+        } else {
+          additionalBadges.classList.add('hidden');
+          toggleButton.setAttribute('aria-expanded', 'false');
+          toggleButton.textContent = toggleButton.dataset.originalText;
+        }
+      };
+    }
   }
+
+  initBadgesToggle();
+
+  // Re-wire after Astro page transitions replace the footer
+  document.addEventListener('astro:page-load', initBadgesToggle);
 
   // Helper to format time
   function formatTime(ms: number): string {

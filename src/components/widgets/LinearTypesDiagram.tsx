@@ -11,8 +11,10 @@ import React, { useState } from 'react';
 const colors = {
   wire: '#4f46e5',       // indigo-600
   wireSecondary: '#7c3aed', // violet-600
-  consumed: '#dc2626',   // red-600
-  valid: '#16a34a',      // green-600
+  consumed: '#dc2626',   // red-600 (strokes/borders)
+  consumedText: '#b91c1c', // red-700 (text fills — better contrast)
+  valid: '#16a34a',      // green-600 (strokes/borders)
+  validText: '#166534',  // green-800 (text fills — better contrast)
   borrowed: '#2563eb',   // blue-600
   mutBorrowed: '#ea580c', // orange-600
   node: '#1e1b4b',       // indigo-950
@@ -44,6 +46,8 @@ const Diagram: React.FC<DiagramProps> = ({
         viewBox={`${-padding} ${-padding} ${paddedWidth} ${paddedHeight}`}
         width="100%"
         height="auto"
+        role="img"
+        aria-label={title}
         style={{
           maxWidth: `${paddedWidth}px`,
           margin: '0 auto',
@@ -158,17 +162,17 @@ export const NoDiagonalDiagram: React.FC = () => (
     />
 
     {/* Big X over the operation */}
-    <text x={160} y={110} fill={colors.consumed} fontSize="40" fontWeight="bold" textAnchor="middle">✗</text>
+    <text x={160} y={110} fill={colors.consumedText} fontSize="40" fontWeight="bold" textAnchor="middle">✗</text>
 
     {/* Question marks for output */}
     <circle cx={270} cy={70} r={25} fill="#fef2f2" stroke={colors.consumed} strokeWidth={2} strokeDasharray="4,2" />
-    <text x={270} y={75} fill={colors.consumed} fontSize="20" fontWeight="600" textAnchor="middle">?</text>
+    <text x={270} y={75} fill={colors.consumedText} fontSize="20" fontWeight="600" textAnchor="middle">?</text>
 
     <circle cx={270} cy={130} r={25} fill="#fef2f2" stroke={colors.consumed} strokeWidth={2} strokeDasharray="4,2" />
-    <text x={270} y={135} fill={colors.consumed} fontSize="20" fontWeight="600" textAnchor="middle">?</text>
+    <text x={270} y={135} fill={colors.consumedText} fontSize="20" fontWeight="600" textAnchor="middle">?</text>
 
     {/* Error message */}
-    <text x={270} y={180} fill={colors.consumed} fontSize="11" textAnchor="middle" fontFamily="monospace">
+    <text x={270} y={180} fill={colors.consumedText} fontSize="11" textAnchor="middle" fontFamily="monospace">
       error: use of moved value
     </text>
   </Diagram>
@@ -184,7 +188,7 @@ export const MoveDiagram: React.FC = () => (
     <rect x={20} y={50} width={100} height={80} rx={8} fill={colors.nodeFill} stroke={colors.node} strokeWidth={2} />
     <text x={70} y={75} fill={colors.text} fontSize="14" fontWeight="600" textAnchor="middle">s: String</text>
     <text x={70} y={95} fill={colors.textMuted} fontSize="12" textAnchor="middle">"hello"</text>
-    <text x={70} y={115} fill={colors.valid} fontSize="11" textAnchor="middle">✓ valid</text>
+    <text x={70} y={115} fill={colors.validText} fontSize="11" textAnchor="middle">✓ valid</text>
 
     {/* Arrow */}
     <path d="M 130 90 L 180 90" fill="none" stroke={colors.node} strokeWidth={2.5} markerEnd="url(#arrow-move)" />
@@ -192,15 +196,15 @@ export const MoveDiagram: React.FC = () => (
 
     {/* After move - source consumed */}
     <rect x={190} y={50} width={90} height={80} rx={8} fill="#fef2f2" stroke={colors.consumed} strokeWidth={2} strokeDasharray="4,2" />
-    <text x={235} y={75} fill={colors.consumed} fontSize="14" fontWeight="600" textAnchor="middle">s</text>
-    <text x={235} y={95} fill={colors.consumed} fontSize="11" textAnchor="middle">moved</text>
-    <text x={235} y={115} fill={colors.consumed} fontSize="11" textAnchor="middle">✗ invalid</text>
+    <text x={235} y={75} fill={colors.consumedText} fontSize="14" fontWeight="600" textAnchor="middle">s</text>
+    <text x={235} y={95} fill={colors.consumedText} fontSize="11" textAnchor="middle">moved</text>
+    <text x={235} y={115} fill={colors.consumedText} fontSize="11" textAnchor="middle">✗ invalid</text>
 
     {/* After move - destination valid */}
     <rect x={290} y={50} width={100} height={80} rx={8} fill="#f0fdf4" stroke={colors.valid} strokeWidth={2} />
     <text x={340} y={75} fill={colors.text} fontSize="14" fontWeight="600" textAnchor="middle">t: String</text>
     <text x={340} y={95} fill={colors.textMuted} fontSize="12" textAnchor="middle">"hello"</text>
-    <text x={340} y={115} fill={colors.valid} fontSize="11" textAnchor="middle">✓ valid</text>
+    <text x={340} y={115} fill={colors.validText} fontSize="11" textAnchor="middle">✓ valid</text>
 
     <defs>
       <marker id="arrow-move" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
@@ -227,7 +231,7 @@ export const CloneCopyDiagram: React.FC = () => (
 
     <rect x={170} y={35} width={70} height={50} rx={6} fill="#f0fdf4" stroke={colors.valid} strokeWidth={2} />
     <text x={205} y={55} fill={colors.text} fontSize="12" fontWeight="600" textAnchor="middle">x: i32</text>
-    <text x={205} y={72} fill={colors.valid} fontSize="10" textAnchor="middle">still valid</text>
+    <text x={205} y={72} fill={colors.validText} fontSize="10" textAnchor="middle">still valid</text>
 
     <rect x={250} y={35} width={70} height={50} rx={6} fill="#f0fdf4" stroke={colors.valid} strokeWidth={2} />
     <text x={285} y={55} fill={colors.text} fontSize="12" fontWeight="600" textAnchor="middle">y: i32</text>
@@ -251,7 +255,7 @@ export const CloneCopyDiagram: React.FC = () => (
 
     <rect x={180} y={150} width={70} height={50} rx={6} fill="#f0fdf4" stroke={colors.valid} strokeWidth={2} />
     <text x={215} y={168} fill={colors.text} fontSize="11" fontWeight="600" textAnchor="middle">s: String</text>
-    <text x={215} y={185} fill={colors.valid} fontSize="10" textAnchor="middle">still valid</text>
+    <text x={215} y={185} fill={colors.validText} fontSize="10" textAnchor="middle">still valid</text>
 
     <rect x={260} y={150} width={70} height={50} rx={6} fill="#f0fdf4" stroke={colors.valid} strokeWidth={2} />
     <text x={295} y={168} fill={colors.text} fontSize="11" fontWeight="600" textAnchor="middle">t: String</text>
@@ -267,8 +271,8 @@ export const CloneCopyDiagram: React.FC = () => (
     <text x={110} y={245} fill={colors.text} fontSize="14" fontWeight="700" textAnchor="middle">Without Clone</text>
 
     <rect x={30} y={255} width={70} height={50} rx={6} fill="#fef2f2" stroke={colors.consumed} strokeWidth={2} strokeDasharray="4,2" />
-    <text x={65} y={273} fill={colors.consumed} fontSize="11" fontWeight="600" textAnchor="middle">s</text>
-    <text x={65} y={290} fill={colors.consumed} fontSize="10" textAnchor="middle">moved</text>
+    <text x={65} y={273} fill={colors.consumedText} fontSize="11" fontWeight="600" textAnchor="middle">s</text>
+    <text x={65} y={290} fill={colors.consumedText} fontSize="10" textAnchor="middle">moved</text>
 
     <text x={135} y={280} fill={colors.textMuted} fontSize="11" textAnchor="middle">let t = s;</text>
 
@@ -276,7 +280,7 @@ export const CloneCopyDiagram: React.FC = () => (
     <text x={205} y={273} fill={colors.text} fontSize="11" fontWeight="600" textAnchor="middle">t: String</text>
     <text x={205} y={290} fill={colors.textMuted} fontSize="10" textAnchor="middle">"hello"</text>
 
-    <text x={300} y={280} fill={colors.consumed} fontSize="11" fontStyle="italic">no copy possible</text>
+    <text x={300} y={280} fill={colors.consumedText} fontSize="11" fontStyle="italic">no copy possible</text>
   </Diagram>
 );
 
@@ -305,7 +309,7 @@ export const BorrowDiagram: React.FC = () => (
     <rect x={155} y={70} width={60} height={35} rx={4} fill="#eff6ff" stroke={colors.borrowed} strokeWidth={1.5} />
     <text x={185} y={92} fill={colors.borrowed} fontSize="11" fontWeight="600" textAnchor="middle">r2: &s</text>
 
-    <text x={250} y={55} fill={colors.valid} fontSize="24">✓</text>
+    <text x={250} y={55} fill={colors.validText} fontSize="24">✓</text>
     <text x={280} y={60} fill={colors.textMuted} fontSize="11">Both valid!</text>
 
     {/* Divider */}
@@ -327,11 +331,11 @@ export const BorrowDiagram: React.FC = () => (
 
     {/* Second mutable borrow - blocked */}
     <rect x={250} y={165} width={80} height={40} rx={4} fill="#fef2f2" stroke={colors.consumed} strokeWidth={1.5} strokeDasharray="4,2" />
-    <text x={290} y={185} fill={colors.consumed} fontSize="11" textAnchor="middle">&mut s</text>
-    <text x={290} y={200} fill={colors.consumed} fontSize="20">✗</text>
+    <text x={290} y={185} fill={colors.consumedText} fontSize="11" textAnchor="middle">&mut s</text>
+    <text x={290} y={200} fill={colors.consumedText} fontSize="20">✗</text>
 
-    <text x={370} y={185} fill={colors.consumed} fontSize="10" fontStyle="italic">cannot borrow</text>
-    <text x={370} y={198} fill={colors.consumed} fontSize="10" fontStyle="italic">twice as mut</text>
+    <text x={370} y={185} fill={colors.consumedText} fontSize="10" fontStyle="italic">cannot borrow</text>
+    <text x={370} y={198} fill={colors.consumedText} fontSize="10" fontStyle="italic">twice as mut</text>
 
     <defs>
       <marker id="arrow-borrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
@@ -393,10 +397,12 @@ consume(x); // Required!`,
         {(['js', 'rust', 'linear'] as const).map(lang => (
           <button
             key={lang}
+            type="button"
             onClick={() => setLanguage(lang)}
+            aria-pressed={language === lang}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
               language === lang
-                ? 'bg-indigo-600 text-white'
+                ? 'bg-indigo-600 text-white ring-2 ring-indigo-300'
                 : 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600'
             }`}
           >
@@ -404,6 +410,15 @@ consume(x); // Required!`,
           </button>
         ))}
       </div>
+
+      {/* Visually-hidden live summary of the selected language's rules */}
+      <p className="sr-only" aria-live="polite">
+        {`${language === 'js' ? 'JavaScript' : language === 'rust' ? 'Rust' : 'Linear'}: ${(
+          Object.keys(current) as Array<keyof typeof current>
+        )
+          .map(rule => `${rule} ${current[rule] ? 'allowed' : 'not allowed'}`)
+          .join(', ')}.`}
+      </p>
 
       {/* Rules grid */}
       <div className="grid grid-cols-3 gap-4 mb-6">
@@ -469,6 +484,16 @@ export const ResourceFlowDiagram: React.FC = () => {
     }
   };
 
+  // Darker variants for text on the light state backgrounds (contrast);
+  // borders/swatches keep the original hues via getStateColor.
+  const getStateTextColor = (state: string) => {
+    switch (state) {
+      case 'valid': return '#166534';
+      case 'moved': return '#b91c1c';
+      default: return getStateColor(state);
+    }
+  };
+
   return (
     <div className="my-8 rounded-xl bg-white dark:bg-slate-800 p-6 border border-slate-200 dark:border-slate-700">
       <h4 className="text-lg font-bold text-center mb-4 text-slate-900 dark:text-slate-100">
@@ -513,7 +538,7 @@ export const ResourceFlowDiagram: React.FC = () => {
             }}
           >
             <span className="font-mono font-bold text-slate-900">s</span>
-            <span className="text-xs mt-1" style={{ color: getStateColor(current.s) }}>
+            <span className="text-xs mt-1" style={{ color: getStateTextColor(current.s) }}>
               {current.s}
             </span>
           </div>
@@ -530,7 +555,7 @@ export const ResourceFlowDiagram: React.FC = () => {
             }}
           >
             <span className="font-mono font-bold text-slate-900">t</span>
-            <span className="text-xs mt-1" style={{ color: current.t === 'none' ? '#94a3b8' : getStateColor(current.t) }}>
+            <span className="text-xs mt-1" style={{ color: current.t === 'none' ? '#94a3b8' : getStateTextColor(current.t) }}>
               {current.t === 'none' ? '—' : current.t}
             </span>
           </div>
@@ -538,7 +563,7 @@ export const ResourceFlowDiagram: React.FC = () => {
       </div>
 
       {/* Description */}
-      <p className="text-center text-slate-600 dark:text-slate-400 text-sm">
+      <p className="text-center text-slate-600 dark:text-slate-400 text-sm" aria-live="polite">
         {current.desc}
       </p>
 

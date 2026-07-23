@@ -27,10 +27,20 @@ const alertStyles = {
 
 const { icon, color } = alertStyles[type];
 const alertId = dismissible ? `alert-${Math.random().toString(36).substr(2, 9)}` : null;
+
+const typeLabels = {
+  success: "Success",
+  error: "Error",
+  warning: "Warning",
+  info: "Info"
+};
+
+const typeLabel = typeLabels[type];
 ---
 
-<div class={`alert alert-${color}`} id={alertId} role="alert">
+<div class={`alert alert-${color}`} id={alertId} role="note">
   <div class="alert-content">
+    <span class="sr-only">{typeLabel}: </span>
     <span class="alert-icon" aria-hidden="true">{icon}</span>
     <div class="alert-text">
       {title && <strong class="alert-title">{title}</strong>}

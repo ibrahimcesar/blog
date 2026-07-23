@@ -15,7 +15,7 @@ if (!headings || headings.length === 0) {
 ---
 
 <nav class="toc font-sans" aria-label="Table of Contents">
-  <button class="toc-toggle" aria-label="Toggle Table of Contents" aria-expanded="false">
+  <button class="toc-toggle" aria-label="Toggle Table of Contents" aria-expanded="false" aria-controls="toc-content">
     <svg class="toc-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <line x1="8" y1="6" x2="21" y2="6"></line>
       <line x1="8" y1="12" x2="21" y2="12"></line>
@@ -26,7 +26,7 @@ if (!headings || headings.length === 0) {
     </svg>
     <span class="toc-toggle-text">{title}</span>
   </button>
-  <div class="toc-content">
+  <div class="toc-content" id="toc-content">
     <div class="toc-header">
       <h2 class="toc-title">{title}</h2>
     </div>
@@ -57,7 +57,7 @@ if (!headings || headings.length === 0) {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    background: #3b82f6; /* blue-500 */
+    background: #2563eb; /* blue-600 */
     color: white;
     border: none;
     border-radius: 24px;
@@ -70,7 +70,7 @@ if (!headings || headings.length === 0) {
   }
 
   .toc-toggle:hover {
-    background: #2563eb; /* blue-600 */
+    background: #1d4ed8; /* blue-700 */
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
     transform: translateY(-2px);
   }
@@ -159,8 +159,8 @@ if (!headings || headings.length === 0) {
   }
 
   .toc-link:hover {
-    color: #3b82f6; /* blue-500 */
-    border-left-color: #3b82f6; /* blue-500 */
+    color: #2563eb; /* blue-600 */
+    border-left-color: #2563eb; /* blue-600 */
     background: #f1f5f9; /* slate-100 */
   }
 
@@ -197,7 +197,7 @@ if (!headings || headings.length === 0) {
 
   .toc-depth-6 .toc-link {
     padding-left: 3.75rem;
-    font-size: 0.6875rem;
+    font-size: 0.75rem;
   }
 
   /* Active link highlighting */
@@ -225,10 +225,8 @@ if (!headings || headings.length === 0) {
     border-radius: 4px;
   }
 
-  @media (prefers-color-scheme: dark) {
-    .toc-content::-webkit-scrollbar-thumb {
-      background: #475569; /* slate-600 */
-    }
+  :global(.dark) .toc-content::-webkit-scrollbar-thumb {
+    background: #475569; /* slate-600 */
   }
 
   /* Mobile adjustments */
@@ -286,7 +284,10 @@ if (!headings || headings.length === 0) {
           if (href && href.startsWith('#')) {
             const target = document.querySelector(href);
             if (target) {
-              target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              const smooth = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+              target.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', block: 'start' });
+              const wrapper = target.closest('.heading-wrapper') || target;
+              wrapper.focus({ preventScroll: true });
               history.pushState(null, '', href);
               toc.classList.remove('expanded');
               newToggle.setAttribute('aria-expanded', 'false');
@@ -294,6 +295,21 @@ if (!headings || headings.length === 0) {
           }
         });
       });
+
+      // Close ToC on Escape and return focus to the toggle button
+      if (!toc.dataset.escapeBound) {
+        toc.dataset.escapeBound = 'true';
+        toc.addEventListener('keydown', function(e) {
+          if (e.key === 'Escape' && toc.classList.contains('expanded')) {
+            toc.classList.remove('expanded');
+            const btn = toc.querySelector('.toc-toggle');
+            if (btn) {
+              btn.setAttribute('aria-expanded', 'false');
+              btn.focus();
+            }
+          }
+        });
+      }
 
       // Close ToC when clicking outside (use capture to ensure we catch it)
       document.addEventListener('click', function(e) {
@@ -349,15 +365,13 @@ if (!headings || headings.length === 0) {
 
 <style is:global>
   .toc-link.active {
-    color: #3b82f6 !important; /* blue-500 */
-    border-left-color: #3b82f6 !important; /* blue-500 */
+    color: #2563eb !important; /* blue-600 */
+    border-left-color: #2563eb !important; /* blue-600 */
     font-weight: 600;
   }
 
-  @media (prefers-color-scheme: dark) {
-    .toc-link.active {
-      color: #60a5fa !important; /* blue-400 */
-      border-left-color: #60a5fa !important; /* blue-400 */
-    }
+  .dark .toc-link.active {
+    color: #60a5fa !important; /* blue-400 */
+    border-left-color: #60a5fa !important; /* blue-400 */
   }
 </style>

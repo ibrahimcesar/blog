@@ -19,14 +19,16 @@ const label = language === "en" ? "reactions" : "reações";
 
 <div
   id="reaction-count"
-  class="reaction-count-container hidden"
+  class="reaction-count-region"
   aria-live="polite"
   aria-atomic="true"
 >
-  <span class="reaction-icon" aria-hidden="true">❤️</span>
-  <span class="reaction-text">
-    <strong class="reaction-number">0</strong>
-    <span class="reaction-label">{label}</span>
+  <span class="reaction-count-container hidden">
+    <span class="reaction-icon" aria-hidden="true">❤️</span>
+    <span class="reaction-text">
+      <strong class="reaction-number">0</strong>
+      <span class="reaction-label">{label}</span>
+    </span>
   </span>
 </div>
 
@@ -44,15 +46,20 @@ const label = language === "en" ? "reactions" : "reações";
       // Only show if there are reactions
       if (reactionCount > 0) {
         const container = document.getElementById('reaction-count');
+        const wrapper = container?.querySelector('.reaction-count-container');
         const numberElement = container?.querySelector('.reaction-number');
 
-        if (container && numberElement) {
-          numberElement.textContent = reactionCount.toString();
-          container.classList.remove('hidden');
-          container.classList.add('visible');
+        if (container && wrapper && numberElement) {
+          // Unhide first, then write the count so the aria-live region announces it
+          wrapper.classList.remove('hidden');
+          wrapper.classList.add('visible');
 
           // Add animation
-          container.classList.add('fade-in');
+          wrapper.classList.add('fade-in');
+
+          requestAnimationFrame(() => {
+            numberElement.textContent = reactionCount.toString();
+          });
         }
       }
     });
@@ -70,6 +77,10 @@ const label = language === "en" ? "reactions" : "reações";
 </script>
 
 <style>
+  .reaction-count-region {
+    display: inline-block;
+  }
+
   .reaction-count-container {
     display: inline-flex;
     align-items: center;
@@ -102,7 +113,12 @@ const label = language === "en" ? "reactions" : "reações";
   .reaction-icon {
     font-size: 1rem;
     line-height: 1;
-    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .reaction-icon {
+      animation: pulse 2s ease-in-out infinite;
+    }
   }
 
   @keyframes pulse {

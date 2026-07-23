@@ -35,8 +35,7 @@ const typeInfo = typeConfig[type] || typeConfig.article;
 ---
 
 <Layout meta={{ title: `${title} | What I Read`, description: description || title }}>
-  <main>
-    <article class="px-4 sm:px-6 py-8 sm:py-12 mx-auto max-w-4xl">
+  <article class="px-4 sm:px-6 py-8 sm:py-12 mx-auto max-w-4xl">
       <!-- Header -->
       <header class="mb-8">
         <div class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-4">
@@ -89,7 +88,7 @@ const typeInfo = typeConfig[type] || typeConfig.article;
         <div class="mb-8 flex justify-center">
           <img
             src={bookCover}
-            alt={title}
+            alt={`Cover of ${title}`}
             class="max-w-xs rounded-lg shadow-lg"
           />
         </div>
@@ -116,6 +115,5 @@ const typeInfo = typeConfig[type] || typeConfig.article;
           </a>
         </div>
       )}
-    </article>
-  </main>
+  </article>
 </Layout>

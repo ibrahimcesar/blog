@@ -1,13 +1,11 @@
 ---
-import Layout from "~/layouts/BaseLayout.astro";
+import Layout from "~/layouts/PageLayout.astro";
 import { SITE } from "~/config.mjs";
 import Error404 from "~/components/widgets/Error404.astro";
 
 const title = `Error 404 — ${SITE.name}`;
 ---
 
-<Layout meta={{ title }}>
-  <main>
-    <Error404 />
-  </main>
+<Layout meta={{ title }} hideBooks={true}>
+  <Error404 />
 </Layout>

@@ -6,8 +6,11 @@ import mdx from "@astrojs/mdx";
 import react from "@astrojs/react";
 import expressiveCode from "astro-expressive-code";
 import remarkMath from "remark-math";
+import remarkSmartypants from "remark-smartypants";
 import rehypeKatex from "rehype-katex";
 import rehypeMermaid from "rehype-mermaid";
+import rehypeSlug from "rehype-slug";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
 
 import { h } from 'hastscript';
 import { toString } from 'hast-util-to-string';
@@ -32,11 +35,7 @@ const AnchorLinkIcon = h(
   })
 );
 
-const createSROnlyLabel = (text) => {
-  const node = h('span.sr-only', `Section titled ${escape(text)}`);
-  node.properties['is:raw'] = true;
-  return node;
-};
+const createSROnlyLabel = (text) => h('span.sr-only', `Section titled ${text}`);
 
 // https://astro.build/config
 export default defineConfig({
@@ -52,16 +51,16 @@ export default defineConfig({
       wrap: true
     },
     remarkPlugins: [
-      ['remark-smartypants', { dashes: false }],
+      [remarkSmartypants, { dashes: false }],
       remarkMath,
     ],
     rehypePlugins: [
       rehypeKatex,
       [rehypeMermaid, { strategy: 'pre-mermaid' }],
-      'rehype-slug',
+      rehypeSlug,
       // This adds links to headings
       [
-        'rehype-autolink-headings',
+        rehypeAutolinkHeadings,
         {
           properties: {
             class: 'anchor-link',

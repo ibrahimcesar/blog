@@ -30,7 +30,7 @@ const fallbackEmoji = getEmojiForPost(post.slug);
 <article
   class="max-w-md mx-auto md:max-w-none grid md:grid-cols-2 gap-6 md:gap-8"
 >
-  <a class="relative block group" href={`/blog/${post.slug}`}>
+  <a class="relative block group" href={`/blog/${post.slug}`} aria-hidden="true" tabindex="-1">
     <div
       class="relative h-64 md:h-80 overflow-hidden bg-gradient-to-br from-purple-500 to-blue-600 dark:from-purple-700 dark:to-blue-800 rounded shadow-lg flex items-center justify-center"
     >
@@ -40,11 +40,11 @@ const fallbackEmoji = getEmojiForPost(post.slug);
           class="absolute inset-0 w-full h-full object-cover rounded shadow-lg"
           widths={[400, 768]}
           sizes="(max-width: 767px) 400px, 768px"
-          alt={post.data.description}
+          alt=""
           aspectRatio={1}
         />
       ) : (
-        <div class="text-9xl select-none" role="img" aria-label="Post icon">
+        <div class="text-9xl select-none" aria-hidden="true">
           {fallbackEmoji}
         </div>
       )}

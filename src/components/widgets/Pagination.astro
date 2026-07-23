@@ -2,11 +2,12 @@
 const { prevUrl, nextUrl } = Astro.props;
 ---
 
-<div class="container flex">
+<nav class="container flex" aria-label="Pagination">
   <div class="flex flex-row mx-auto container justify-between">
     <a
       href={prevUrl}
-      class={`btn font-medium text-gray-600 hover:text-gray-900 dark:hover:text-white shadow-none mr-2 ${
+      rel="prev"
+      class={`btn font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white shadow-none mr-2 ${
         !prevUrl ? "invisible" : ""
       }`}
     >
@@ -27,7 +28,8 @@ const { prevUrl, nextUrl } = Astro.props;
     </a>
     <a
       href={nextUrl}
-      class={`btn font-medium text-gray-600 hover:text-gray-900 dark:hover:text-white shadow-none ${
+      rel="next"
+      class={`btn font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white shadow-none ${
         !nextUrl ? "invisible" : ""
       }`}
     >
@@ -47,4 +49,4 @@ const { prevUrl, nextUrl } = Astro.props;
       </div>
     </a>
   </div>
-</div>
+</nav>

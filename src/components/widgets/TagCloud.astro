@@ -36,6 +36,7 @@ const maxCount = Math.max(...Object.values(tagCounts));
             title={`${count} post${count !== 1 ? 's' : ''}`}
           >
             {tag}
+            <span class="sr-only">({count} post{count !== 1 ? 's' : ''})</span>
           </a>
         );
       })

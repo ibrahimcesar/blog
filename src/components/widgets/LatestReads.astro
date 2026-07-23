@@ -44,7 +44,7 @@ const typeIcons: Record<string, string> = {
                 <h3 class="font-semibold text-slate-900 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors inline-flex items-center gap-1">
                   {item.data.title}
                   {isExternal && (
-                    <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-3.5 h-3.5 text-slate-500 dark:text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
                     </svg>
                   )}
@@ -59,7 +59,7 @@ const typeIcons: Record<string, string> = {
               </div>
               <time
                 datetime={item.data.pubDate.toISOString()}
-                class="text-xs text-slate-400 dark:text-slate-500 flex-shrink-0"
+                class="text-xs text-slate-500 dark:text-slate-400 flex-shrink-0"
               >
                 {item.data.pubDate.toISOString().substring(0, 10)}
               </time>

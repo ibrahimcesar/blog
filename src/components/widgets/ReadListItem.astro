@@ -36,12 +36,12 @@ const typeInfo = typeConfig[type] || typeConfig.article;
         {bookCover ? (
           <img
             src={bookCover}
-            alt={title}
+            alt=""
             class="w-24 h-32 object-cover rounded-lg shadow-md"
             loading="lazy"
           />
         ) : (
-          <div class="w-24 h-32 bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-700 dark:to-slate-800 rounded-lg flex items-center justify-center text-4xl">
+          <div class="w-24 h-32 bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-700 dark:to-slate-800 rounded-lg flex items-center justify-center text-4xl" aria-hidden="true">
             {typeInfo.icon}
           </div>
         )}
