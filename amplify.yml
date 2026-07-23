@@ -5,6 +5,8 @@ frontend:
       commands:
         # Astro 7 requires Node >= 22.12
         - nvm install 22 && nvm use 22
+        # rehype-mermaid's pre-mermaid strategy never launches a browser
+        - export PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
         - npm ci
     build:
       commands:
