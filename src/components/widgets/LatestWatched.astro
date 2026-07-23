@@ -21,7 +21,7 @@ const latestWatched = watched.slice(0, count);
       {latestWatched.map((item) => {
         const thumbnailUrl = `https://i.ytimg.com/vi/${item.data.videoId}/hqdefault.jpg`;
         return (
-          <a href={`/watched/${item.slug}`} class="group block">
+          <a href={`/watched/${item.id}`} class="group block">
             <article class="h-full">
               <div class="relative aspect-video rounded-lg overflow-hidden bg-slate-200 dark:bg-slate-700 mb-3">
                 <img

@@ -10,7 +10,7 @@ interface Props {
 const { currentPost, seriesPosts, seriesName } = Astro.props;
 
 // Find current post index
-const currentIndex = seriesPosts.findIndex((p) => p.slug === currentPost.slug);
+const currentIndex = seriesPosts.findIndex((p) => p.id === currentPost.id);
 const totalPosts = seriesPosts.length;
 
 // Don't render if this is the only post in the series

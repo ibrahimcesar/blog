@@ -30,7 +30,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   return posts
     .filter(post => !post.data.socialImage) // Only for posts without socialImage
     .map(post => ({
-      params: { slug: post.slug },
+      params: { slug: post.id },
       props: {
         title: post.data.title,
         description: post.data.description || '',

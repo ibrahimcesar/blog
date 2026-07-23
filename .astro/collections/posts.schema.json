@@ -1,137 +1,107 @@
 {
-  "$ref": "#/definitions/posts",
-  "definitions": {
-    "posts": {
-      "type": "object",
-      "properties": {
-        "title": {
-          "type": "string"
-        },
-        "description": {
-          "type": "string"
-        },
-        "pubDate": {
-          "anyOf": [
-            {
-              "type": "string",
-              "format": "date-time"
-            },
-            {
-              "type": "string",
-              "format": "date"
-            },
-            {
-              "type": "integer",
-              "format": "unix-time"
-            }
-          ]
-        },
-        "featured": {
-          "type": "boolean",
-          "default": false
-        },
-        "draft": {
-          "type": "boolean",
-          "default": false
-        },
-        "language": {
-          "type": "string",
-          "enum": [
-            "en",
-            "pt-br"
-          ],
-          "default": "pt-br"
-        },
-        "image": {
-          "type": "string"
-        },
-        "socialImage": {
-          "type": "string"
-        },
-        "tags": {
-          "anyOf": [
-            {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            },
-            {
-              "type": "string"
-            }
-          ],
-          "default": []
-        },
-        "category": {
-          "type": "string"
-        },
-        "author": {
-          "type": "string",
-          "default": "Ibrahim Cesar"
-        },
-        "updated": {
-          "anyOf": [
-            {
-              "type": "string",
-              "format": "date-time"
-            },
-            {
-              "type": "string",
-              "format": "date"
-            },
-            {
-              "type": "integer",
-              "format": "unix-time"
-            }
-          ]
-        },
-        "excerpt": {
-          "type": "string"
-        },
-        "canonicalURL": {
-          "type": "string",
-          "format": "uri"
-        },
-        "series": {
-          "type": "string"
-        },
-        "seriesOrder": {
-          "type": "integer",
-          "exclusiveMinimum": 0
-        },
-        "relatedPosts": {
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "pubDate": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "featured": {
+      "default": false,
+      "type": "boolean"
+    },
+    "draft": {
+      "default": false,
+      "type": "boolean"
+    },
+    "language": {
+      "default": "pt-br",
+      "type": "string",
+      "enum": [
+        "en",
+        "pt-br"
+      ]
+    },
+    "image": {
+      "type": "string"
+    },
+    "socialImage": {
+      "type": "string"
+    },
+    "tags": {
+      "anyOf": [
+        {
           "type": "array",
           "items": {
             "type": "string"
-          },
-          "default": []
+          }
         },
-        "tableOfContents": {
-          "type": "boolean",
-          "default": true
-        },
-        "showComments": {
-          "type": "boolean",
-          "default": true
-        },
-        "discussionUrl": {
-          "type": "string",
-          "format": "uri"
-        },
-        "tldr": {
-          "type": "string"
-        },
-        "$schema": {
+        {
           "type": "string"
         }
-      },
-      "required": [
-        "title",
-        "description",
-        "pubDate"
-      ],
-      "additionalProperties": false
+      ]
+    },
+    "category": {
+      "type": "string"
+    },
+    "author": {
+      "default": "Ibrahim Cesar",
+      "type": "string"
+    },
+    "updated": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "excerpt": {
+      "type": "string"
+    },
+    "canonicalURL": {
+      "type": "string",
+      "format": "uri"
+    },
+    "series": {
+      "type": "string"
+    },
+    "seriesOrder": {
+      "type": "integer",
+      "exclusiveMinimum": 0,
+      "maximum": 9007199254740991
+    },
+    "relatedPosts": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "tableOfContents": {
+      "default": true,
+      "type": "boolean"
+    },
+    "showComments": {
+      "default": true,
+      "type": "boolean"
+    },
+    "discussionUrl": {
+      "type": "string",
+      "format": "uri"
+    },
+    "tldr": {
+      "type": "string"
+    },
+    "$schema": {
+      "type": "string"
     }
   },
-  "$schema": "http://json-schema.org/draft-07/schema#"
+  "required": [
+    "title",
+    "description",
+    "pubDate"
+  ]
 }

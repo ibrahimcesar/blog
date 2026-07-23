@@ -145,7 +145,7 @@ export async function getRelatedPosts(
   const allPosts = await getPosts();
 
   // Exclude current post
-  const otherPosts = allPosts.filter((post) => post.slug !== currentPost.slug);
+  const otherPosts = allPosts.filter((post) => post.id !== currentPost.id);
 
   // Calculate relevance score for each post
   const scoredPosts = otherPosts.map((post) => {

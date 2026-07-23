@@ -29,7 +29,7 @@ const typeIcons: Record<string, string> = {
     <ul class="space-y-4">
       {latestReads.map((item) => {
         const typeIcon = typeIcons[item.data.type] || typeIcons.article;
-        const linkUrl = item.data.sourceUrl || `/reads/${item.slug}`;
+        const linkUrl = item.data.sourceUrl || `/reads/${item.id}`;
         const isExternal = !!item.data.sourceUrl;
         return (
           <li class="group">

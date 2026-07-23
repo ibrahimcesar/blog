@@ -13,7 +13,7 @@ const classLanguage = isEnglish ? "en" : "br";
  <div class="mb-6 transition">
 
    <a
-      href={`/blog/${post.slug}`}
+      href={`/blog/${post.id}`}
       title={post.data.title}>
     <Picture
             src={image}
@@ -26,7 +26,7 @@ const classLanguage = isEnglish ? "en" : "br";
   <span class={`font-mono text-xs font-semibold uppercase ${classLanguage}`}>📝 {isEnglish ? "en" : "pt-br"}</span>
   <h3 class="mb-2 text-xl font-bold leading-snug sm:text-2xl">
     <a
-      href={`/blog/${post.slug}`}
+      href={`/blog/${post.id}`}
       class="text-slate-900 dark:text-slate-100 hover:text-blue-600 underline underline-offset-4 decoration-1 decoration-dotted transition ease-in duration-200"
     >
       {post.data.title}
