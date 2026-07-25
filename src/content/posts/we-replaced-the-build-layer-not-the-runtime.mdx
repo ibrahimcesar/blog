@@ -1,6 +1,6 @@
 ---
 title: "We Replaced the Build Layer, Not the Runtime"
-description: "Everyone is now a programmer — natural language is the new programming language, and that's genuinely true. But building something that runs is not the same as understanding why it runs. AI moved the abstraction up; the foundation underneath didn't move at all."
+description: "Guillermo Rauch says everyone is now a programmer. Anyone can now build software by writing or speaking — but building something that runs is not the same as understanding why it runs. AI replaced the layer where we author programs, not the runtime they execute on, and the runtime still has to be understood by someone."
 pubDate: "2026-07-25T12:00:00.000Z"
 language: en
 category: "Technology"
@@ -20,10 +20,12 @@ import DiveDeep from '../../components/editorial/DiveDeep.astro';
 Guillermo Rauch wrote that everyone is now a programmer, because the present
 and future programming language is your natural language: *if you can write or
 speak, you can build.* He calls it the most important evolution in our field
-since its creation, a tsunami that has just started. I agree with almost all of
-it. Where I get off the train is the leap from *you can build* to *everyone is a
-programmer* — those are not the same claim, and the gap between them is this
-whole essay.
+since its creation, a tsunami that has just started. A claim that sweeping —
+from someone with that much to gain by making it — deserves some critical
+thinking, not a reflexive nod. The real part is smaller than the sentence
+sounds: you can now build software by writing or speaking. What I want to argue
+with is the slide from *you can build* to *everyone is a programmer* — not the
+same claim, and the gap between them is this whole essay.
 
 </Lead>
 
@@ -79,27 +81,52 @@ it assumes, when it will *stop* running, and what you do at that moment. A model
 can hand you the first. The rest is still, stubbornly, understanding — and
 understanding does not come bundled in the output.
 
-Here is the asymmetry that makes this dangerous rather than merely academic:
-**generating code got radically cheaper, but understanding code did not.** The
-tsunami lowered the cost of production to almost zero and left the cost of
-comprehension exactly where it was. When those two curves diverge, you get an
-enormous amount of software that works and that no one — including the person
-who "wrote" it — can account for.
+Here's the objection that deserves an answer, because it's the strongest one
+against everything I'm about to say: *the same model that writes the code will
+also explain it.* Paste the stack trace and get a root-cause hypothesis; ask why
+the query is slow and get a paragraph about indexes. If generation got cheap,
+didn't comprehension get cheap right along with it?
+
+Partly. And that part is real — I use it every day. But a machine can hand you a
+theory; it cannot make you *hold* one. The explanation arrives as fluent,
+confident prose, and fluent-and-confident is exactly the trap: you cannot tell a
+correct explanation from a plausible wrong one *unless you already understand the
+thing being explained.* Comprehension you didn't earn doesn't transfer, doesn't
+compound, and isn't there in the one moment you actually need it — the novel
+failure the model has never seen, where its explanation is as wrong as its code
+and just as self-assured. So the honest version of the asymmetry is this:
+generation fell to almost nothing, and real understanding got cheaper too, but
+far more slowly — and it stops being free precisely when the stakes go up. When
+those two curves diverge, you get an enormous amount of software that works and
+that no one — the person who prompted it, or the model that wrote it — can
+actually account for.
 
 ## The abstraction moved up. The foundation didn't.
 
 Here's the framing I keep coming back to, and it's the whole point of this post.
 
-We did not replace the runtime. We replaced the **build layer**.
+We did not replace the runtime. We replaced the layer where programs get
+*authored*.
 
-Think about what an LLM actually does when it "programs." It sits at the layer
-where a human used to assemble instructions — choosing the function, wiring the
-call, naming the variable. It automates *authoring*. But the thing it authors
-still has to descend, unchanged, through every layer beneath it: the language
-runtime, the operating system, the network, the database, the distributed system
-with its partial failures and its clock skew and its retries. None of that got
-abstracted away. None of it got smarter. It obeys the same laws it obeyed in
-2005.
+Think about what an LLM actually does when it "programs." It sits where a human
+used to assemble the instructions — choosing the function, wiring the call,
+naming the variable. It automates *authoring*. I'm calling that the **build
+layer**, with one caveat for the engineers reading: I don't mean the toolchain
+you normally attach to that phrase — the compiler, the bundler, CI. I mean the
+human act of composing the program in the first place. That is the part the model
+now does for you.
+
+But the thing it authors still has to descend through every layer beneath it:
+the language runtime, the operating system, the network, the database, the
+distributed system with its partial failures and its clock skew and its retries.
+Plenty of *that* has been abstracted away too — it's most of what two decades of
+cloud and managed services did, and it's the same move at a lower altitude: hand
+people a runtime they can operate without understanding it. But abstracting a
+runtime is not abolishing it. The laws underneath don't change. The database
+still has to do the work the query asked for; the network still partitions; the
+CPU still stalls on a cache miss. The understanding didn't become unnecessary —
+it just moved out of sight. Which is a very different thing, and the whole source
+of the risk.
 
 <InfoBox title="The one-line version" type="note">
 
@@ -144,43 +171,56 @@ even if every line still compiles and runs. New maintainers can read the code
 perfectly and still make it worse, because they patch the shadow without holding
 the thing that cast it. The code runs; the understanding is gone; decay follows.
 
-Sit with that in the context of vibe coding. If a program's life is the theory
-in a human mind, then code generated by a model and accepted without
-comprehension is **born without a theory.** It is a shadow with nothing casting
-it. It runs on day one — and it is, in Naur's precise sense, already dead. There
+Now extend that — and let me be clear the next step is mine, not Naur's; he was
+writing about teams dispersing, not about machines. If a program's life is the
+theory in a human mind, then code generated by a model and accepted without
+comprehension is a shadow with nothing casting it. It runs on day one, and there
 is no one who holds why it is the way it is. The first serious change starts from
 zero, or worse than zero.
+
+The fair objection is that none of this is new. Copy-pasted Stack Overflow,
+inherited legacy nobody remembers writing, the dependency you imported and never
+read — theory-free code is as old as code reuse, and we've shipped it for
+decades. True. What's new is that the cheapest, default, most frictionless way to
+make software now produces theory-free code *by construction*, at a volume and
+speed the copy-paste era could never reach. We didn't invent the theory gap. We
+industrialized it.
 
 ## The priesthood of the machine
 
 This is the part my instinct reached for in that thread, and I still think it's
 the right instinct.
 
-I kept thinking of Asimov's *Foundation.*[^5] In the kingdoms of the Galactic
-Periphery, the technology still exists — they still have atomic power. What they
-have lost is the *understanding* of it. The reactors are tended by a priesthood
-that operates them through memorized ritual, having no idea what the rituals
-mean. It works, generation after generation, exactly as long as nothing new
+I kept thinking of Asimov's *Foundation.*[^5] On the kingdoms of the Galactic
+Periphery, atomic technology still runs — but the science behind it is gone, and
+the reactors are tended by a priesthood that works them through memorized
+ritual, with no idea what the rituals actually do. It works, generation after generation, exactly as long as nothing new
 breaks. The Foundation's entire strategy rests on a simple bet: whoever
 understands the machine controls the people who can only worship it. When the
 knowledge became religion, the power moved to whoever kept the knowledge.
 
 <DiveDeep title="Why this keeps happening — from the Bronze Age to the build pipeline">
 
-The pattern isn't science fiction. Around 1200 BCE, a whole interlocking network
-of Late Bronze Age Mediterranean civilizations collapsed within a couple of
-generations. In Greece, the loss was so complete that literacy itself
-disappeared — the Linear B script simply stopped being written, and the region
-fell into centuries we still call the Greek Dark Ages. Knowledge that no living
-person fully held anymore didn't degrade gracefully. It fell off a cliff.
+A caveat first: what follows is an *image*, not evidence. Asimov's worlds are
+invented to prove his point, and real history is messier than any thesis. But
+the image earns its keep. Around 1200 BCE, a whole interlocking network of Late
+Bronze Age Mediterranean civilizations came apart within a couple of generations
+— the causes still argued over: drought, the Sea Peoples, earthquakes, and the
+brittleness of systems too specialized to bend. One casualty in Greece was Linear
+B, the script the palace scribes used to run the economy. It was never mass
+literacy — it was a narrow administrative skill held by a handful of people — and
+when the palaces fell, that handful was a small enough bottleneck that the skill
+died with them. Writing didn't return to Greece for centuries.
 
-Complex civilizations don't fail because the technology vanishes. They fail
-because the *understanding* that maintains the technology thins out — concentrates
-in fewer and fewer heads, becomes ritual, and then one shock arrives that the
-rituals don't cover. Asimov dramatized it with reactors. Naur formalized it with
-software teams. It is the same failure mode at three different scales: the theory
-is lost while the artifact keeps running, and everyone mistakes "it still runs"
-for "we still understand it."
+Notice the direction of causation, because it matters and cuts against the tidy
+reading: the lost knowledge was mostly a *symptom* of the collapse, not its
+trigger. But the bottleneck is the part that travels to us. When a capability
+lives in very few heads — because it curdled into ritual, or because it was never
+really learned in the first place — the system has no margin. One shock it wasn't
+rehearsed for, and the capability is simply gone. Asimov dramatized that with
+reactors; Naur described it with software teams. Same shape, wildly different
+scales — and, to be honest, not three independent proofs of anything. Just one
+recurring worry, told three ways.
 
 Asimov made the literal version even sharper in a 1958 short story, *The Feeling
 of Power*, where a future humanity has forgotten how to do arithmetic by hand —
@@ -190,14 +230,15 @@ index works" and you have a Tuesday.
 
 </DiveDeep>
 
-We are building our own priesthood, and we're doing it enthusiastically. Every
-layer of abstraction we adopt without understanding moves us one step closer to
-tending reactors we can't repair. The danger isn't the abstraction — abstraction
-is how all of engineering makes progress. The danger is *fascination*: mistaking
-the gift of the machine for comprehension of it, treating the whole stack as
-magic that floats on nothing, forgetting that under every abstraction there is a
-runtime, and that a runtime is not a metaphor. It is a real thing that fails in
-real ways and calls for a real human who knows why.
+We are building our own priesthood, and mostly we're enjoying it. Every layer of
+abstraction we adopt without understanding buys real leverage and quietly adds a
+little fragility — one more thing that works until it doesn't, tended by people
+who can run the ritual but not explain it. The danger was never abstraction
+itself; abstraction is how engineering makes any progress at all. The danger is
+*fascination* — mistaking the gift of the machine for comprehension of it,
+treating the whole stack as magic that floats on nothing, and forgetting that
+under every abstraction there is a runtime that will, sooner or later, need
+someone who knows why.
 
 ## Someone always has to know
 
@@ -207,14 +248,25 @@ would be both wrong and useless — the water is already here, and most of what 
 brought is good. More people making software is a gift.
 
 The correction I want to make is smaller and, I think, harder to argue with.
-"Everyone is a programmer" is true the way "everyone with a phone is a
-photographer" is true. The bar to make an image dropped to nothing, and the world
-is richer for it — and it did not, for one second, make the people who understand
-light and composition and the physics of the sensor less valuable. It made them
-*more* valuable, because now they're rare in a sea of output.
+Reach for the obvious analogy — everyone with a phone is a photographer — and you
+can feel exactly where it strains. Cheap cameras did flood the world with images,
+and they did make the people who genuinely understand light and composition and
+the physics of the sensor *more* valuable, not less, because now they are rare in
+a sea of output. That half transfers cleanly. What doesn't transfer is the
+stakes: a bad photo just looks bad, while a bad program nobody understands pages
+someone at 3am or empties an account. Democratizing the *making* is pure upside
+when the worst case is a boring picture. It is something more double-edged when
+the worst case is running in production.
 
-So the value doesn't disappear. It moves — down the stack, to the people who
-understand the layer the magic is standing on:
+And let me be honest about my own dividing line, because it's softer than the
+Meeks quote makes it sound. Understanding isn't a wall with programmers on one
+side and dabblers on the other. Nobody understands all the way down — the senior
+engineer who can debug the slow query can't debug the CPU's branch predictor, and
+Spolsky's law guarantees every one of us is standing on abstractions we've
+quietly agreed not to open. It's a gradient, and the only question that matters
+is which direction you're moving on it. So the value doesn't disappear; it moves
+down the stack, toward the people willing to push their competent layer one rung
+lower than they strictly had to:
 
 - **If you're building with these tools**: use them, ship with them, enjoy the
   leverage — and keep learning the layer underneath the one you're working at.
@@ -247,4 +299,4 @@ Or pay someone who does.
 
 [^4]: Peter Naur, *Programming as Theory Building*, 1985. Naur co-created Backus–Naur Form, so this isn't a skeptic sniping from outside the field — it's one of its architects arguing that the code is the least durable part of what a programmer makes. The essay is short and worth reading in full; it has aged into one of the most quietly radical things ever written about software.
 
-[^5]: Isaac Asimov, *Foundation* (1951) — verified against the source, since I first cited it from memory. In the "Encyclopedists" and "Mayors" sections, the Four Kingdoms of the Galactic Periphery (chiefly **Anacreon**) still possess atomic reactors but have entirely lost the science behind them. The Foundation exports that technology wrapped in a religion it calls **Scientism**: technician-priests are trained in the *operation* of the reactors — the rituals — but pointedly not in the theory, so the kingdoms stay dependent on Foundation-trained specialists to keep the machines running. Salvor Hardin's whole strategy rests on it: when knowledge becomes ceremony, power flows to whoever still understands the machine. It is Asimov's dramatization of exactly the failure mode this post is about — the artifact keeps humming while the comprehension drains out of it, until something breaks that no ritual covers.
+[^5]: Isaac Asimov, *Foundation* (1951) — verified against the source, since I first cited it from memory. In "The Mayors," the kingdoms of the Galactic Periphery (chiefly **Anacreon**) have *lost* atomic power and regressed toward coal and oil. The Foundation reintroduces the technology wrapped in a religion it calls **Scientism**: technician-priests are trained in the *operation* of the reactors — the rituals — but pointedly not in the theory, which keeps the kingdoms dependent on Foundation-trained specialists to keep the machines running. Salvor Hardin's whole strategy rests on it: when knowledge becomes ceremony, power flows to whoever still understands the machine. It's Asimov's dramatization of exactly the failure mode this post is about — the artifact keeps humming while comprehension drains out of it, until something breaks that no ritual covers.
