@@ -1,0 +1,250 @@
+---
+title: "We Replaced the Build Layer, Not the Runtime"
+description: "Everyone is now a programmer — natural language is the new programming language, and that's genuinely true. But building something that runs is not the same as understanding why it runs. AI moved the abstraction up; the foundation underneath didn't move at all."
+pubDate: "2026-07-25T12:00:00.000Z"
+language: en
+category: "Technology"
+tags: ["AI", "Vibe Coding", "Programming", "Abstractions", "Technology and Society"]
+featured: true
+tldr: "Guillermo Rauch says everyone is now a programmer. I'd say everyone can now *build* — which is not the same thing. AI replaced the layer where we assemble programs, not the runtime those programs live in, and someone always has to understand the runtime, or pay someone who does. Otherwise you get the priesthood of the machine."
+relatedPosts: ["conjuramos-os-espiritos-do-computador", "grok-and-the-naked-king", "como-llms-funcionam-do-texto-ao-token"]
+---
+
+import Lead from '../../components/editorial/Lead.astro';
+import PullQuote from '../../components/editorial/PullQuote.astro';
+import InfoBox from '../../components/editorial/InfoBox.astro';
+import DiveDeep from '../../components/editorial/DiveDeep.astro';
+
+<Lead>
+
+Guillermo Rauch wrote that everyone is now a programmer, because the present
+and future programming language is your natural language: *if you can write or
+speak, you can build.* He calls it the most important evolution in our field
+since its creation, a tsunami that has just started. I agree with almost all of
+it. Where I get off the train is the leap from *you can build* to *everyone is a
+programmer* — those are not the same claim, and the gap between them is this
+whole essay.
+
+</Lead>
+
+## The hottest new programming language is English
+
+Let's be honest about where this is coming from. Rauch runs a company whose
+business is selling shovels for exactly this gold rush, and *"everyone is now a
+programmer"* is about the most comfortable sentence a person in that chair can
+say. So yes — some of this is hype, a marketing weather report from someone with
+product to move. Andrej Karpathy reached for the same image earlier and more
+bluntly — *"the hottest new programming language is English"*[^1], later naming
+the practice **vibe coding**, where you describe what you want, accept what the
+model produces, and mostly forget the code even exists[^2] — and he has his own
+share of boosterism to answer for too. Discount the whole chorus for the sales
+pitch. Skepticism is the right posture to open with.
+
+And then, having discounted it all the way down, notice that something real is
+still sitting at the bottom of the claim.
+
+It works. I've watched people who have never opened a terminal produce
+something that runs — a landing page, a script that renames a thousand files, a
+small tool that solves a real problem in their day. That is not nothing. It is,
+genuinely, one of the largest expansions of who gets to make software in the
+history of the field. The barrier that kept most of humanity out of building was
+never a lack of ideas. It was syntax, tooling, the thousand small hostilities of
+the environment. Natural language dissolves a lot of that.
+
+So yes: anyone can now *build*. That much I'll grant without a fight — it's
+true, it's new, and it's one of the best things to happen to the field in my
+lifetime.
+
+What I won't grant is the word Rauch reaches for to describe it. *Build* and
+*programmer* are not synonyms, and the distance between them is the rest of this
+essay.
+
+## Building is not programming
+
+Everyone can now *ask* for a program that runs. Not everyone can tell you **why**
+it runs — or fix it when it stops. In the thread where I first made this
+argument, Kelvin Meeks put the dividing line better than I could:
+
+<PullQuote cite="Kelvin Meeks">
+
+If the person can't debug the source code, they are just a dabbler — not a
+programmer.
+
+</PullQuote>
+
+That sounds gatekeep-y until you've been the one paged at 3am. "It runs" is a
+statement about a single execution, on one machine, with one input, at one
+moment. Programming is everything that statement leaves out: why it runs, what
+it assumes, when it will *stop* running, and what you do at that moment. A model
+can hand you the first. The rest is still, stubbornly, understanding — and
+understanding does not come bundled in the output.
+
+Here is the asymmetry that makes this dangerous rather than merely academic:
+**generating code got radically cheaper, but understanding code did not.** The
+tsunami lowered the cost of production to almost zero and left the cost of
+comprehension exactly where it was. When those two curves diverge, you get an
+enormous amount of software that works and that no one — including the person
+who "wrote" it — can account for.
+
+## The abstraction moved up. The foundation didn't.
+
+Here's the framing I keep coming back to, and it's the whole point of this post.
+
+We did not replace the runtime. We replaced the **build layer**.
+
+Think about what an LLM actually does when it "programs." It sits at the layer
+where a human used to assemble instructions — choosing the function, wiring the
+call, naming the variable. It automates *authoring*. But the thing it authors
+still has to descend, unchanged, through every layer beneath it: the language
+runtime, the operating system, the network, the database, the distributed system
+with its partial failures and its clock skew and its retries. None of that got
+abstracted away. None of it got smarter. It obeys the same laws it obeyed in
+2005.
+
+<InfoBox title="The one-line version" type="note">
+
+AI is a new **build** layer — a faster, friendlier way to produce the artifact.
+It is not a new **runtime**. The artifact still executes on the same unforgiving
+foundation, and that foundation still demands to be understood by *someone.*
+
+</InfoBox>
+
+This is why the "everyone can build" story feels magical and reads as risky at
+the same time. Magic is the correct word for the experience — you speak, and a
+working thing appears. But magic, in the honest sense, is just an abstraction
+whose internals you've agreed not to look at. And abstractions have a law, stated
+by Joel Spolsky more than twenty years ago and undefeated since:
+
+<PullQuote cite="Joel Spolsky, The Law of Leaky Abstractions (2002)">
+
+All non-trivial abstractions, to some degree, are leaky.
+
+</PullQuote>
+
+The vibe holds right up until the abstraction leaks — the query that's fine at a
+hundred rows and melts at a million, the race condition that only shows up under
+load, the dependency with a CVE, the bill that arrives because nobody understood
+what "serverless" was actually invoicing.[^3] And when the leak happens, natural
+language is no help at all, because the leak is happening at a layer natural
+language never touched. Fixing it requires exactly the skill the tsunami
+promised you didn't need: knowing how the runtime works.
+
+## A program is a theory, not a text
+
+The deepest version of this argument is forty years old and was never really
+about AI. In 1985, Peter Naur — the *N* in BNF — wrote a short, stubborn essay
+called *Programming as Theory Building.*[^4] His claim: the real program is not
+the source code. The real program is the **theory** living in the minds of the
+people who wrote it — their understanding of the problem, of why the code is
+shaped the way it is, of which parts are load-bearing and which are incidental.
+
+The text is a *shadow* of the theory. And here is the unsettling part: Naur
+argued that when the team holding the theory disperses, the program **dies**,
+even if every line still compiles and runs. New maintainers can read the code
+perfectly and still make it worse, because they patch the shadow without holding
+the thing that cast it. The code runs; the understanding is gone; decay follows.
+
+Sit with that in the context of vibe coding. If a program's life is the theory
+in a human mind, then code generated by a model and accepted without
+comprehension is **born without a theory.** It is a shadow with nothing casting
+it. It runs on day one — and it is, in Naur's precise sense, already dead. There
+is no one who holds why it is the way it is. The first serious change starts from
+zero, or worse than zero.
+
+## The priesthood of the machine
+
+This is the part my instinct reached for in that thread, and I still think it's
+the right instinct.
+
+I kept thinking of Asimov's *Foundation.*[^5] In the kingdoms of the Galactic
+Periphery, the technology still exists — they still have atomic power. What they
+have lost is the *understanding* of it. The reactors are tended by a priesthood
+that operates them through memorized ritual, having no idea what the rituals
+mean. It works, generation after generation, exactly as long as nothing new
+breaks. The Foundation's entire strategy rests on a simple bet: whoever
+understands the machine controls the people who can only worship it. When the
+knowledge became religion, the power moved to whoever kept the knowledge.
+
+<DiveDeep title="Why this keeps happening — from the Bronze Age to the build pipeline">
+
+The pattern isn't science fiction. Around 1200 BCE, a whole interlocking network
+of Late Bronze Age Mediterranean civilizations collapsed within a couple of
+generations. In Greece, the loss was so complete that literacy itself
+disappeared — the Linear B script simply stopped being written, and the region
+fell into centuries we still call the Greek Dark Ages. Knowledge that no living
+person fully held anymore didn't degrade gracefully. It fell off a cliff.
+
+Complex civilizations don't fail because the technology vanishes. They fail
+because the *understanding* that maintains the technology thins out — concentrates
+in fewer and fewer heads, becomes ritual, and then one shock arrives that the
+rituals don't cover. Asimov dramatized it with reactors. Naur formalized it with
+software teams. It is the same failure mode at three different scales: the theory
+is lost while the artifact keeps running, and everyone mistakes "it still runs"
+for "we still understand it."
+
+Asimov made the literal version even sharper in a 1958 short story, *The Feeling
+of Power*, where a future humanity has forgotten how to do arithmetic by hand —
+machines do all of it — and rediscovering long multiplication is treated as an
+astonishing, almost dangerous breakthrough. Swap arithmetic for "how a database
+index works" and you have a Tuesday.
+
+</DiveDeep>
+
+We are building our own priesthood, and we're doing it enthusiastically. Every
+layer of abstraction we adopt without understanding moves us one step closer to
+tending reactors we can't repair. The danger isn't the abstraction — abstraction
+is how all of engineering makes progress. The danger is *fascination*: mistaking
+the gift of the machine for comprehension of it, treating the whole stack as
+magic that floats on nothing, forgetting that under every abstraction there is a
+runtime, and that a runtime is not a metaphor. It is a real thing that fails in
+real ways and calls for a real human who knows why.
+
+## Someone always has to know
+
+None of this is a case against the tsunami. I'm not going to stand on the beach
+telling people to stop building because they can't yet read the assembly. That
+would be both wrong and useless — the water is already here, and most of what it
+brought is good. More people making software is a gift.
+
+The correction I want to make is smaller and, I think, harder to argue with.
+"Everyone is a programmer" is true the way "everyone with a phone is a
+photographer" is true. The bar to make an image dropped to nothing, and the world
+is richer for it — and it did not, for one second, make the people who understand
+light and composition and the physics of the sensor less valuable. It made them
+*more* valuable, because now they're rare in a sea of output.
+
+So the value doesn't disappear. It moves — down the stack, to the people who
+understand the layer the magic is standing on:
+
+- **If you're building with these tools**: use them, ship with them, enjoy the
+  leverage — and keep learning the layer underneath the one you're working at.
+  You don't need to write the runtime. You need to be able to *read* it when the
+  abstraction leaks, because it will.
+- **If you run a team or a company**: you can absolutely generate more software
+  than ever. Just don't confuse volume with an asset. Code no one understands is
+  a liability with a delay on it. Keep — and pay — the people who hold the theory.
+- **If you're just getting in**: the fundamentals didn't get less important
+  because a model can skip them for you. They got *more* important, because
+  understanding them is now the thing that separates you from everyone who can
+  only ask.
+
+We forget how much the basics and the infrastructure matter, right up until the
+moment the reactor stops and there's no one left who knows why. We are replacing
+the build layer, not the runtime. The runtime is still down there, running the
+world, obeying its own laws, indifferent to how eloquently we asked.
+
+Someone always has to understand how the runtimes work.
+
+Or pay someone who does.
+
+---
+
+[^1]: Andrej Karpathy, [on X](https://twitter.com/karpathy/status/1617979122625712128), January 2023: *"The hottest new programming language is English."* The line predates the current wave of natural-language coding tools and reads, in hindsight, like a weather report for the storm Rauch is describing.
+
+[^2]: Andrej Karpathy coined **"vibe coding"** in a [February 2025 post](https://twitter.com/karpathy/status/1886192184808149383): *"you fully give in to the vibes, embrace exponentials, and forget that the code even exists."* He meant it partly as delight and partly as a warning — the whole point is that you stop reading the code. That's exactly the move this essay is nervous about when the stakes rise above throwaway toys.
+
+[^3]: The serverless bill is not a hypothetical. The recurring genre of "our $x/month app suddenly cost $y0,000" postmortems is almost always a story about an abstraction — pay-per-request, auto-scaling, a recursive trigger — doing precisely what it said it would, to someone who never looked under it.
+
+[^4]: Peter Naur, *Programming as Theory Building*, 1985. Naur co-created Backus–Naur Form, so this isn't a skeptic sniping from outside the field — it's one of its architects arguing that the code is the least durable part of what a programmer makes. The essay is short and worth reading in full; it has aged into one of the most quietly radical things ever written about software.
+
+[^5]: Isaac Asimov, *Foundation* (1951) — verified against the source, since I first cited it from memory. In the "Encyclopedists" and "Mayors" sections, the Four Kingdoms of the Galactic Periphery (chiefly **Anacreon**) still possess atomic reactors but have entirely lost the science behind them. The Foundation exports that technology wrapped in a religion it calls **Scientism**: technician-priests are trained in the *operation* of the reactors — the rituals — but pointedly not in the theory, so the kingdoms stay dependent on Foundation-trained specialists to keep the machines running. Salvor Hardin's whole strategy rests on it: when knowledge becomes ceremony, power flows to whoever still understands the machine. It is Asimov's dramatization of exactly the failure mode this post is about — the artifact keeps humming while the comprehension drains out of it, until something breaks that no ritual covers.
