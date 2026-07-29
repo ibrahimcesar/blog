@@ -2,13 +2,13 @@
 title: "Pullbacks and Pushouts: Integration Points That Don't Lie"
 description: "When two services need to agree on something, you need a pullback. When two sources need to merge, you need a pushout. Part 9 of applying category theory to Solutions Architecture."
 featured: false
-pubDate: "2025-12-11T12:00:00.000Z"
+pubDate: "2026-07-29T12:00:00.000Z"
 language: en
 category: "Architecture"
 series: "Categorical Solutions Architecture"
 seriesOrder: 9
 tags: ["Category Theory", "Solutions Architecture", "Integration", "Software Architecture", "AWS"]
-draft: true
+draft: false
 ---
 
 import Lead from '../../components/editorial/Lead.astro';
@@ -30,19 +30,18 @@ $$
 f \circ p_1 = g \circ p_2
 $$
 
-With the universal property: for any object $Q$ with morphisms $q_1: Q \to A$ and $q_2: Q \to B$ satisfying $f \circ q_1 = g \circ q_2$, there exists a unique morphism $u: Q \to P$.
+With the universal property:[^1] for any object $Q$ with morphisms $q_1: Q \to A$ and $q_2: Q \to B$ satisfying $f \circ q_1 = g \circ q_2$, there exists a unique morphism $u: Q \to P$ such that $p_1 \circ u = q_1$ and $p_2 \circ u = q_2$.
 
 ```
-        q₁
-    Q -------> A
-    |    u     |
-    | ↘    p₁  | f
-    |   P ---->|
-    |   |      |
-    |   | p₂   v
-    |   v      C
-    +-> B ---->
-        q₂    g
+    Q ----------q₁---------.
+    |  \                   v
+    |   u -->  P ---p₁---> A
+    |          |           |
+    q₂         p₂          f
+    |          v           v
+    '------->  B ----g---> C
+
+    f ∘ p₁ = g ∘ p₂;  u is the unique map with p₁ ∘ u = q₁ and p₂ ∘ u = q₂
 ```
 
 The pullback is "the most general object that projects to both A and B *consistently with respect to C*."
@@ -154,21 +153,25 @@ const isCompatible = (v1: V1Order, v2: V2Order): boolean => {
 
 ## The Pushout: Merging with Identification
 
-A **pushout** is dual to a pullback. For morphisms $f: C \to A$ and $g: C \to B$, the pushout $P$ satisfies:
+A **pushout** is dual to a pullback.[^2] For morphisms $f: C \to A$ and $g: C \to B$, the pushout $P$ satisfies:
 
 $$
 i_1 \circ f = i_2 \circ g
 $$
 
-With the universal property: for any object $Q$ with morphisms to it from A and B that agree on C, there's a unique morphism from P to Q.
+With the universal property: for any object $Q$ with morphisms $q_A: A \to Q$ and $q_B: B \to Q$ agreeing on $C$ (that is, $q_A \circ f = q_B \circ g$), there's a unique morphism $u: P \to Q$ with $u \circ i_1 = q_A$ and $u \circ i_2 = q_B$.
 
 ```
     C ----f----> A
-    |            |
-    g           i₁
-    |            |
-    v            v
-    B ---i₂---> P ----u----> Q
+    |            |  \
+    g            i₁   qA
+    |            |      \
+    v            v       v
+    B ---i₂---> P ---u--> Q
+     \                    ^
+      \________qB________/
+
+    u is the unique map with u ∘ i₁ = qA and u ∘ i₂ = qB
 ```
 
 The pushout is "A and B glued together along their common part C."
@@ -203,10 +206,11 @@ interface PaymentEvent extends BaseEvent {
   data: PaymentData;
 }
 
-// Pushout: unified event stream that identifies common structure
+// The coproduct: a unified stream of disjoint variants
 type UnifiedEvent = OrderEvent | PaymentEvent;
 
-// The pushout property: events with same correlationId are related
+// The pushout: quotient the coproduct by shared correlationId —
+// correlate is what performs the identification
 const correlate = (events: UnifiedEvent[]): CorrelatedEventGroup[] => {
   const groups = new Map<string, UnifiedEvent[]>();
   for (const event of events) {
@@ -220,7 +224,7 @@ const correlate = (events: UnifiedEvent[]): CorrelatedEventGroup[] => {
 
 ### Schema Merge
 
-Merging two schemas that share common fields:
+Merging two schemas that share common fields:[^4]
 
 ```typescript
 // Shared fields
@@ -242,7 +246,10 @@ interface SchemaB extends CommonFields {
   tags: string[];
 }
 
-// Pushout: merged schema identifying common fields
+// Merged schema identifying the common fields.
+// (A lossy TS encoding: the true schema pushout keeps the union of
+// fields *required* — at the value level it's SchemaA | SchemaB
+// glued along CommonFields, not an everything-optional record.)
 interface MergedSchema {
   // Common fields (identified)
   id: string;
@@ -265,7 +272,7 @@ interface MergedSchema {
 
 ### Fiber Product (Pullback) in Databases
 
-The fiber product over a common key is a pullback:
+The fiber product over a common key is a pullback:[^3]
 
 ```sql
 -- Orders and Shipments, fibered over userId
@@ -281,8 +288,8 @@ Events from multiple sources, identified by correlation:
 
 ```typescript
 // Multiple sources produce events with correlationId
-const orderEvents: Stream<OrderEvent>;
-const paymentEvents: Stream<PaymentEvent>;
+declare const orderEvents: Stream<OrderEvent>;
+declare const paymentEvents: Stream<PaymentEvent>;
 
 // Pushout: merge identifying by correlationId
 const mergedStream = merge(orderEvents, paymentEvents)
@@ -295,19 +302,20 @@ const mergedStream = merge(orderEvents, paymentEvents)
 
 ### S3 + DynamoDB Consistency (Pullback)
 
-When S3 object and DynamoDB record must agree:
+When S3 object and DynamoDB record must agree:[^5]
 
 ```typescript
 // S3 has object metadata
 interface S3Object {
   key: string;
-  etag: string;
+  ETag: string;  // SDK casing
   lastModified: Date;
 }
 
 // DynamoDB has record
 interface DDBRecord {
   pk: string;  // Same as S3 key
+  etag: string;  // Copy of the S3 ETag written alongside the record
   status: string;
   metadata: object;
 }
@@ -352,8 +360,8 @@ const ruleBPattern = {
 };
 
 // Pushout: combined routing that identifies common pattern
-// Events matching both patterns are routed to both targets
-// but only processed once at the source identification level
+// The event enters the bus once, but each matching rule fires
+// independently — EventBridge does not deduplicate across rules
 ```
 
 ### Step Functions Parallel + Join (Pullback)
@@ -405,8 +413,8 @@ interface Pullback<A, B, C> {
 // For any Q that accepts both A and B and identifies along C,
 // there's a unique way to factor through the pushout P
 
-interface Pushout<A, B, C> {
-  p: A | B;  // The pushout object (roughly)
+interface Pushout<A, B, C, P> {
+  // P is roughly A | B, with the shared C identified
   inject: {
     fromA: (a: A) => P;
     fromB: (b: B) => P;
@@ -415,8 +423,8 @@ interface Pushout<A, B, C> {
   // Universal property
   factor: <Q>(
     qa: (a: A) => Q,
-    qb: (b: B) => Q,
-    agreesOnC: (c: C) => qa(f(c)) === qb(g(c))
+    qb: (b: B) => Q
+    // requires: qa ∘ f = qb ∘ g — both agree on C
   ) => (p: P) => Q;
 }
 ```
@@ -458,14 +466,14 @@ Use pushouts when:
 
 ```typescript
 // Pattern: unified event stream
-const pushoutPattern = <A extends Base, B extends Base, Base>(
+const pushoutPattern = <Base, A extends Base, B extends Base>(
   streamA: AsyncIterable<A>,
   streamB: AsyncIterable<B>,
   identify: (base: Base) => string
-): AsyncIterable<A | B> {
-  // Merge streams, identifying by common key
+): AsyncIterable<A | B> => {
+  // merge gives the coproduct; the pushout identification happens
+  // when downstream groups by identify(event)
   return merge(streamA, streamB);
-  // Downstream can group by identify(event)
 };
 ```
 
@@ -473,7 +481,7 @@ const pushoutPattern = <A extends Base, B extends Base, Base>(
 
 ## Consistency vs. Availability
 
-Pullbacks make explicit the consistency requirements:
+Pullbacks make explicit the consistency requirements:[^6]
 
 ```typescript
 // Strict pullback: both must be consistent NOW
@@ -532,3 +540,19 @@ The universal property tells you: your integration is correct if everything fact
 ---
 
 *Next in the series: **Limits and Colimits: The General Theory of "Best Fit"** — Where we generalize products, coproducts, pullbacks, and pushouts into a unified framework.*
+
+---
+
+## Footnotes
+
+[^1]: The pullback is also called the *fiber product* (or *fibered product*), written $A \times_C B$. In the category **Set**, it has a concrete description: $A \times_C B = \{(a, b) \in A \times B \mid f(a) = g(b)\}$ — the subset of the full product that satisfies the constraint. This makes the slogan precise: a pullback is a product *filtered by agreement*. Products (Part 8) are actually a special case — when $C$ is the terminal object, every pair trivially agrees, and the pullback collapses to the plain product $A \times B$.
+
+[^2]: The pushout is also called the *amalgamated sum* or *fibered coproduct*, written $A +_C B$. In **Set**, it's the disjoint union $A \sqcup B$ quotiented by identifying $f(c) \sim g(c)$ for every $c \in C$ — "glue A and B along C." Topology uses exactly this construction to build spaces by gluing along a shared boundary. The duality with pullbacks continues the theme from Part 8: reverse every arrow in the pullback square and you obtain the pushout square, just as reversing the product's projections yields the coproduct's injections.
+
+[^3]: The correspondence between relational joins and pullbacks is made rigorous in categorical database theory, most notably in David Spivak's work on functorial data migration — see Spivak, *"Functorial Data Migration"* (Information and Computation, 2012) and *Category Theory for the Sciences* (MIT Press, 2014). An inner equi-join computes precisely the fiber product of the two tables over the shared key column. This line of research grew into the categorical query language CQL, which uses these constructions to guarantee that data migrations preserve integrity constraints.
+
+[^4]: Merging along a shared base is also the shape of version control. A three-way merge — two branches diverging from a common ancestor — is a pushout: the ancestor is $C$, the branches are $A$ and $B$, and the merge result glues them along what they share. This is formalized in Mimram & Di Giusto, *"A Categorical Theory of Patches"* (Electronic Notes in Theoretical Computer Science, 2013) — a post-hoc categorical formalization of Darcs-style patch theory, and the foundation Pijul builds on. One honest caveat from that paper: the category of files and patches does *not* have all pushouts — merge conflicts are exactly the cases where the pushout fails to exist, which is why the construction lives in a free cocompletion. Schema merges, CRDTs, and event-stream unification all follow the same pattern: identify the common part, then glue — when the glue exists.
+
+[^5]: Amazon S3 has delivered strong read-after-write consistency for all objects since December 2020, and DynamoDB offers strongly consistent reads and condition expressions within a single table. But there are no cross-service transactions between S3 and DynamoDB — each service's guarantees stop at its own boundary. That's exactly why the pullback check in the code is an application-level concern: the consistency of the *pair* is a property neither service can enforce alone. DynamoDB's `TransactWriteItems` helps within DynamoDB, but the S3-DynamoDB pullback must be verified (or designed around) by you.
+
+[^6]: The CAP theorem began as Eric Brewer's conjecture (PODC keynote, 2000) and was formalized and proved by Seth Gilbert and Nancy Lynch in *"Brewer's Conjecture and the Feasibility of Consistent, Available, Partition-Tolerant Web Services"* (ACM SIGACT News, 2002). The three pullback variants in the code map directly onto the trade-off: the strict pullback chooses consistency over availability (CP), the optimistic pullback chooses availability (AP), and the eventual pullback trades latency for consistency — the extension Daniel Abadi captures in the PACELC formulation (IEEE Computer, 2012).
