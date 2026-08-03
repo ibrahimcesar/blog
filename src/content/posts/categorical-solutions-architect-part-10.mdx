@@ -2,13 +2,13 @@
 title: "Limits and Colimits: The General Theory of 'Best Fit'"
 description: "Products, pullbacks, and terminal objects are all limits. Coproducts, pushouts, and initial objects are all colimits. Part 10 of applying category theory to Solutions Architecture—the unified theory."
 featured: false
-pubDate: "2025-12-12T12:00:00.000Z"
+pubDate: "2026-07-29T12:00:00.000Z"
 language: en
 category: "Architecture"
 series: "Categorical Solutions Architecture"
 seriesOrder: 10
 tags: ["Category Theory", "Solutions Architecture", "Universal Properties", "Software Architecture", "AWS"]
-draft: true
+draft: false
 ---
 
 import Lead from '../../components/editorial/Lead.astro';
@@ -41,7 +41,7 @@ All of these share a pattern: **they're the "best" solution to a specific proble
 
 ## Limits: The General Construction
 
-A **limit** is the most general way to "combine" objects subject to constraints.
+A **limit** is the most general way to "combine" objects subject to constraints.[^1]
 
 Given a **diagram** $D: J \to \mathcal{C}$ (a shape $J$ mapped into your category), the limit $\lim D$ is:
 
@@ -81,7 +81,7 @@ const toUnit = <A>(a: A): Unit => undefined;
 
 ### Product (Discrete Diagram)
 
-When $J$ has two objects with no morphisms between them:
+When $J$ has two objects with no morphisms between them:[^2]
 
 ```
 J:  •   •    (two disconnected points)
@@ -105,6 +105,8 @@ lim = Eq(f, g) = { x | f(x) = g(x) }
 
 ```typescript
 // Equalizer: inputs where two functions agree
+declare const deepEqual: (a: unknown, b: unknown) => boolean;
+
 const equalizer = <A, B>(
   f: (a: A) => B,
   g: (a: A) => B
@@ -135,7 +137,7 @@ Given a diagram $D: J \to \mathcal{C}$, the colimit $\text{colim } D$ is:
 
 1. An object with morphisms FROM each object in the diagram
 2. Such that all triangles commute
-3. Universal: any other such object is a unique factorization
+3. Universal: for any other cocone with apex $Q$, there is a unique morphism $\text{colim } D \to Q$ commuting with the cocone legs
 
 ### Visualizing Colimits
 
@@ -143,7 +145,7 @@ Given a diagram $D: J \to \mathcal{C}$, the colimit $\text{colim } D$ is:
                 D(4)
                ↗  ↑  ↖
              D(1) D(2) D(3)
-               ↖  ↑  ↗
+               ↘  ↓  ↙
                 colim D
 ```
 
@@ -189,17 +191,17 @@ J:  • ⇉ •
 colim = Coeq(f, g) = B / (f(a) ~ g(a))
 ```
 
-**Architectural meaning**: Merging where two computations are treated as equivalent.
+**Architectural meaning**: Merging where two computations are treated as equivalent.[^3]
 
 ```typescript
 // Coequalizer: quotient by equivalence
-const coequalizer = <A, B>(
+type EquivalenceClass<B> = { representative: B };
+
+// Identify f(a) with g(a) for all a; map each b to its class
+declare const coequalizer: <A, B>(
   f: (a: A) => B,
   g: (a: A) => B
-): ((b: B) => EquivalenceClass<B>) => {
-  // Identify f(a) with g(a) for all a
-  // Return equivalence class
-};
+) => (b: B) => EquivalenceClass<B>;
 ```
 
 ### Pushout (Span)
@@ -224,18 +226,18 @@ colim = A +_C B (pushout)
 | Product A × B | Coproduct A + B | Combine/Choose |
 | Equalizer | Coequalizer | Agree/Identify |
 | Pullback | Pushout | Consistent combine/Merge |
-| Limit | Colimit | Universal receive/send |
+| Limit | Colimit | Project into/Receive from |
 
 ---
 
 ## Complete and Cocomplete Categories
 
-A category is **complete** if it has all limits. It's **cocomplete** if it has all colimits.
+A category is **complete** if it has all *small* limits. It's **cocomplete** if it has all *small* colimits.[^4]
 
 ### Sets Are Complete and Cocomplete
 
 ```typescript
-// All limits exist in Set (TypeScript types)
+// All small limits exist in Set (TypeScript types)
 
 // Terminal: Unit
 type Unit = void;
@@ -246,7 +248,7 @@ type Product<A, B> = [A, B];
 // Equalizers: subsets
 type Equalizer<A, B> = A & { _eq: true };  // Conceptually
 
-// All colimits exist too
+// All small colimits exist too
 
 // Initial: Never
 type Never = never;
@@ -285,32 +287,38 @@ An API Gateway over multiple Lambda functions is a limit:
 
 It's the universal way to access all three consistently.
 
-### DynamoDB Transactions as Pullback
+### DynamoDB Transactions: Joint Consistency
 
-TransactWriteItems is a pullback construction:
+TransactWriteItems is closer to a product with an atomicity guarantee:[^5]
 
 ```typescript
-// Multiple items that must agree (all succeed or all fail)
-await ddb.transactWriteItems({
+// Multiple items committed together (all succeed or all fail)
+await client.send(new TransactWriteItemsCommand({
   TransactItems: [
     { Put: { TableName: 'orders', Item: order } },
-    { Update: { TableName: 'inventory', Key: { sku }, UpdateExpression: 'SET qty = qty - :dec' } },
-  ]
-});
-// This is the pullback: writes that agree on "transaction succeeded"
+    { Update: {
+        TableName: 'inventory',
+        Key: { sku: { S: sku } },
+        UpdateExpression: 'SET qty = qty - :dec',
+        ExpressionAttributeValues: { ':dec': { N: '1' } },
+    } },
+  ],
+}));
+// Not a literal pullback—a product whose legs commit jointly.
+// "Joint consistency" is the analogy, not the construction.
 ```
 
-### CloudWatch Metrics as Limit
+### CloudWatch Metrics and Limits
 
-Aggregated metrics are limits over individual data points:
+The limit over discrete data points is their product—the joint record of all of them:
 
 ```
-                 Aggregated Metric (avg, sum, max)
-                        ↓
+      (datapoint1, datapoint2, datapoint3, ...)
+          ↙           ↓           ↘
     datapoint1  datapoint2  datapoint3  ...
 ```
 
-The aggregate is the limit—the universal summary of all points.
+The limit is the lossless tuple. Aggregates like avg, sum, and max are morphisms *out* of that product—useful summaries with no universal property. Collapsing many points into one number is quotient-flavored, and quotients live on the colimit side.
 
 ---
 
@@ -328,15 +336,17 @@ EventBridge merging multiple sources:
 
 It's the universal merge, identifying events by common schema.
 
-### S3 Select as Coequalizer
+### S3 Select: Filter, Not Coequalizer
 
-Filtering and projecting data identifies equivalent rows:
+It's tempting to read filtering as identification—but nothing gets identified:
 
 ```sql
 SELECT s.name FROM s3object s WHERE s.age > 21
--- Rows with same (name) are equivalent
--- This is a coequalizer on the name projection
+-- WHERE carves out a subobject: the rows with age > 21
+-- That's equalizer/pullback territory—limit-side, not colimit
 ```
+
+The coequalizer would be `SELECT DISTINCT s.name`—quotienting rows by the kernel pair of the name projection, collapsing everything that agrees on it. Plain `SELECT` performs no quotient at all.
 
 ### Kinesis Stream Merge
 
@@ -354,19 +364,21 @@ This is a colimit—the universal merge of shards.
 
 ## Calculating with Limits and Colimits
 
-### Limits Preserve Limits
+### Functors That Preserve Limits
 
-If $F: \mathcal{C} \to \mathcal{D}$ preserves limits, then:
+A functor $F: \mathcal{C} \to \mathcal{D}$ **preserves limits** when:
 
 $$
 F(\lim D) \cong \lim F(D)
 $$
 
+That's a definition, not a theorem—it says what preservation *means*. The genuine theorem nearby: limits commute with limits, $\lim_i \lim_j \cong \lim_j \lim_i$.
+
 **Meaning**: If your migration functor preserves limits, aggregations survive the migration.
 
 ### Colimits and Adjoints
 
-Left adjoints preserve colimits. Right adjoints preserve limits.
+Left adjoints preserve colimits. Right adjoints preserve limits.[^6]
 
 **Meaning**: If you have an adjunction between architectures, you know exactly what preserves.
 
@@ -391,6 +403,9 @@ When you need to **aggregate with constraints**:
 3. Verify the universal property (everything factors through it)
 
 ```typescript
+// Stub: the limit's carrier—for a discrete diagram, the product
+type LimitObject<Diagram> = { [K in keyof Diagram]: Diagram[K] };
+
 // Generic limit pattern
 interface Limit<Diagram> {
   object: LimitObject<Diagram>;
@@ -410,6 +425,9 @@ When you need to **merge with identification**:
 3. Verify the universal property (it factors to anything)
 
 ```typescript
+// Stub: the colimit's carrier—for a discrete diagram, the coproduct
+type ColimitObject<Diagram> = Diagram[keyof Diagram];
+
 // Generic colimit pattern
 interface Colimit<Diagram> {
   object: ColimitObject<Diagram>;
@@ -458,8 +476,8 @@ A complete category can build anything. An incomplete category has fundamental l
 
 Limits and colimits unify all universal constructions:
 
-1. **Limits**: Best way to receive from a diagram (aggregate)
-2. **Colimits**: Best way to send to a diagram (merge)
+1. **Limits**: Best way to project into a diagram (aggregate)
+2. **Colimits**: Best way to receive from a diagram (merge)
 3. **Universal property**: The defining characteristic—everything factors through
 4. **Completeness**: Having all limits/colimits means full flexibility
 
@@ -473,3 +491,19 @@ The general theory gives you the vocabulary to recognize and design any combinat
 ---
 
 *Next in the series: **Adjunctions: The Formal Structure of Trade-offs** — Where we discover that many architectural tensions are mathematically necessary, and learn to navigate them.*
+
+---
+
+## Footnotes
+
+[^1]: Formally, a *cone* over a diagram $D: J \to \mathcal{C}$ is an object $N$ (the apex) together with a morphism $N \to D(j)$ for every $j$ in $J$, commuting with every arrow of the diagram. The limit is the *terminal* cone: every other cone factors through it via exactly one morphism. Terminality is why limits are unique up to unique isomorphism—two limits of the same diagram aren't just isomorphic, they're isomorphic in precisely one way compatible with the projections. The standard references are Mac Lane, *Categories for the Working Mathematician* (Springer), and Riehl, *Category Theory in Context* (Dover, 2016), both of which build much of the theory on this single definition.
+
+[^2]: This is the payoff of Parts 8 and 9: every construction we met there is a limit or colimit for a particular choice of shape $J$. The empty shape gives the terminal object; two isolated points give the product (Part 8); the cospan $\bullet \to \bullet \leftarrow \bullet$ gives the pullback (Part 9). Dualize—reverse every arrow—and the same shapes yield the initial object, the coproduct, and the pushout. Nothing new had to be invented; we only had to notice the parametrization.
+
+[^3]: In **Set**, the coequalizer of $f, g: A \to B$ is the quotient $B/\sim$, where $\sim$ is the smallest equivalence relation with $f(a) \sim g(a)$ for all $a$. Its limit-side cousin is the *kernel pair* of a morphism $f: B \to C$—the pullback of $f$ along itself, the pairs $f$ cannot tell apart. In **Set** every surjection is the coequalizer of its own kernel pair, which is the categorical way of saying a quotient is exactly the record of what got identified. Awodey's *Category Theory* (Oxford University Press) works out equalizers and coequalizers in detail with these examples.
+
+[^4]: "Small" means the diagram's shape $J$ has only a set's worth of objects and morphisms—not a proper class. The restriction isn't pedantry: by an observation due to Peter Freyd, a small category with all small limits collapses into a preorder—at most one morphism between any two objects. So "complete" always means *small-complete*; a category with literally all limits would be degenerate. **Set** is the canonical example, complete and cocomplete for all small diagrams. Mac Lane discusses this in *Categories for the Working Mathematician* alongside the adjoint functor theorems, where the size condition earns its keep as Freyd's solution set condition.
+
+[^5]: DynamoDB's `TransactWriteItems` executes a set of write actions as a single all-or-nothing operation—every action succeeds or the whole transaction is canceled. A transaction can span multiple tables within one AWS account and Region, currently up to 100 actions per request (the original limit of 25 was raised in 2022), with condition checks and idempotency via a client request token. What it does *not* give you is any cross-Region or cross-service guarantee—the atomicity boundary is the single request. See the [DynamoDB transactions documentation](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/transaction-apis.html).
+
+[^6]: The mnemonic is RAPL: *right adjoints preserve limits*—dually, left adjoints preserve colimits. The canonical example is the free ⊣ forgetful adjunction: the forgetful functor from monoids to sets is a right adjoint, which is why the underlying set of a product of monoids is just the product of the underlying sets; the free monoid functor is a left adjoint, which is why free constructions play well with coproducts. The theorem is proved in Mac Lane's *Categories for the Working Mathematician* and Awodey's *Category Theory*, and Riehl's *Category Theory in Context* leans on it constantly. We'll meet adjunctions properly in the next post.
