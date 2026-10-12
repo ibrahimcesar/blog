@@ -11,6 +11,16 @@
       "src": "/certs/aws-certified-devops-engineer-professional.png"
     },
     {
+      "href": "https://www.credly.com/badges/1f645743-bcba-4168-8e86-1ec1c88af86e/public_url",
+      "title": "AWS Certified Generative AI Developer - Professional",
+      "src": "/certs/aws-certified-generative-ai-developer-professional.png"
+    },
+    {
+      "href": "https://www.credly.com/badges/788bd6d6-040f-4f9a-b674-aff66ccd53f5/public_url",
+      "title": "AWS Certified AI Business Strategist",
+      "src": "/certs/aws-certified-ai-business-strategist.png"
+    },
+    {
       "href": "https://www.credly.com/badges/5f1acc74-2575-415a-a9a1-1ab786cbf72d/public_url",
       "title": "Well-Architected Proficient",
       "src": "/certs/well-architected-proficient.png"
